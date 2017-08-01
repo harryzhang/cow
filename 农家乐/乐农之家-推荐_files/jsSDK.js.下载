@@ -1,0 +1,53 @@
+var appId="";
+var timestamp="";
+var nonceStr="";
+var signature="";
+var root="";
+var jsSDK={
+	 appId:"",
+	 timestamp:"",
+	 nonceStr:"",
+	 signature:"",
+	 root:"",
+
+     setPrefix :function(root){
+        this.root = root;
+     },
+
+	getWxConfigParam:function(generalid,url){
+         $.ajax({
+          url:this.root+"wxutil/getWxConfig",
+          type:"POST",
+          dataType : "json",
+          async:false,
+          data:{generalid:generalid,url:url,ts:(new Date()).getTime()},
+          success:function(data){
+             appId=data.appId;
+	    	 timestamp=data.timestamp;
+	    	 nonceStr=data.nonceStr;
+	    	 signature=data.signature;
+          },
+          error:function(){
+             return {errcode:"01",errmsg:"获取微信配置页面信息失败!"}
+          }
+        });
+	},
+	setWxConfig:function(){
+		wx.config({
+		    debug: false, //
+		    appId: appId, //
+		    timestamp: timestamp, //
+		    nonceStr: nonceStr, //
+		    signature: signature,//
+		    jsApiList: [
+	        'checkJsApi',
+	        'onMenuShareTimeline',
+	        'onMenuShareAppMessage',
+	        'hideMenuItems',
+	        'showMenuItems',
+	        'onMenuShareQQ'
+	      ]
+		});
+	}
+
+}

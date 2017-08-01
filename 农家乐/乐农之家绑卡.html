@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<!-- saved from url=(0056)https://www.lenongzhijia.com/lnweixin/getSecUserBankList -->
+<html style="font-size: 59.5px;"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>乐农之家</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+<meta http-equiv="expires" content="0">
+
+<link rel="shortcut icon" href="https://www.lenongzhijia.com/static/images/logo.ico">
+<meta content="telephone=no" name="format-detection">
+    <script type="text/jscript" src="./乐农之家绑卡_files/jquery-1.8.3.js.下载"></script>
+    <script type="text/jscript" src="./乐农之家绑卡_files/bind_bank.js.下载"></script>
+    <script type="text/jscript" src="./乐农之家绑卡_files/formValidatorRegex.js.下载"></script>
+	<link type="text/css" href="./乐农之家绑卡_files/base.css" rel="stylesheet">
+    <link type="text/css" href="./乐农之家绑卡_files/common.css" rel="stylesheet">
+    <link type="text/css" href="./乐农之家绑卡_files/account.css" rel="stylesheet">
+    <script>
+	//定义屏幕字体大小
+	document.getElementsByTagName("html")[0].style.fontSize=document.documentElement.clientWidth/10+"px";
+	</script>
+</head>
+
+<body>
+	<div class="wrap">
+        <div class="main">
+        	<input type="hidden" id="basePath" value="https://www.lenongzhijia.com:443/">	
+        	<!--绑定银行卡-->
+			<form action="https://www.lenongzhijia.com/lnweixin/getSecUserBankList" class="form_wrap">
+            	<div class="formStyle2">
+                	<div class="form_item">
+                    	<ul>
+                    		<li class="form_line1 clearfix">
+                    			<input type="hidden" id="readRealName" value="">
+                    			<input type="hidden" id="readIdNo" value="">
+                            	<span>真实姓名</span>
+                            	<input type="text" id="realName" placeholder="请输入您的真实姓名" value="">
+                            	</li>
+                            <li class="clearfix">
+                            	<span>身份证号</span>
+                            	<input type="text" id="idNo" placeholder="请输入您的身份证号" value="">
+                            	</li>
+                    	</ul>
+                    </div>
+                    <p class="notice"><span>重要提示：</span>乐农之家使用”同卡进出”方式确保资金安全，即提现和充值的银行卡保持一致，银行卡信息必须和本人身份证实名信息保持一致，否则无法提现。</p>
+                    <div class="form_item">
+                    	<ul>
+                    		<li class="form_line1 choose_bank clearfix">
+                            	<span>选择银行</span>
+                                <p>请选择银行</p>
+                                <input id="hideBank" type="hidden" value="请选择银行"> 
+                            </li>
+                            <li class="clearfix">
+                            	<span>银行卡号</span>
+                                <input type="text" id="cardNo" placeholder="请输入您的银行卡号" value="">
+                            </li>
+                    	</ul>
+                    </div>
+                    <p class="notice1">乐农之家智能加密，保障你用卡安全</p>
+                     <div class="error_notice">
+                        <p class="hide">错误提示</p>
+                    </div>
+                    <input type="hidden" value="" id="requestNo"> 
+                    <a href="javascript:void(0);" id="bank_submit" class="btn funcBtn btn_green option_btn">确认提交</a>
+                </div>
+                
+                 <!-- 验证码 -->
+		        <div class="side hide">
+		            <p class="yz">输入验证码</p>
+		            <input class="validation" type="text" id="validateCode" placeholder="请输入6位短信验证码">
+		            <a class="h_btn" href="javascript:" id="reSendCode">获取验证码<!-- (<em>120</em>) --></a>
+		            <i id="validateMsg"></i>
+		            <div class="button">
+		                <a href="javascript:" class="qx">取 消</a>
+		                <a href="javascript:" class="bt_s">确 定</a>
+		            </div>
+		        </div>
+                
+                <!--选择银行-->
+                <div class="mask_bg hide"></div>
+                <div class="choose_bank_list hide">
+                    <h2>请选择银行</h2>
+                    <ul>
+                    	<li>
+                            <img src="./乐农之家绑卡_files/icbc.png" alt="">
+                            <p>工商银行</p>
+                            <span>限额：5万/笔 5万/日</span>
+                            <b style="display: none">ICBC,icbc</b>
+                            <i></i>
+                        </li>
+                    	<li>
+                            <img src="./乐农之家绑卡_files/b2c.png" alt="">
+                            <p>中国银行</p>
+                            <span>限额：5万/笔 50万/日</span>
+                            <b style="display: none">BOC,b2c</b>
+                            <i></i>
+                        </li>
+                    	<li>
+                            <img src="./乐农之家绑卡_files/ccb.png" alt="">
+                            <p>建设银行</p>
+                            <span>限额：10万/笔 50万/日</span>
+                            <b style="display: none">CCB,ccb</b>
+                            <i></i>
+                        </li>
+                    	<li>
+                            <img src="./乐农之家绑卡_files/post.png" alt="">
+                            <p>邮政储蓄</p>
+                            <span>限额：5万/笔 10万/日</span>
+                            <b style="display: none">PSBC,post</b>
+                            <i></i>
+                        </li>
+                    	<li>
+                            <img src="./乐农之家绑卡_files/citic.png" alt="">
+                            <p>中信银行</p>
+                            <span>限额：1万/笔 1万/日</span>
+                            <b style="display: none">ECITIC,citic</b>
+                            <i></i>
+                        </li>
+                    	<li>
+                            <img src="./乐农之家绑卡_files/cebb.png" alt="">
+                            <p>光大银行</p>
+                            <span>限额：10万/笔 50万/日</span>
+                            <b style="display: none">CEB,cebb</b>
+                            <i></i>
+                        </li>
+                    	<li>
+                            <img src="./乐农之家绑卡_files/hxb.png" alt="">
+                            <p>华夏银行</p>
+                            <span>限额：10万/笔 50万/日</span>
+                            <b style="display: none">HX,hxb</b>
+                            <i></i>
+                        </li>
+                    	<li>
+                            <img src="./乐农之家绑卡_files/cib.png" alt="">
+                            <p>兴业银行</p>
+                            <span>限额：5万/笔 30万/日</span>
+                            <b style="display: none">CIB,cib</b>
+                            <i></i>
+                        </li>
+                    	<li>
+                            <img src="./乐农之家绑卡_files/pab.png" alt="">
+                            <p>平安银行</p>
+                            <span>限额：10万/笔 50万/日</span>
+                            <b style="display: none">SZPA,pab</b>
+                            <i></i>
+                        </li>
+                    	<li>
+                            <img src="./乐农之家绑卡_files/cmbc.png" alt="">
+                            <p>民生银行</p>
+                            <span>限额：10万/笔 50万/日</span>
+                            <b style="display: none">CMBC,cmbc</b>
+                            <i></i>
+                        </li>
+                    	<li>
+                            <img src="./乐农之家绑卡_files/cgb.png" alt="">
+                            <p>广发银行</p>
+                            <span>限额：10万/笔 50万/日</span>
+                            <b style="display: none">GDB,cgb</b>
+                            <i></i>
+                        </li>
+                    	<li>
+                            <img src="./乐农之家绑卡_files/abc.png" alt="">
+                            <p>农业银行</p>
+                            <span>限额：20万/笔 50万/日</span>
+                            <b style="display: none">ABC,abc</b>
+                            <i></i>
+                        </li>
+                    	<li>
+                            <img src="./乐农之家绑卡_files/cmb.png" alt="">
+                            <p>招商银行</p>
+                            <span>限额：5万/笔 5万/日</span>
+                            <b style="display: none">CMBCHINA,cmb</b>
+                            <i></i>
+                        </li>
+                    	<li>
+                            <img src="./乐农之家绑卡_files/boco.png" alt="">
+                            <p>交通银行</p>
+                            <span>限额：5万/笔 30万/日</span>
+                            <b style="display: none">BOCO,boco</b>
+                            <i></i>
+                        </li>
+                    	</ul>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script>
+    	$(function(){
+			//浮层弹出
+			$(".choose_bank").click(function(){
+				$(".choose_bank_list").show();
+				$(".mask_bg").show();	
+			})
+			
+			$(".choose_bank_list li").click(function(e){
+				$(this).find("i").addClass("choose_this");
+				$(".choose_bank_list").hide();
+				$(".mask_bg").hide();
+				$(".choose_bank_list li i").removeClass("choose_this");
+				var txt = $(this).find("p").html();
+				var b = $(this).find("b").html();
+				var img = $(this).find("img").attr("src");
+				$(".choose_bank p").html('<img src="'+img+'" alt="">' + txt);
+				$("#hideBank").val(txt+","+b);
+				//阻止冒泡时间
+				if (e.stopPropagation){ 
+				  e.stopPropagation(); 
+			   } else {
+				  e.cancelBubble = true;  
+			   } 
+			});
+			
+			$(".mask_bg").click(function(){
+				$(".choose_bank_list").hide();
+				$(".mask_bg").hide();	
+			});
+		})
+    </script>
+
+
+</body></html>

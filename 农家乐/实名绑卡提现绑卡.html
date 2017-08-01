@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<!-- saved from url=(0068)https://www.lenongzhijia.com/lnweixin/newWithdrawtInit?isRecharge=no -->
+<html style="font-size: 59.5px;"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>实名绑卡</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+<meta http-equiv="expires" content="0">
+
+<link rel="shortcut icon" href="https://www.lenongzhijia.com/pageh5/static/images/logo.ico">
+<link type="text/css" href="./实名绑卡提现绑卡_files/base.css" rel="stylesheet">
+    <link type="text/css" href="./实名绑卡提现绑卡_files/user_card.css" rel="stylesheet">
+    <script type="text/javascript" src="./实名绑卡提现绑卡_files/jquery-1.8.1.min.js.下载"></script>
+    <script type="text/javascript" src="./实名绑卡提现绑卡_files/bind_card.js.下载"></script>
+    <script type="text/javascript" src="./实名绑卡提现绑卡_files/formValidatorRegex.js.下载"></script>
+    <script>
+    //定义屏幕字体大小
+    document.getElementsByTagName("html")[0].style.fontSize=document.documentElement.clientWidth/10+"px";
+    </script>
+</head>
+<body>
+	<input id="lnfund" type="hidden" value="https://www.lenongzhijia.com:443/">
+    <!-- content -->
+    <div class="content">
+        <div class="news">
+            <div class="card cara_date">
+                <p>您只能绑定一张银行卡，银行卡开户名必须是您的真实姓名，并且银行卡预留手机号需与您在乐农之家注册手机号一致。</p>
+                <div class="news_com clearfix">
+                	<input id="isAuth" type="hidden" value="2">
+                	<!-- 未实名认证 -->
+                	<div class="cove clearfix"><strong>开户人姓名</strong><input type="text" placeholder="请输入开户人真实姓名" value="" id="nullRealName"></div>
+                    	<div class="cove clearfix"><strong>身份证号码</strong><input type="text" placeholder="请输入您的身份证号码" value="" id="nullIdNo"></div>
+                    <!-- 已实名认证 -->
+                    <input id="realName" type="hidden" value="">
+					<input id="readIdNo" type="hidden" value="">
+                    <div class="cove clearfix"><strong>银行卡号</strong><input type="text" placeholder="请输入您的银行卡号" id="cardNo"></div>
+                    <div class="cove clearfix">
+                        <strong>请选择银行</strong><input type="text" id="choose_bank" placeholder="请选择银行" readonly="readonly"><b class="xiala"></b>
+                        <ul class="preferential">
+                        	<li class="add_color" bank-info-code="ICBC" bank-code="icbc"><img src="./实名绑卡提现绑卡_files/icbc.png"><span>工商银行</span></li>
+								<li bank-info-code="BOC" bank-code="b2c"><img src="./实名绑卡提现绑卡_files/b2c.png"><span>中国银行</span></li>
+								<li bank-info-code="CCB" bank-code="ccb"><img src="./实名绑卡提现绑卡_files/ccb.png"><span>建设银行</span></li>
+								<li bank-info-code="PSBC" bank-code="post"><img src="./实名绑卡提现绑卡_files/post.png"><span>邮政储蓄</span></li>
+								<li bank-info-code="ECITIC" bank-code="citic"><img src="./实名绑卡提现绑卡_files/citic.png"><span>中信银行</span></li>
+								<li bank-info-code="CEB" bank-code="cebb"><img src="./实名绑卡提现绑卡_files/cebb.png"><span>光大银行</span></li>
+								<li bank-info-code="HX" bank-code="hxb"><img src="./实名绑卡提现绑卡_files/hxb.png"><span>华夏银行</span></li>
+								<li bank-info-code="CIB" bank-code="cib"><img src="./实名绑卡提现绑卡_files/cib.png"><span>兴业银行</span></li>
+								<li bank-info-code="SZPA" bank-code="pab"><img src="./实名绑卡提现绑卡_files/pab.png"><span>平安银行</span></li>
+								<li bank-info-code="CMBC" bank-code="cmbc"><img src="./实名绑卡提现绑卡_files/cmbc.png"><span>民生银行</span></li>
+								<li bank-info-code="GDB" bank-code="cgb"><img src="./实名绑卡提现绑卡_files/cgb.png"><span>广发银行</span></li>
+								<li bank-info-code="ABC" bank-code="abc"><img src="./实名绑卡提现绑卡_files/abc.png"><span>农业银行</span></li>
+								<li bank-info-code="CMBCHINA" bank-code="cmb"><img src="./实名绑卡提现绑卡_files/cmb.png"><span>招商银行</span></li>
+								<li bank-info-code="BOCO" bank-code="boco"><img src="./实名绑卡提现绑卡_files/boco.png"><span>交通银行</span></li>
+								</ul>
+                    </div>
+                    <div class="cove w315 fl"><strong>短信验证码</strong><input type="text" placeholder="请输入短信验证码" class="w166" id="validateCode"></div>
+                    <!-- 按钮颜色控制类again,gray -->
+                    <input type="button" class="btn fl" name="" readonly="readonly" value="获取验证码" id="requestCode" onclick="requestCode()">
+                    <input type="hidden" value="" id="requestno">
+                </div>
+                <a href="javascript:bindCardConfirm();" class="bt">确认绑卡</a>
+            </div>
+            <i id="error-box"></i>
+        </div>
+    </div>
+
+</body></html>

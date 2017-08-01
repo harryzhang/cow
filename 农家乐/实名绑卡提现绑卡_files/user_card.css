@@ -1,0 +1,172 @@
+@charset "UTF-8";
+/**
+ *
+ * @authors Marte (iqianduan@126.com)
+ * @date    2017-04-28 15:06:17
+ * @version $Id$
+ */
+.content{
+    width: 100%;
+    background-color: #fff;
+    overflow: hidden;
+}
+/*添加银行卡资料*/
+.news{
+    position: relative;
+}
+.news .cara_date{
+    width: 7.8125rem;
+    margin:1.1875rem auto 0;
+}
+.news p{
+    display: block;
+    width: 7.8125rem;
+    margin:0 auto;
+    font-size: .34375rem;
+    color: #ffb11a;
+    line-height: .5rem;
+}
+
+.news .news_com{
+    width:100%;
+}
+.news .news_com .cove{
+    width:100%;
+    background:#fff;
+    border-radius:.125rem;
+    margin-top: .25rem;
+    position: relative;
+    border: 1px solid #b5b5b5;
+}
+.news .news_com .cove strong{
+    width: 2.0625rem;
+    height: .984375rem;
+    line-height: .984375rem;
+    text-align: center;
+    color:#fff;
+    font-size: .34375rem;
+    background:#02bf6d;
+    border-radius:.125rem;
+    display:block;
+    float: left;
+}
+.news .news_com .cove input{
+    width: 5.09375rem;
+    height: .983125rem;
+    font-size: .34375rem;
+    color:#999;
+    padding-left: .3125rem;
+    display:block;
+    float: left;
+    outline:none;
+    background:#fff;
+    border: none;
+}
+.news .news_com .cove em{
+    font-style: normal;
+    margin:0 3px;
+}
+.news .news_com .cove b{
+    width: 1.09375rem;
+    height: .953125rem;
+    background: url(../images/user/z2.png) no-repeat center;
+    background-size: .5rem .28125rem;
+    display:block;
+    position:absolute;
+    right:0;
+    top:0;
+    cursor:pointer;
+}
+.cove .preferential{
+    display: none;
+    width: 4.90625rem;
+    height: 3.25rem;
+    background:#fff;
+    padding:.15625rem 0;
+    position:absolute;
+    left: 2.0625rem;
+    top: .984375rem;
+    z-index: 9;
+    border:.015625rem solid #e5e5e5;
+    border-radius: .125rem;
+    overflow-y: auto;
+}
+.cove .preferential li{
+    width: 4.203125rem;
+    margin:0 auto;
+    border-bottom: 1px solid #e5e5e5;
+    height: .625rem;
+    padding-left: .465rem;
+    cursor:pointer;
+    overflow: hidden;
+}
+.cove .preferential li img{
+    display: block;
+    float: left;
+    width: .65625rem;
+    height: .5rem;
+    margin-top: .0625rem;
+}
+.cove .preferential li span{
+    display: block;
+    float: left;
+    line-height: .609375rem;
+    font-size: .34375rem;
+    color:#a9a9a9;
+    margin-left: .125rem;
+}
+
+.cove .preferential li:hover{
+    color:#1cc47b;
+}
+.cove .preferential li.add_color{
+    background:url(../images/user/blue_y.png) no-repeat .15625rem center;
+    background-size: .15625rem .15625rem;
+    color:#1cc47b;
+}
+.news .news_com .w315{
+    width: 5.3125rem;
+}
+.news .news_com .cove .w166{
+    width: 2.81875rem;
+}
+.news .news_com .btn{
+    width: 2.275rem;
+    height: .984375rem;
+    line-height: .984375rem;
+    border: none;
+    border-radius: .125rem;
+    background-color: #02bf6d;
+    color: #fff;
+    font-size: .34375rem;
+    margin: .25rem 0 0 .09375rem;
+    -webkit-border-radius: .125rem;
+}
+.news .news_com .gray{
+    background-color: #bfbfbf;
+}
+.news .news_com .again{
+    background-color: #02bf6d;
+}
+.news .bt{
+    display: block;
+    width: 5.125rem;
+    height: 1.125rem;
+    line-height: 1.125rem;
+    border-radius: .125rem;
+    background-color: #02bf6d;
+    color: #fff;
+    font-size: .375rem;
+    text-align: center;
+    margin: 2.4375rem auto 0;
+    -webkit-border-radius: .125rem;
+}
+.news>i{
+    position: absolute;
+    left: 1.125rem;
+    top: 8.725rem;
+    color: #ff6060;
+    width: 7.8125rem;
+    text-align: center;
+    font-size: .34375rem;
+}

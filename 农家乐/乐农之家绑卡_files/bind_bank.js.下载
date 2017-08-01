@@ -1,0 +1,225 @@
+var basePath = $("#basePath").val();
+$(function(){
+	var timer2 = 120;
+	var tipId2;
+	$("#cardNo").keyup(function(){
+		var val = $(this).val();
+		var len = val.length+"";
+		var oldLen = $(this).attr("flag");
+		$(this).attr("flag",len);
+		if(oldLen<len){
+			
+			var last = len.substring(len.length-1,len.length);
+			if(last=="4"||last=="9"){
+				val = val+" ";
+				$(this).val(val);
+			}
+		}
+	})
+	
+    function rtimer2() {
+		if (timer2 > 0) {
+			$("#reSendCode").html(timer2 + "秒后获取");
+			timer2--;
+		} else {
+			window.clearInterval(tipId2);
+			$("#reSendCode").html("重新发送");
+			timer2 = 120;
+			codeValid = false;
+		}
+	}
+	
+	$("#reSendCode").click(function(){
+		tipId2 = window.setInterval(rtimer2, 1000);
+		var params = {};
+		params['requestNo'] = $("#requestNo").val();
+		$.ajax({
+			type : "POST",
+			cache : false,
+			async : false,
+			dataType : "json",
+			url : $("#basePath").val()+"lnweixin/resendBindCardCode",
+			data :params,
+			success : function(data) {
+				$("#requestNo").val(data.message);
+			}
+		})
+	});
+	
+	
+	$("#bank_submit").click(function(){
+		var params = {};
+		var readRealName = $("#readRealName").val();
+		var readIdNo = $("#readIdNo").val();
+//		 alert(readRealName+"\t"+readIdNo);
+		var chinese = /^[\u4e00-\u9fa5]{0,}$/;
+		var isAuth = $("#isAuth").val();
+		var realName = $("#realName").val();
+		var idNo = $("#idNo").val();
+		var cardNo = $("#cardNo").val();
+		if(readRealName==""&&readIdNo==""){
+		if(realName==""){
+			showTipMsg("&nbsp;&nbsp;&nbsp;&nbsp;*真实姓名不能为空！");
+			return;
+		}else if(!chinese.test(realName)){
+			showTipMsg("&nbsp;&nbsp;&nbsp;&nbsp;*真实姓名必须为中文！");
+			return;
+		}else if(realName.length>12){
+			showTipMsg("&nbsp;&nbsp;&nbsp;&nbsp;*姓名长度不能大于12位！");
+			return;
+		}else if(realName.length<2){
+			showTipMsg("&nbsp;&nbsp;&nbsp;&nbsp;*姓名长度不能小于2位！");
+			return;
+		}else{
+			var idNo = $("#idNo").val();
+			if(idNo==""){
+				showTipMsg("&nbsp;&nbsp;&nbsp;&nbsp;*请输入身份证号！");
+				return;
+			}else if(chinese.test(isCardID(idNo))){
+				showTipMsg("&nbsp;&nbsp;&nbsp;&nbsp;*"+isCardID(idNo));
+				return;
+			}else{
+				var chooseBank = $("#hideBank").val();
+				if(chooseBank=="请选择银行"){
+					showTipMsg("&nbsp;&nbsp;&nbsp;&nbsp;*请选择银行！");
+					return;
+				}else{
+					var cardNo = $("#cardNo").val().replace(/\s/g,"");
+					if(cardNo=="请输入储蓄卡号"||cardNo==""){
+						showTipMsg("&nbsp;&nbsp;&nbsp;&nbsp;*卡号不能为空！");
+						return;		
+					}
+				}
+			}
+		}
+		 params["realName"] =$("#realName").val();
+		 params["idNo"] =$("#idNo").val();
+		}else{
+			var chooseBank = $("#hideBank").val();
+			if(chooseBank=="请选择银行"){
+				showTipMsg("&nbsp;&nbsp;&nbsp;&nbsp;*请选择银行！");
+				return;
+			}
+			var cardNo = $("#cardNo").val().replace(/\s/g,"");
+			if(cardNo=="请输入储蓄卡号"||cardNo==""){
+				showTipMsg("&nbsp;&nbsp;&nbsp;&nbsp;*卡号不能为空！");
+				return;		
+			}
+		}
+		var array = chooseBank.split(',');
+		 params["cardNo"] =$("#cardNo").val().replace(/\s/g,"");
+//		 params["realName"] =$("#readRealName").val();
+//		 params["idNo"] =$("#idNo").val();
+		 params["bankName"] =array[0];
+		 params["bankRealId"] =array[1];
+		 params["bankCode"] =array[2];
+		$.ajax({
+			type : "POST",
+			cache : false,
+			async : false,
+			dataType : "json",
+			url : $("#basePath").val()+"lnweixin/getBindBankCode",
+			data :params,
+			success : function(data) {
+				if(data.responseCode=='0000'){
+					$(".side").show();
+					tipId2 = window.setInterval(rtimer2, 1000);
+					$("#requestNo").val(data.message);
+				}else{
+					showTipMsg(data.message);
+				}
+			}
+		})
+		
+		 $(".qx").click(function(){
+			 $("#reSendCode").html("获取验证码");
+			 window.clearInterval(tipId2);
+			 timer2 = 120;
+            $(".mask_bg,.side").hide();
+         })
+	 /*var array = chooseBank.split(',');
+	 params["cardNo"] =$("#cardNo").val().replace(/\s/g,"");
+	 params["bankName"] =array[0];
+	 params["bankRealId"] =array[1];
+	 params["bankCode"] =array[2];
+	$.ajax({
+		type : "POST",
+		cache : false,
+		async : false,
+		dataType : "json",
+		url : $("#basePath").val()+"lnweixin/addBankCard",
+		data :params,
+		success : function(data) {
+			if (data.state == 1) {
+				window.location.href = $("#basePath").val()+"lnweixin/secUserInfo";
+			} else {
+				showTipMsg(data.msg);
+			}
+		}
+	})	*/
+	})
+	
+	$(".bt_s").click(function(){
+		var requestNo = $("#requestNo").val();
+		var validateCode =$("#validateCode").val();
+		if(validateCode==""){
+			$("#validateMsg").html("验证码不能为空");
+			return;
+		}
+		
+		var chooseBank = $("#hideBank").val();
+		var params = {};
+		params['requestNo'] = requestNo;
+		params['validateCode'] = validateCode;
+		var array = chooseBank.split(',');
+		params["cardNo"] =$("#cardNo").val().replace(/\s/g,"");
+		params["realName"] =$("#realName").val();
+		params["idNo"] =$("#idNo").val();
+		params["bankName"] =array[0];
+		params["bankRealId"] =array[1];
+		params["bankCode"] =array[2];
+		$.ajax({
+			type : "POST",
+			cache : false,
+			async : false,
+			dataType : "json",
+			url : $("#basePath").val()+"lnweixin/checkBindBankCode",
+			data :params,
+			success : function(data) {
+				if(data.state==0){
+					$("#validateMsg").html(data.msg);
+				}else{
+					location.href= $("#basePath").val()+"lnweixin/getSecUserBankList";
+				}
+			}
+		});
+	});
+	
+	$(".delBank").click(function(){
+//		var bankId = $("#bankId").val();
+		var params ={};
+		params["cardId"] =$("#bankId").val();
+		if(confirm("是否确定删除该卡")){
+			$.ajax({
+				type : "POST",
+				cache : false,
+				async : false,
+				dataType : "json",
+				url : $("#basePath").val()+"lnweixin/operateBankCard",
+				data :params,
+				success : function(data) {
+					if (data.msg == "删除成功") {
+						window.location.href = $("#basePath").val()+"lnweixin/secUserInfo";
+					} else {
+						showTipMsg(data.msg);
+					}
+				}
+			});
+		}
+//		$(this).parents('.bank_box').hide();
+	});
+})
+	function showTipMsg(msg) {
+		$(".error_notice p").show();
+		$(".error_notice p").html(msg);
+}

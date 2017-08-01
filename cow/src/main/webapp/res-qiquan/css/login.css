@@ -1,0 +1,141 @@
+@charset "utf-8";
+/* ***************************************
+** 文件说明：注册，登录，忘记密码，找回密码等页面样式
+** 作者：刘刚
+** 时间：2016-1-26
+** 最后修改时间：	
+*****************************************/
+.wrap{
+	background:#c8e5ff url(../images/bg1.png) no-repeat bottom center;
+	background-size: cover;
+}
+.logo_box{
+	width:3rem;
+	height:3rem;
+	margin:0 auto;
+	padding-top:1rem;
+}
+.logo_box img{
+	width:100%;
+	display:block;
+}
+
+.form_wrap{ 
+	margin:1rem 0.35rem 0; 
+}
+.wrap .login_btn{ width:95%; margin:0 auto; display:block; background:#01bf6c;}
+.forget{
+	width:95%;
+	margin:0.3rem auto 0;
+}
+.forget a,.forget a:link{
+	font-size:0.4rem;
+	color:#969699;
+}
+.formStyle1 .form_box .verif_code{
+	width:3rem;
+	height:1.15rem;
+	margin-top:0.2rem;
+}
+
+.reg_recom span{
+	height:1.1rem;
+	color:#7e7e7e;
+	font-size:0.45rem;
+	margin-top:0.2rem;
+	line-height:1.1rem;
+}
+.reg_recom li{
+	height:1.1rem;
+	margin-top:0.2rem;
+	float:left;
+	margin-left:10px;
+	cursor:pointer;
+	display:inline;
+	line-height:1.1rem;
+	color:#7e7e7e;
+}
+.reg_recom li i{
+	width:16px;
+	height:16px;
+	display:inline-block;
+	background:url(../images/radio_false.png) center left no-repeat;
+	background-size: cover;
+	margin-right:5px;
+	position:relative; 
+	top:3px;
+	}
+.reg_recom li.checked i{
+	background-image:url(../images/radio_true.png);
+}
+
+.formStyle1 .form_box .push_phone_input{
+	width:3.5rem;
+	height:1.1rem;
+	margin-top:0.2rem;
+	float:right;
+	display:none;
+}
+.agreement{
+	margin:0.2rem 0.35rem 0;
+	text-align:right;
+}
+.agreement a,.agreement a:link{
+	color:#01bf6c;
+}
+.verify_phone{
+	height:1.1rem;
+	line-height:1.1rem;
+	font-size:0.4rem;
+	color:#7e7e7e;
+	margin-top:0.2rem;
+}
+.verify_phone span{
+	color:#df541a;
+	font-size:0.45rem;
+}
+.wrap .code{
+	width:3rem;
+	float:right;
+	font-size:0.4rem;
+	letter-spacing:inherit;
+	margin-top:0.25rem;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

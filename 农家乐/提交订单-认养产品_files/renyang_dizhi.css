@@ -1,0 +1,323 @@
+*{margin:0;padding:0;}
+html, body {
+    position: relative;
+    height: 100%;
+    /*background-repeat: no-repeat;*/
+    /*background-size: contain;*/
+}
+body {
+    background: #eee;
+    font-family: "微软雅黑", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 0.7rem;
+    color:#000;
+    margin: 0;
+    padding: 0;
+}
+.clear{clear:both;}
+li{list-style-type: none;}
+a{text-decoration: none;}
+em,i{font-style: normal;}
+.center{
+    width:10.0rem;
+    margin:0 auto;
+}
+
+.wrap{
+    width:100%;
+    overflow: hidden;
+    background:#d8d8d8;
+}
+.content{
+    width:100%;
+}
+.content .cove{
+    color:#939ba1;
+    font-size: 0.4rem;
+    height:2.333333rem;
+    line-height: 2.0rem;
+    padding-left: 1.533333rem;
+    background:#f3f3f3 url(../images/page/xian.png) no-repeat left 2.0rem;
+    background-size: contain;
+}
+.content .menu{
+    margin-top: 0.25rem;
+    width:100%;
+    padding:0.333333rem 0;
+    background:#d8d8d8;
+}
+.content .menu .yang{
+    width:2.783333rem;
+    height:2.166667rem;
+    display:inline-block;
+    margin-left: 0.416667rem;
+}
+.content .menu p{
+    width:4.5rem;
+    font-size: 0.333333rem;
+    line-height: 0.5rem;
+    color:#282828;
+    margin-left: 0.333333rem;
+    display:inline-block;
+}
+.content .menu span{
+    font-size:0.466667rem;
+    color:#282828;
+    float:right;
+    margin-top:1.0rem;
+}
+.content .sidebar{
+    width:100%;
+    height:1.416667rem;
+    background:#f3f3f3;
+    border-bottom:1px solid #a9a7a7;
+}
+.content .sidebar p{
+    width:100%;
+    height:1.416667rem;
+    line-height:1.416667rem;
+}
+.content .sidebar p span{
+    font-size: 0.366667rem;
+    color:#282828;
+    margin-left: 0.416667rem;
+}
+.content .sidebar p em{
+    font-size: 0.366667rem;
+    color:#282828;
+    float:right;
+    margin-top:5px;
+}
+.content .navber{
+    width:100%;
+    padding:0.666667rem 0 0.466667rem;
+    background:#f3f3f3;
+}
+.content .navber dl{
+    width:100%;
+}
+.content .navber dl dt{
+    font-size: 0.366667rem;
+    color:#282828;
+    line-height: 0.5rem;
+    float:left;
+    margin-left: 0.416667rem;
+}
+.content .navber dl dd{
+    font-size: 0.366667rem;
+    color:#282828;
+    line-height: 0.5rem;
+    height:0.416667rem;
+    line-height: 0.416667rem;
+    float:left;
+    margin-left:0.5rem;
+}
+.content .navber dl dd i{
+    width:0.416667rem;
+    height:0.416667rem;
+    display:inline-block;
+    cursor: pointer;
+    background:url(../images/page/d_false.jpg) no-repeat;
+    background-size: contain;
+    vertical-align: middle;
+    margin-top:-2px;
+    margin-right: 5px;
+}
+.content .navber dl dd i.d_true{
+    background:url(../images/page/d_true.jpg) no-repeat;
+    background-size: contain;
+}
+.content .navber .back{
+    
+    font-size: 0.333333rem;
+    color:#828282;
+    display:inline-block;
+    padding-right:0.6rem;
+    background:url(../images/page/w.png) no-repeat right center;
+    background-size: contain;
+    margin-top:0.333333rem;
+    margin-left: 0.416667rem;
+}
+.vote{
+    margin-top: 0.366667rem;
+    width:100%;
+    height:1.2rem;
+    line-height: 1.2rem;
+    background:#f3f3f3;
+}
+.vote p{
+    width:50%;
+    float:left;
+    font-size: 0.366667rem;
+    color:#282828;
+}
+.vote p:first-child{
+    text-indent: 0.416667rem;
+}
+.vote p:last-child{
+    width:50%;
+    text-align:right;
+}
+.vote p i{
+    width:0.216667rem;
+    height:0.35rem;
+    display:inline-block;
+    margin-left:3px;
+    background:url(../images/page/r.png) no-repeat right center;
+    background-size: contain;
+    vertical-align: middle;
+    margin-top:-3px;
+}
+.vote span{
+    width:1.4rem;
+    height:0.766667rem;
+    background:#0ca260;
+    display:block;
+    border-radius:0.5rem;
+    float:right;
+    padding:3px;
+    margin-top:0.166667rem;
+}
+.vote span.cor{
+    background:#b8b8b8;
+}
+.vote span em{
+    width:0.766667rem;
+    height:0.766667rem;
+    display:block;
+    border-radius: 100%;
+    background:#fff;
+}
+.vote span em.malk{
+    margin-left:0.6rem;
+}
+.sear{
+    width:100%;
+    margin-top: 0.7rem;
+    background:#f3f3f3;
+    height:1.266667rem;
+    line-height: 1.266667rem;
+}
+.sear p{
+    width:50%;
+    font-size: 0.366667rem;
+    color:#282828;
+    float:left;
+}
+.sear p:first-child{
+    text-indent: 0.416667rem;
+}
+.sear p:last-child{
+    text-align: right;
+}
+.settlement{
+    width:100%;
+    height:1.666667rem;
+    background:#0ca260;
+    margin-top: 1.1rem;
+}
+.settlement .sett{
+    width:7.466667rem;
+    line-height:1.666667rem;;
+    font-size: 0.4rem;
+    color:#fff;
+    text-align: center;
+    float:left;
+}
+.settlement .submit{
+    width:3.1rem;
+    height:1.666667rem;
+    line-height: 1.666667rem;
+    text-align: center;
+    display:block;
+    font-size: 0.5rem;
+    color:#fff;
+    background:#008048;
+    float:right;
+}
+/*收益说明*/
+.mee{
+    display:none;
+    background:rgba(0, 0, 0, 0.5);
+    width:100%;
+    height:100%;
+    position:fixed;
+    left:0;
+    top:0;
+    z-index: 9;
+}
+.tak{
+    display:none;
+    width:9.583333rem;
+    background:#fff;
+    position:fixed;
+    left:50%;
+    top:0.333333rem;
+    margin-left:-4.783333rem;
+    z-index: 99;
+    border-radius: 0.25rem;
+    padding-bottom: 1rem;
+}
+.tak .path{
+    width:100%;
+    height:1.1rem;
+    border-bottom:1px solid #ccc;
+    position:relative;
+    text-align: center;
+    font-size: 0.4rem;
+    color:#939ba1;
+    line-height: 1.1rem;
+}
+.tak .path .ends{
+    width:0.4rem;
+    height:0.4rem;
+    display:block;
+    position:absolute;
+    right:0.333333rem;
+    top:0.333333rem;
+    cursor:pointer;
+}
+.tak .path .ends img{
+    width:0.4rem;
+    height:0.4rem;
+    display:block;
+}
+.tak .mian{
+    width:7.916667rem;
+    margin:0 auto;
+}
+.tak .mian .tie{
+    font-size: 0.266667rem;
+    color:#1da664;
+    text-indent: 2em;
+    line-height: 0.5rem;
+    margin:0.5rem 0;
+}
+.tak .mian h3{
+    font-size: 0.266667rem;
+    color:#1da664;
+    margin-top: 5px;
+}
+.tak .mian dl{
+    width:100%;
+}
+.tak .mian dl dt{
+    width:0.5rem;
+    float:left;
+    font-size: 0.266667rem;
+    color:#8a919d;
+
+}
+.tak .mian dl dd{
+    width:7.333333rem;
+    float:left;
+    font-size: 0.266667rem;
+    color:#8a919d;
+    line-height: 0.5rem;
+}
+.tak .mian b{
+   font-size: 0.266667rem;
+    color:#8a919d;
+    line-height: 0.4rem; 
+}
+
+

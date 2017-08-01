@@ -1,0 +1,239 @@
+var bank_info_code = null;
+var bank_code = null;
+var bankName = null;
+var timer3 = 60;
+$(function() {
+	// 点击空白
+	$(".xiala").click(function(event) {
+		$(".preferential").slideDown().css("overflow","");
+		event.stopPropagation();
+	})
+	$(document).click(function(event) {
+		$(".preferential").slideUp().css("overflow","");
+		event.stopPropagation();
+	})
+	$(".preferential li").click(function() {
+		$(this).addClass('add_color').siblings("li").removeClass('add_color');
+		var val = $(this).text();
+		$("#choose_bank").val(val);
+		$(".preferential").hide();
+		bank_info_code = $(this).attr('bank-info-code');
+		bank_code = $(this).attr('bank-code');
+		bankName = $(this).text();
+	})
+})
+
+// 获取请求验证码
+function requestCode() {
+	//校验不通过
+	if(!checkBindCard()){
+		return;
+	}
+	var params = {};
+	var isAuth = $("#isAuth").val();
+	if (isAuth == 1) {
+		params["realName"] = $("#nullRealName").val().replace(/\s/g, "")
+				.replace("\·", "");
+		params["idNo"] = $("#nullIdNo").val().replace(/\s/g, "");
+	} else {
+		params["realName"] = $("#realName").val().replace(/\s/g, "").replace(
+				"\·", "");
+		params["idNo"] = $("#readIdNo").val().replace(/\s/g, "");
+	}
+	params["cardNo"] = $("#cardNo").val().replace(/\s/g, "");
+	params["bankCode"] = bank_code;
+	params["bankName"] = bankName;
+	params["bankRealId"] = bank_info_code;
+	params["isAuth"] = $("#isAuth").val();
+	$("#requestCode").attr("value", "发送中...");
+	$("#requestCode").removeClass("again").addClass("gray").attr("disabled",
+			"disabled");
+	if ($("#requestno").val() != "") {
+		// 重发验证码
+		var param = {};
+		param["requestNo"] = $("#requestno").val();
+		$.ajax({
+			type : "POST",
+			cache : false,
+			async : false,
+			dataType : "json",
+			url : $("#lnfund").val() + "lnweixin/resendBindCardNote",
+			data : param,
+			success : function(data) {
+				if (data.key == 1) {
+					$("#requestno").attr("value", data.msg);
+					var tipId3 = window.setInterval(function() {
+						$("#requestCode").attr("value", timer3 + "秒后获取");
+						if (timer3 <= 0) {
+							clearInterval(tipId3);
+							timer3 = 60;
+							$("#requestCode").attr("value", "重新获取");
+							$("#requestCode").removeClass("gray").addClass(
+									"again").removeAttr("disabled");
+						}
+						timer3--;
+					}, 1000);
+					return;
+				} else {
+					showTipMsg(data.msg);
+					$("#requestCode").removeClass("gray").addClass("again")
+							.attr("value", "获取验证码");
+					$("#requestCode").removeAttr("disabled");
+					return;
+				}
+			}
+		})
+	} else {// 为空说明第一次请求验证码
+		$.ajax({
+			type : "POST",
+			cache : false,
+			async : false,
+			dataType : "json",
+			url : $("#lnfund").val() + "lnweixin/bankCardRequest",
+			data : params,
+			success : function(data) {
+				if (data.key == 1) {
+					$("#requestno").attr("value", data.msg);// 获得请求号
+					$("#nullRealName").attr("readonly", true);
+					$("#nullIdNo").attr("readonly", true);
+					$("#cardNo").attr("readonly", true);
+					$(".xiala").attr("disabled", "disabled");
+					var tipId3 = window.setInterval(function() {
+						$("#requestCode").attr("value", timer3 + "秒后获取");
+						if (timer3 <= 0) {
+							clearInterval(tipId3);
+							timer3 = 60;
+							$("#requestCode").attr("value", "重新获取");
+							$("#requestCode").removeClass("gray").addClass(
+									"again").removeAttr("disabled");
+						}
+						timer3--;
+					}, 1000);
+					return;
+				} else {
+					showTipMsg(data.msg);
+					$("#requestCode").removeClass("gray").addClass("again")
+							.attr("value", "获取验证码");
+					$("#requestCode").removeAttr("disabled");
+					return;
+				}
+			}
+		})
+	}
+}
+// 确认绑卡
+function bindCardConfirm() {
+	//校验不通过
+	if(!checkBindCard()){
+		return;
+	}
+	var params = {};
+	var isAuth = $("#isAuth").val();
+	if (isAuth == 1) {
+		params["realName"] = $("#nullRealName").val().replace(/\s/g, "")
+				.replace("\·", "");
+		params["idNo"] = $("#nullIdNo").val().replace(/\s/g, "");
+	} else {
+		params["realName"] = $("#realName").val().replace(/\s/g, "").replace(
+				"\·", "");
+		params["idNo"] = $("#readIdNo").val().replace(/\s/g, "");
+	}
+	params["cardNo"] = $("#cardNo").val().replace(/\s/g, "");
+	params["bankCode"] = bank_code;
+	params["bankName"] = bankName;
+	params["bankRealId"] = bank_info_code;
+	params["isAuth"] = $("#isAuth").val();
+	params["requestno"] = $("#requestno").attr("value");
+	params["validateCode"] = $("#validateCode").val();
+	if ($("#requestno").attr("value") && $("#validateCode").val()) {
+		$.ajax({
+			type : "POST",
+			cache : false,
+			async : false,
+			dataType : "json",
+			url : $("#lnfund").val() + "lnweixin/bindCardConfirm",
+			data : params,
+			success : function(data) {
+				alert(data.msg);
+				if (data.key == 1) {
+					window.location.href = $("#lnfund").val()
+							+ "lnweixin/getUserBankCards";
+				} else {
+					showTipMsg(data.msg);
+					return;
+				}
+			}
+		})
+	} else {
+		showTipMsg("请输入验证码!")
+		return;
+	}
+}
+
+function checkBindCard(){
+	$("#error-box").hide();
+	var chinese = /^[\u4e00-\u9fa5]{0,}$/;
+	var nullIdNo = $("#nullIdNo").val().trim();
+	var choose_bank = $("#choose_bank").val();
+	var isAuth = $("#isAuth").val();
+	if (parseInt(isAuth) != 2) {
+		var nullRealName = $("#nullRealName").val().replace(/\s/g, "").replace(
+				"\.", "").replace("\·", "");
+		if (!chinese.test(nullRealName)) {
+			showTipMsg("&nbsp;&nbsp;&nbsp;&nbsp;*真实姓名必须为中文！");
+			return false;
+		} else if (nullRealName.length > 12) {
+			showTipMsg("&nbsp;&nbsp;&nbsp;&nbsp;*姓名长度不能大于12位！");
+			return false;
+		} else if (nullRealName.length < 2) {
+			showTipMsg("&nbsp;&nbsp;&nbsp;&nbsp;*姓名长度不能小于2位！");
+			return false;
+		} else {
+			// var nullIdNo = $("#nullIdNo").val();
+			if (nullIdNo == "") {
+				showTipMsg("&nbsp;&nbsp;&nbsp;&nbsp;*请输入身份证号！");
+				return false;
+			} else if (chinese.test(isCardID(nullIdNo))) {
+				showTipMsg("&nbsp;&nbsp;&nbsp;&nbsp;*" + isCardID(nullIdNo));
+				return false;
+			} else {
+				var cardNo = $("#cardNo").val().replace(/\s/g, "");
+				if (cardNo == "请输入储蓄卡号" || cardNo == "") {
+					showTipMsg("&nbsp;&nbsp;&nbsp;&nbsp;*卡号不能为空！");
+					return false;
+				}
+			}
+		}
+	} else {
+		var cardNo = $("#cardNo").val().replace(/\s/g, "");
+		if (cardNo == "请输入储蓄卡号" || cardNo == "") {
+			showTipMsg("&nbsp;&nbsp;&nbsp;&nbsp;*卡号不能为空！");
+			return false;
+		}
+	}
+	if (choose_bank == null || choose_bank == undefined || choose_bank == ''
+			|| bank_info_code == null || bank_code == null) {
+		showTipMsg("请选择银行");
+		return false;
+	}
+	return true;
+}
+
+function showTipMsg(msg) {
+	$("#error-box").show();
+	$("#error-box").html(msg);
+}
+
+// 清空数据
+function clean() {
+	var isAuth = $("#isAuth").val();
+	if (parseInt(isAuth) != 2) {
+		$("#cardNo").attr("value", "");
+		$("#choose_bank").attr("value", "");
+		$("#nullRealName").attr("value", "");
+		$("#nullIdNo").attr("value", "");
+	} else {
+		$("#cardNo").attr("value", "");
+		$("#choose_bank").attr("value", "");
+	}
+}

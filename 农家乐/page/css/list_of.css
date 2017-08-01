@@ -1,0 +1,209 @@
+*{padding:0;margin:0;}
+html{font-size:100px;}
+body{font-family: Î¢ÈíÑÅºÚ;}
+li{list-style-type: none;}
+a{text-decoration: none;}
+i,em{font-style: normal;}
+.clear{clear:both;}
+
+.wrap{
+    width:100%;
+    max-width: 6.4rem;
+    position:relative;
+    margin:0 auto;
+    background: #f2f2f2;
+    padding-bottom: 1rem;
+}
+.mian{
+    width:100%;
+    padding-bottom: 0.4rem;
+}
+.issue{
+    width:2.58rem;
+    height:0.46rem;
+    border:1px solid #ffa304;
+    color:#ffa304;
+    font-size:0.22rem;
+    line-height: 0.46rem;
+    text-align: center;
+    display:block;
+    margin:0.4rem auto 0;
+    border-radius:0.1rem;
+}
+.banner{
+    width:100%;
+    height:2.6rem;
+}
+.banner img{
+    width:100%;
+    height:100%;
+    display:block;
+}
+.host{
+    width:6rem;
+    background:#fff;
+    border-radius: 0.1rem;
+    margin:0.1rem auto 0;
+    padding-bottom: 0.4rem;
+}
+.navber{
+    width:5.6rem;
+    margin:0 auto;
+}
+.navber .top_nav{
+    padding:0.1rem 0 0.1rem 0;
+    font-size:0.22rem;
+    color:#7b7b7b;
+    border-bottom: 0.01rem solid #d2d2d2;
+}
+.content .pag1{
+    width:1.64rem;
+    height:1rem;
+    display:block;
+    float:left;
+    margin-top:0.3rem;
+}
+.code{
+    width:3.4rem;
+    float:right;
+    margin-top: 0.3rem;
+}
+.code li{
+    height:0.32rem;
+    line-height: 0.32rem;
+    font-size: 0.18rem;
+    color:#939ba1;
+}
+.code li .set1{
+    width:2.15rem;
+    float:left;
+}
+.code li em{
+    width:1.26rem;
+    font-size: 0.18rem;
+    color:#939ba1;
+    display:inline-block;
+    text-align: right;
+}
+.code li span{
+    width:0.8rem;
+    height:0.16rem;
+    background:#02bf83;
+    display:inline-block;
+
+}
+.code li span.page2{
+    width:0.42rem;
+}
+.code li span.page3{
+    width:0.53rem;
+}
+.code li p.set2{
+    width:1.2rem;
+    float:left;
+    text-align: right;
+}
+.code li p i{
+    color:#02bf83;
+    font-size: 0.18rem;
+}
+.snap_up{
+    width:5.6rem;
+    height:0.28rem;
+    display:block;
+    margin-top: 0.15rem;
+    background:url(../images/page/qiangou.png) no-repeat center left;
+}
+.end{
+    width:5.6rem;
+    height:0.28rem;
+    display:block;
+    margin-top: 0.15rem;
+    background:url(../images/page/end.png) no-repeat center left;
+}
+.snap_up2{
+    background:url(../images/page/daojishi.png) no-repeat center left;
+}
+.list{
+    margin-top: 0.1rem;
+}
+.list .video{
+    height:0.4rem;
+    line-height: 0.4rem;
+    font-size:0.18rem;
+    color:#939ba1;
+    float:left;
+    margin:0.3rem 0.69rem 0 0.4rem;
+    padding-left: 0.48rem;
+    background:url(../images/page/camera.png) no-repeat left center;
+}
+.list .btn{
+    width:0.9rem;
+    height:0.75rem;
+    font-size: 0.22rem;
+    margin-right: 0.65rem;
+    color:#fff;
+    float:left;
+    background:#02bf6d;
+    text-align: center;
+    border-radius: 100%;
+    padding-top: 0.15rem;
+}
+.list .btn_end{
+    width:0.9rem;
+    height:0.9rem;
+    line-height: 0.9rem;
+    font-size: 0.22rem;
+    margin-right: 0.65rem;
+    color:#fff;
+    float:left;
+    background:#939ba1;
+    text-align: center;
+    border-radius: 100%;
+}
+.list .btn2{
+    background:#fd696f;
+    width:0.9rem;
+    height:0.9rem;
+    line-height: 0.9rem;
+    padding-top:0;
+}
+.list .text{
+    background:url(../images/page/money_z.png) no-repeat left center;
+    height:0.37rem;
+    color:#939ba1;
+    float:left;
+    text-align: center;
+    margin-top: 0.3rem;
+    font-size: 0.18rem;
+    padding-left: 0.48rem;
+    line-height: 0.20rem;
+}
+.list .text span{
+    color:#ffb606;
+    margin-top: 5px;
+    display:block;
+}
+.nav {
+    width: 100%;
+    height: 1rem;
+    position: fixed;
+    left: 0;
+    bottom:0;
+    background: #fff;
+    z-index: 99;
+.nav a {
+    width: 33.33%;
+    height: 1rem;
+    display: block;
+    float: left;
+    text-align: center;
+    font-size: 0.24rem;
+}
+.wrap .nav a img {
+    width:0.32rem;
+    height: 0.32rem;
+    display: block;
+    margin: 0 auto 5px;
+    padding-top: 0.18rem;
+}

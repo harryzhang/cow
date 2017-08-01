@@ -1,0 +1,149 @@
+@charset "utf-8";
+/* ***************************************
+** 文件说明：初始样式表
+** 作者：刘刚
+** 时间：2016-1-26
+** 最后修改时间：	
+*****************************************/
+html {
+    background:#fff;
+    color:black;
+}
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,textarea,p,blockquote,th,td,hr,button,article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section {
+    margin:0;
+    padding:0;
+}
+body,button,input,select,textarea {
+	font:14px "Microsoft YaHei",Arial,Helvetica,sans-serif,tahoma,"宋体";
+}
+input,select,textarea {
+    font-size:100%;
+	vertical-align:middle;
+}
+table {
+    border-collapse:collapse;
+    border-spacing:0;
+}
+th {
+    text-align:inherit;
+}
+fieldset,img {
+    border:none;
+}
+iframe {
+    display:block;
+}
+abbr,acronym {
+    border:none;
+    font-variant:normal;
+}
+del {
+    text-decoration:line-through;
+}
+address,caption,cite,code,dfn,em,th,var {
+    font-style:normal;
+    font-weight:500;
+}
+ol,ul {
+    list-style:none;
+}
+caption,th {
+    text-align:left;
+}
+h1,h2,h3,h4,h5,h6 {
+    font-size:100%;
+    font-weight:500;
+}
+q:before,q:after {
+    content:'';
+}
+sub,sup {
+    font-size:75%;
+    line-height:0;
+    position:relative;
+    vertical-align:baseline;
+}
+sup {
+    top:-0.5em;
+}
+sub {
+    bottom:-0.25em;
+}
+a:link {
+ text-decoration: none;
+ outline:none;
+}
+a:visited {
+ text-decoration: none;
+ outline:none;
+}
+a:hover {
+ text-decoration: none;
+ outline:none;
+}
+a:active {
+ text-decoration: none;
+ outline:none;
+}
+
+ins,a,li {
+    text-decoration:none;
+	outline:none;
+	-webkit-font-smoothing: antialiased;
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+	-webkit-user-select: none;
+	-webkit-touch-callout:none;
+}
+a:focus,*:focus {
+    outline:none;
+}
+.clearfix:before,.clearfix:after {
+    content:"";
+    display:table;
+}
+.clearfix:after {
+    clear:both;
+    overflow:hidden;
+}
+.clearfix {
+    zoom:1; /* for ie6 & ie7 */
+}
+.clear {
+    clear:both;
+    display:block;
+    font-size:0;
+    height:0;
+    line-height:0;
+    overflow:hidden;
+}
+.hide {
+    display:none;
+}
+.block {
+    display:block;
+}
+.fl,.fr {
+    display:inline;
+}
+.fl {
+    float:left;
+}
+.fr {
+    float:right;
+}
+.position_r{
+	position:relative;
+}
+.position_rb6{
+	position:relative;
+	top:-6px;
+}
+.position_s{
+	position:static !important;
+}
+.align_center{
+	text-align:center;
+}
+.align_right{
+	text-align:right;
+}

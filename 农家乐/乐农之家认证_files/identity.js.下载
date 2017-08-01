@@ -1,0 +1,93 @@
+var chinese = /^[\u4e00-\u9fa5]{0,}$/;
+$(function(){
+	
+	$("#realName").blur(function() {
+		if ($(this).val() == "") {
+			showTipMsg("&nbsp;&nbsp;&nbsp;&nbsp;*真实姓名不能为空！");
+			return;
+		}else if(!chinese.test($("#realName").val())){
+			showTipMsg("&nbsp;&nbsp;&nbsp;&nbsp;*真实姓名必须为中文！");
+			return;
+		}else if($("#realName").val().length > 12){
+			showTipMsg("&nbsp;&nbsp;&nbsp;&nbsp;*姓名长度不能大于12位！");
+			return;
+		}else if($("#realName").val().length < 2){
+			showTipMsg("&nbsp;&nbsp;&nbsp;&nbsp;*姓名长度不能小于2位！");
+			return;
+		}else{
+			showTipMsg("");
+		}
+	});
+//	
+//	$("#idNo").blur(function() {
+//		var realName = $("#realName").val() ;
+//		if(realName == "" || realName =="null" || realName == null){
+//			showTipMsg("&nbsp;&nbsp;&nbsp;&nbsp;请输入姓名");
+//			return;
+//		}else if(chinese.test(isCardID($("#idNo").val()))){
+//			showTipMsg("&nbsp;&nbsp;&nbsp;&nbsp;*"+isCardID($("#idNo").val()));
+//			return;
+//		}
+//	});
+	$("#identity_submit").click(function(){
+		var idNo = $("#idNo").val();
+		var realName = $("#realName").val();
+		var chinese = /^[\u4e00-\u9fa5]{0,}$/;
+		if(realName == ""){
+			showTipMsg("&nbsp;&nbsp;&nbsp;&nbsp;*请输入真实姓名！");
+			$("#realName").focus();
+			return;
+		}
+		if(!chinese.test(realName)){
+			showTipMsg("&nbsp;&nbsp;&nbsp;&nbsp;*真实姓名必须为中文！");
+			$("#realName").focus();
+			return;
+		}		
+		if(realName.length > 12){
+			showTipMsg("&nbsp;&nbsp;&nbsp;&nbsp;*姓名长度不能大于12位！");
+			$("#realName").focus();
+			return;
+		}
+		if(realName.length < 2){
+			showTipMsg("&nbsp;&nbsp;&nbsp;&nbsp;*姓名长度不能小于2位！");
+			$("#realName").focus();
+			return;
+		}
+		
+		if(idNo == ""){
+			showTipMsg("&nbsp;&nbsp;&nbsp;&nbsp;*请输入身份证号！");
+			$("#idNo").focus();
+			return;
+		}
+		
+		if(chinese.test(isCardID(idNo))){
+			showTipMsg("&nbsp;&nbsp;&nbsp;&nbsp;*"+isCardID($("#idNo").val()));
+			$("#idNo").focus();
+			return;
+		}
+		
+		var params = {};
+		params['realName'] = realName;
+		params['idNo'] = idNo;
+		$.ajax({
+			type:"POST",
+			cache:false,
+			async : false,
+			dataType : "json",
+			url : $("#basePath").val()+"lnweixin/modifyRealnameIdNo",
+			data :params,
+			success:function(data){
+				if(data.key==1){
+					$("#realName").attr("readonly","readonly");
+					window.location.href = $("#basePath").val()+"lnweixin/secUserInfo";
+				}else{
+					showTipMsg(data.msg);
+				}
+			}
+		});
+	})
+})
+	function showTipMsg(msg) {
+		$(".error_notice p").show();
+		$(".error_notice p").html(msg);
+	}

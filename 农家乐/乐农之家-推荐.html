@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<!-- saved from url=(0091)https://www.lenongzhijia.com/lnwxfront/clientlist?refferee=c04219de834b457dfe0567a34750b8f2 -->
+<html style="font-size: 59.5px;"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>乐农之家-注册领抵用券</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+<meta http-equiv="expires" content="0">
+
+<link rel="shortcut icon" href="https://www.lenongzhijia.com/pageh5/static/images/logo.ico">
+<link type="text/css" href="./乐农之家-推荐_files/base.css" rel="stylesheet">
+    <link type="text/css" href="./乐农之家-推荐_files/common.css" rel="stylesheet">
+    <link type="text/css" href="./乐农之家-推荐_files/layout.css" rel="stylesheet">
+    <script>
+	//定义屏幕字体大小
+	document.getElementsByTagName("html")[0].style.fontSize=document.documentElement.clientWidth/10+"px";
+	</script>
+</head>
+<body>
+	<div class="wrap">
+	<input type="hidden" value="c04219de834b457dfe0567a34750b8f2" id="refferee">
+    	<div class="recommend">
+        	<img src="./乐农之家-推荐_files/recommend_pic.png" alt="">
+            <h2>成功推荐朋友注册</h2>
+            <h3>即可获取现金<span>20</span>元抵用券奖励</h3>
+            <a href="https://www.lenongzhijia.com/pageh5/activity/award_rule.jsp">奖励规则&gt;&gt;</a>
+            <a href="javascript:;" class="share_btn">邀请好友</a>
+            <p>已成功推荐<span>0</span>人，可获取<span>0</span>元抵用券</p>
+        </div>
+        <div class="mark"></div>
+        <div class="share"></div>
+    </div>
+
+<script type="text/javascript" src="./乐农之家-推荐_files/jquery-1.8.3.js.下载"></script>
+<script src="./乐农之家-推荐_files/jweixin-1.0.0.js.下载" type="text/javascript"></script>
+<script src="./乐农之家-推荐_files/jsSDK.js.下载" type="text/javascript"></script>
+<script>
+  	$(function(){
+		$(".share_btn").click(function(ev){
+			ev.stopPropagation();
+			$(".mark,.share").fadeIn();	
+		});
+		$(".share").click(function(){
+			$(".mark,.share").fadeOut();		
+		})	
+		
+		//微信分享接口
+		var refferee=$("#refferee").val();
+		var url="https://www.lenongzhijia.com:443/";
+   	    var url2 = location.href.split('#')[0];
+   	    jsSDK.setPrefix(url);
+	    jsSDK.getWxConfigParam(1,url2);
+	    jsSDK.setWxConfig();
+	    
+	    wx.ready(function () {
+	        wx.onMenuShareTimeline({
+	            title: '注册就送220元大礼券', // 分享标题
+	            link: 'https://www.lenongzhijia.com:443/lnwxfront/clientlist?refferee=', // 分享链接,将当前登录用户转为puid,以便于发展下线
+	            imgUrl: 'https://www.lenongzhijia.com:443/h5/page/activity/a20160725/images/pig1.png', // 分享图标
+	            success: function () { 
+	                // 用户确认分享后执行的回调函数
+	              
+	            },
+	            cancel: function () { 
+	                // 用户取消分享后执行的回调函数
+	            }
+	        });
+	        
+	        wx.onMenuShareAppMessage({
+		        title: '注册就送220元大礼券', // 分享标题
+		        desc: '资金赚起来', // 分享描述
+		        link: 'https://www.lenongzhijia.com:443/lnwxfront/clientlist?refferee=', // 分享链接
+		        imgUrl: 'https://www.lenongzhijia.com:443/h5/page/activity/a20160725/images/pig1.png', // 分享图标
+		        type: 'link', // 分享类型,music、video或link，不填默认为link
+		        dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+		        success: function () { 
+		            // 用户确认分享后执行的回调函数
+		        },
+		        cancel: function () { 
+		            // 用户取消分享后执行的回调函数
+		        }
+		    });
+	        wx.error(function(res){
+	            // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
+	            alert("errorMSG:"+res);
+	        });
+	    });
+            
+	})
+</script>
+    
+
+</body></html>

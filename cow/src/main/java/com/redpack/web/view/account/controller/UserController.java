@@ -86,6 +86,36 @@ public class UserController extends BaseController{
 	
 	
 	/**
+	 * 重置密码跳转页面
+	 * 
+	 * @return
+	 * @author: huangzl
+	 * @date 2015年8月2日 22:45:08
+	 */
+	@RequestMapping("forgetPwd1")
+	public void forgetPwd1(String pwdFlag,Model model,HttpServletRequest request,HttpServletResponse response) {
+		String phoneNo = request.getParameter("phoneNo");
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("result", 0);
+		jsonObject.put("msg", phoneNo);
+		ResponseUtils.renderText(response, "UTF-8", jsonObject.toString());
+	}
+	
+	
+	/**
+	 * 重置密码跳转页面
+	 * 
+	 * @return
+	 * @author: huangzl
+	 * @date 2015年8月2日 22:45:08
+	 */
+	@RequestMapping("forgetPwd2Index")
+	public String forgetPwd2Index(String pwdFlag,Model model,HttpServletRequest request) {
+		
+		return "login/forgetPwd2Index";
+	}
+	
+	/**
 	 * 用户信息修改查看
 	 * 
 	 */
@@ -104,6 +134,7 @@ public class UserController extends BaseController{
 	@RequestMapping("confirmPassword")
 	public void confirmPassword(String password,String newPassword,Model model, 
 			HttpSession session,HttpServletResponse response) {
+		/*
 		logger.info("----修改密码----");
 		UserDo user = (UserDo) session.getAttribute(WebConstants.SESSION_USER);
 		user=userService.getById(user.getId());
@@ -129,6 +160,10 @@ public class UserController extends BaseController{
 		tempSave.setId(user.getId());
 		tempSave.setPassword(newPass);
 		result = userService.updateUser(tempSave);//修改登录密码
+		ResponseUtils.renderText(response, "UTF-8", jsonObject.toString());
+		*/
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("result", 0);
 		ResponseUtils.renderText(response, "UTF-8", jsonObject.toString());
 	}
 	
@@ -364,11 +399,11 @@ public class UserController extends BaseController{
 	 * @author: huangzl
 	 * @date 2015年8月2日 22:45:08
 	 */
-	@RequestMapping("regIndex")
-	public String regIndex(HttpServletRequest request,Model model) {
+	@RequestMapping("reg_step1")
+	public String reg_step1(HttpServletRequest request,Model model) {
 		
 		
-		String view = getLocalPath(request,"redPack/register");
+		String view = getLocalPath(request,"redPack/reg_step1");
 		
 		//推荐人电话号码
 		String refMobile = request.getParameter("mobile");
@@ -385,6 +420,97 @@ public class UserController extends BaseController{
 		return view;
 	}
     
+	 /**
+	 * 注册用户跳转页面
+	 * 
+	 * @return
+	 * @author: huangzl
+	 * @date 2015年8月2日 22:45:08
+	 */
+	@RequestMapping("saveRegStep1")
+	public void saveRegStep1(HttpServletRequest request,
+			                 HttpServletResponse response,
+			                 Model model) {
+		String phoneNo = request.getParameter("phoneNo");
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("result", 0);
+		jsonObject.put("msg", phoneNo);
+		ResponseUtils.renderText(response, "UTF-8", jsonObject.toString());
+	}
+	
+	 /**
+	 * 注册用户跳转页面
+	 * 
+	 * @return
+	 * @author: huangzl
+	 * @date 2015年8月2日 22:45:08
+	 */
+	@RequestMapping("reg_step2")
+	public String reg_step2(HttpServletRequest request,Model model) {
+		
+		
+		String view = getLocalPath(request,"redPack/reg_step2");
+		
+		//推荐人电话号码
+		String refMobile = request.getParameter("mobile");
+		
+		//A网B网
+		String netWork = request.getParameter("netWork");
+		
+		//推荐人手机
+		model.addAttribute("refMobile",refMobile);
+		model.addAttribute("netWork",netWork);
+		
+		logger.info("----注册用户跳转页面----");
+		
+		return view;
+	}
+	
+	 /**
+	 * 注册用户跳转页面
+	 * 
+	 * @return
+	 * @author: huangzl
+	 * @date 2015年8月2日 22:45:08
+	 */
+	@RequestMapping("saveRegStep2")
+	public void saveRegStep2(HttpServletRequest request,
+			                 HttpServletResponse response,
+			                 Model model) {
+		String phoneNo = request.getParameter("phoneNo");
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("result", 0);
+		jsonObject.put("msg", phoneNo);
+		ResponseUtils.renderText(response, "UTF-8", jsonObject.toString());
+	}
+		
+	/**
+	 * 注册用户跳转页面
+	 * 
+	 * @return
+	 * @author: huangzl
+	 * @date 2015年8月2日 22:45:08
+	 */
+	@RequestMapping("reg_step3")
+	public String reg_step3(HttpServletRequest request,Model model) {
+		
+		
+		String view = getLocalPath(request,"redPack/reg_suc");
+		
+		//推荐人电话号码
+		String refMobile = request.getParameter("mobile");
+		
+		//A网B网
+		String netWork = request.getParameter("netWork");
+		
+		//推荐人手机
+		model.addAttribute("refMobile",refMobile);
+		model.addAttribute("netWork",netWork);
+		
+		logger.info("----注册用户跳转页面----");
+		
+		return view;
+	}
 	
 	/**
 	 * 发送短信验证码

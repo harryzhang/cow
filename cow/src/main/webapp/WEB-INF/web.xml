@@ -122,33 +122,9 @@
 	
 	<servlet-mapping>
 		<servlet-name>default</servlet-name>
-		<url-pattern>/res-kuangji/css/*</url-pattern>
+		<url-pattern>/uploadimages/*</url-pattern>
 	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>default</servlet-name>
-		<url-pattern>/res-kuangji/images/*</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>default</servlet-name>
-		<url-pattern>/res-kuangji/goodsImg/*</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>default</servlet-name>
-		<url-pattern>/res-kuangji/jingcaiImg/*</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>default</servlet-name>
-		<url-pattern>/res-kuangji/js/*</url-pattern>
-	</servlet-mapping>
-	
-	<servlet-mapping>
-		<servlet-name>default</servlet-name>
-		<url-pattern>/res-kuangji/ztreejs/*</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>default</servlet-name>
-		<url-pattern>/res-kuangji/ztreecss/*</url-pattern>
-	</servlet-mapping>
+
 
 	<!-- 请求拦截 -->
 	<servlet-mapping>

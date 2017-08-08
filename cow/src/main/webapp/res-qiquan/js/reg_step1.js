@@ -103,11 +103,11 @@ $(function(){
 			cache : false,
 			async : false,// 设置异步为false,重要！
 			dataType : "json",
-			url : $("#basePath").val() + "lnwxfront/regStep1",
+			url : $("#basePath").val() + "account/saveRegStep1",
 			data : param,
 			success : function(data) {
-				if(data.state == 0){
-					window.location.href=$("#basePath").val()+"reg_step2.html?phoneNo="+data.msg;
+				if (data.result == 0 || data.result == '0') {
+					window.location.href=$("#basePath").val()+"account/reg_step2.html?phoneNo="+data.msg;
 				}else{
 					showTipMsg(data.msg);
 					switchCode();
@@ -217,7 +217,7 @@ function switchCode() {
 	$("#code").css({
 		color : '#999'
 	}); */
-	var url = $('#basePath').val() + 'verifyCode?t=' + Math.random();
+	var url = $('#basePath').val() + 'common/imageCode.html?pageId=register&t=' + Math.random();
 	$('#codeNum').attr('src', url);
 }
 

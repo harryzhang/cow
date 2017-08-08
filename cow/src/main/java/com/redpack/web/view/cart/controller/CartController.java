@@ -75,6 +75,19 @@ public class CartController extends BaseController {
 		logger.debug("----CartController.productListEmpty;----");
 		return getLocalPath(request,"cart/productListEmpty");
 	}
+	
+	/**
+	 * 产品明细
+	 * 
+	 * @return
+	 * @author: zhangyunhua
+	 * @date 2015-3-29 上午3:36:11
+	 */
+	@RequestMapping(value = "/productDetail")
+	public String productDetail(HttpServletRequest request) {
+		logger.debug("----CartController.productListEmpty;----");
+		return getLocalPath(request,"cart/productDetail");
+	}
 
 	/**
 	 * 添加到购物车

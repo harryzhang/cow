@@ -1,253 +1,288 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<!DOCTYPE html>
-<html>
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-    <meta name="format-detection" content="telephone=no">
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-    <meta name="keywords" content="" />
-    <meta name="description" content="" />
-    <title>重置密码</title>
-	<jsp:include page="../common/common.jsp"></jsp:include>
+<!-- saved from url=(0047)https://www.lenongzhijia.com/h5/page/forget.jsp -->
+<html style="font-size: 42.7px;"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+<meta http-equiv="expires" content="0">
+
+<link rel="shortcut icon" href="https://www.lenongzhijia.com/static/images/logo.ico">
+
+
+
+    <title>乐农之家</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    
+    <link type="text/css" href="<c:url value='/res-qiquan/css/base.css" rel="stylesheet'/>"/>
+    <link type="text/css" href="<c:url value='/res-qiquan/css/common.css" rel="stylesheet'/>"/>
+    <link type="text/css" href="<c:url value='/res-qiquan/css/login.css" rel="stylesheet'/>"/>
+    <script type="text/jscript" src="<c:url value='/res-qiquan/js/jquery-1.8.3.js'/>"></script>
+    <script type="text/jscript" src="<c:url value='/res-qiquan/js/formValidatorRegex.js?'/>"></script>
+    <script>
+	//定义屏幕字体大小
+	document.getElementsByTagName("html")[0].style.fontSize=document.documentElement.clientWidth/10+"px";
+	</script>
 </head>
 
 <body>
-<c:if test="${platform ne 'android' && platform ne 'ios' && platform ne 'pad'}">
-    <div class="top-nav">
-        <a class="link"  href="javascript:;" onclick="javascript:window.location.href=&#39;<c:url value='/member/userSettle.html'/>&#39;">&lt;返回</a>
-        <h2>重置密码</h2>
+	<input id="basePath" type="hidden" value="<c:url value='/'/>">
+	<div class="wrap">
+	<div class="logo_box">
+            <img src="<c:url value='/res-qiquan/images/logo.png'/>" alt="头像" class="head_img">
+        </div>
+        <div class="main">
+        	<!--忘记密码-->
+            <form action="<c:url value='/account/forgetPwd1.html'/>" class="form_wrap">
+            	<div class="formStyle1">
+	            	<div class="form_box form_line clearfix">
+	                	<img src="<c:url value='/res-qiquan/images/form_icon1.png'/>" alt="">
+	                    <input type="text" placeholder="请输入手机号" class="phone_input" id="phoneNo">
+	                </div>
+	            	<div class="form_box form_line clearfix">
+	                	<img src="<c:url value='/res-qiquan/images/form_icon3.png'/>" alt="">
+	                    <input type="text" placeholder="请输入验证码" class="code_input" id="code">
+	                    <a href="javascript:;" class="btn codeBtn btn_green code" id="phonecodesend">获取验证码</a>
+	                </div>
+	                
+					<div class="form_box clearfix">
+	                	<img src="<c:url value='/res-qiquan/images/form_icon4.png'/>" alt="">
+	                    <input type="text" placeholder="请输入您的身份证号" class="phone_input" id="idNo">
+	                </div>
+	            </div>
+	                <div class="error_notice">
+	                	<p class="hide" id="error-box">错误提示</p>
+	                </div>
+	                <a class="btn funcBtn btn_green login_btn" href="javascript:void(0);" onclick="javascript:forgetPwd1();">下一步</a>
+            </form>
+        </div>
     </div>
-</c:if>    
-	    <div class="exit-wrap">
-	    	<form id="toLoginForm" action="<c:url value='/account/restLoginPwd.html'/>" method="POST">
-	    	    <input type="hidden" id="pwdType" name="pwdType" value="${pwdType}"/>
-		        <div class="item">
-		            <i class="icon"></i>
-		          <c:if test="${!empty userDo.userName}">
-		            <input type="tel" placeholder="手机号码" readOnly="true" id="mobile" name="mobile"  value="${userDo.userName}" />
-		          </c:if>
-		          <c:if test="${empty userDo.userName}">
-		            <input type="tel" placeholder="手机号码"  id="mobile" name="mobile"   />
-		          </c:if>
-		        </div>
-	        </form>
-            <div class="item">                
-                <input type="text" id="code" name="code" placeholder="图片验证码">            
-                <img src='<c:url value="/common/imageCode.html?pageId=reset"/>' width="120" height="40" title="点击更换验证码" id="codeNum" />                            
-            </div>
-	        <div class="item">
-	            <i class="icon icon-code"></i>
-	            <input type="text" placeholder="输入验证码" id="mobileCode" />
-	            <button class="code-btn" id="getcode">免费获取</button>
-	        </div>
-	        <div class="item">
-	            <i class="icon icon-psw-new"></i>
-	            <input id="psw" type="password" placeholder="设置新密码" />
-	        </div>
-	        <div class="item">
-	            <i class="icon icon-psw"></i>
-	            <input id="psw2" type="password" placeholder="确认密码" />
-	        </div>
-	    </div>
-    <div class="form-btns">
-        <a href="javascript:;" class="btn" id="submit">确定</a>
-        <!-- <p class="tip-right" ><a href="javascript:;" id="toLogin" style="display: none;">去登录</a></p> -->
-    </div>
-   
     <script type="text/javascript">
-        $(function(){
-            //code 点击事件
-            $("#codeNum").bind("click",function(){
-                $(this).attr("src", '<c:url value="/common/imageCode.html?pageId=reset"/>' + new Date().getTime());
-            });
-        });
-    </script>
-    <script>
-    var $psw = $('#psw'),
-        $submit = $('#submit'),
-        $mobile = $('#mobile'),
-        $getcode = $('#getcode');
-        $toLogin = $('#toLogin');
-    var $code = $("#code");
-	
-    //验证手机格式----1
-    function mobile_check(mobile){
-    	var msg = verifyMsg(mobile);
-    	if(msg != ""){
-    		HHN.popup(msg, 'danger');
-    		return false;
-    	}
-    	return true;
-    }
-    //验证手机格式----2
-    function verifyMsg(mobile){
-    	if (mobile == null || mobile == "" || mobile.length == 0) {
-            return "请输入手机号";
-        }else{
-        	if(!HHN.checkPhone(mobile) || mobile.length != 11){
-        		return "手机号码格式错误！";
-        	}else{
-        		return "";
-        	}
-        }
-    }
-    
-  //验证密码--------1
-    function pwd_check(password){
-    	var msg = verPwdMsg(password);
-    	if(msg != ""){
-    		HHN.popup(msg, 'danger');
-    		return false;
-    	}
-    	return true;
-    }
-    //验证密码--------2
-    function verPwdMsg(password){
-    	if(password == null && password =='' || password.length == 0){
-			return "请输入密码";
+		$(function(){
+			$(".reg_link").click(function() {
+				$(this).siblings(".reg_phone").hide();
+				$(this).siblings(".change_phone").show();
+			});
+		});
+	</script>
+	<script type="text/javascript">
+var flag = false;
+var timer2 = 120;
+var tipId2;
+var codeValid = false;
+var regexPhone = /^13[0-9]{9}|15[0123456789][0-9]{8}|17[0123456789][0-9]{8}|18[0123456789][0-9]{8}|147[0-9]{8}$/;
+var chinese = /^[\u4e00-\u9fa5]{0,}$/;
+var num = /^-?\d+\.?\d*$/;
+$(function() {
+
+	//手机验证
+	$("#phoneNo").blur(function() {
+		if (!regexPhone.test($(this).val())) {
+			flag=false;
+			showTipMsg("手机号格式不正确,请重新输入");
+			return;
+		}else if($(this).val().length>11){
+			flag=false;
+			showTipMsg("手机号长度不正确,请重新输入");
+			return;
 		}else{
-			if(password.length < 6 || password.length > 20){
-				return "密码长度在6-20之间";
+			checkPhone();
+		}
+	});
+	
+	$("#code").blur(function() {
+		if ($(this).val() == "") {
+			showTipMsg("请输入验证码！");
+			return;
+		}
+	});
+	
+	$("#idNo").blur(function() {
+		if(chinese.test(isCardID($("#idNo").val().replace(/\s/g,"")))){
+			flag=false;
+			showTipMsg(isCardID($("#idNo").val()));
+			return;
+		}else{
+			showTipMsg("");
+		}
+	});
+	
+	
+	$("#phonecodesend").click(function(){
+			var phoneNo = $("#phoneNo").val();
+			if(!regexPhone.test(phoneNo)){
+				flag=false;
+				showTipMsg("手机号格式不正确,请重新输入");
+				return;
+			}else if(phoneNo.length>11){
+				flag=false;
+				showTipMsg("手机号长度不正确,请重新输入");
+				return;
+			}
+			
+			if(!checkPhone()){
+				showTipMsg("手机号未注册");
+				return;
+			}
+			if(codeValid){
+				return;
+			}
+		    var param = {};
+			/* param["phoneNumber"] = phoneNo; */
+			param["phoneNo"] = $("#phoneNo").val();
+			param["type"] = 3;
+				
+			$("#phonecodesend").html("发送中...");
+			$("#phonecodesend").addClass("btn_grey").attr("disabled","disabled");
+			 $.ajax({
+				type : "POST",
+				cache : false,
+				async : false,// 设置异步为false,重要！
+				dataType : "json",
+				url : $("#basePath").val() + "front/sendPhoneCodeNoode",
+				data : param,
+				success : function(data) {
+					if(data.key==1){
+						codeValid = true;
+						tipId2 = window.setInterval(rtimer2, 1000);
+						showTipMsg("");
+					}else if(data.key==2){
+						codeValid = true;
+						$("#phonecodesend").removeClass("btn_grey").removeAttr("disabled","disabled").attr('value', "次数受限");
+						showTipMsg("次数受限，请联系客服");
+					}else if(data.key == 3){
+						codeValid = true;
+						tipId2 = window.setInterval(rtimer2, 1000);
+						showTipMsg("发送过于频繁，2分钟后再发送");
+					}
+				}
+			}); 
+	});
+});
+
+function rtimer2() {
+	if (timer2 >= 0) {
+		$("#phonecodesend").html(timer2 + "秒后重新获取");
+		timer2--;
+	} else {
+		window.clearInterval(tipId2);
+		$("#phonecodesend").removeClass("btn_grey").removeAttr("disabled").html("重新发送");
+		timer2 = 120;
+		codeValid = false;
+//		clearPhoneCode();
+	}
+}
+
+function checkPhone(){
+	return true;
+	
+	$.ajax({
+		type : "POST",
+		cache : false,
+		async : false,// 设置异步为false,重要！
+		dataType : "json",
+		url : $("#basePath").val() + "front/checkphonenum",
+		data : {
+			"mobilePhone" : function() {
+				return $("#phoneNo").val();
+			}
+		},
+		success : function(data) {
+			if(data.state!=0){
+				flag=true;
+				showTipMsg("");
+				return true;
+			}else{
+				flag=false;
+				showTipMsg("手机号未注册");
+				return false;
 			}
 		}
-    	return "";
-    }
-	
-    //图形验证密码--------1
-    function code_check(code){
-        var msg = codeMsg(code);
-        if(msg != ""){
-            HHN.popup(msg, 'danger');
-            return false;
-        }
-        return true;
-    }
-    //图形验证密码--------2
-    function codeMsg(code){
-        if(code == null || code =='' || code.length == 0 || code.length != 4){
-                return "请填写正确的图片验证码";
-        }
-        return "";
-    }
-
-    function refCode(isPass){
-        if(true){
-            $("#codeNum").attr("src", '<c:url value="/common/imageCode.html?pageId=reset"/>' + new Date().getTime());
-        }else{
-            $("#code").attr("src", '<c:url value="/common/imageCode.html?pageId=reset"/>' + new Date().getTime());
-        }
-    }
+	});
+	return flag;
+}
 
 
-    //获取验证码 ---1
-    $getcode.on('click', function(){
-    	if(mobile_check($mobile.val())){
-            if(code_check($code.val())){                
-                countdown();
-                sendMobileCheckCode($mobile.val());
-            }
-
-    	}
-    });
-  //获取验证码----2计时
-    var interval;
-    function countdown() {
-        $getcode.attr('disabled', 'disabled').html('120秒');
-        var step = 120;
-        interval = setInterval(function() {
-                if (!--step) {
-                    clearInterval(interval);
-                    $getcode.html('重新获取').attr('disabled', null);
-                    return;
-                }
-                $getcode.html(step + '秒');
-            }, 1000);
-    };
-    function countup() {
-    	clearInterval(interval);
-    	$getcode.html('重新获取').attr('disabled', null);
-    	return;
-    }; 
-    //获取验证码----3请求
-    function sendMobileCheckCode(mobile) {
-		var param = {"mobile":mobile,"code":$code.val(),"pageId":"reset"};
-		
-		$.post('<c:url value="/account/sendVirifyCode.html"/>', param, function(data) {
-			if(data.success && data.resultCode == '0'){
-                refCode(true);
-				HHN.popup(data.resultMessage);
-			}else{
-                refCode(false);
-				HHN.popup(data.resultMessage);
-				countup();
-			}
-		},"json");
+//form验证
+function checkform(){
+	if(!regexPhone.test($("#phoneNo").val())){
+		showTipMsg("手机号格式不正确,请重新输入");
+		flag = false;
+		return false;
+	}else {
+		flag = checkPhone();
 	}
-	
-    //提交注册信息----1
-    $submit.on('click', function() {
-    	var mobile = $mobile.val();
-    	var pwdType = $("#pwdType").val();
-    	
-    	
-    	if(mobile_check(mobile)){
-    		var mobileCode = $('#mobileCode').val();
-            var code = $code.val();
-            var bCode = code_check(code);
-        	if(bCode){
-                if(mobileCode == null || mobileCode == "" || mobileCode.length == 0){//验证码
-                HHN.popup("请输入验证码", 'danger');
-                    return false;
-                }else{
-                    //验证密码
-                    var password = $psw.val();//密码
-                    var password2 = $('#psw2').val();//重复密码
-                    var bPwd = pwd_check(password);
-                    if(bPwd){
-                        if(password2 == null || password2 == "" || password2.length == 0){
-                            HHN.popup("请输入重复密码", 'danger');
-                            return false;
-                        }else{
-                            if(password != password2){
-                                HHN.popup("两次输入的密码不一致", 'danger');
-                                return false;
-                            }else{
-                                var param = {"mobile":mobile,"mobileCode":mobileCode,"password":password,"code":code,"pageId":"reset","pwdType":pwdType};          
-                                submitInfo(param);
-                            }
-                        }
-                    }
-                }
-            }
-    	}
-    });
-    
-    //提交信息
-    function submitInfo(param){
-    	$.post('<c:url value="/account/restLoginPwd.html"/>', param, function(data) {
-			if(data.result == '0'){
-				HHN.popup("修改成功");
-					setTimeout(function(){
-                    //refCode(true);
-					window.location.href= '<c:url value="/login/index.html"/>';
-				},1500);
-			}else{
-                refCode(false);
-				HHN.popup(data.result);
-			}
-		},"json");
-    }
-    
-    $toLogin.on('click', function() {
-    	window.location.href= '<c:url value="/login/index.html"/>';
-    });
-    </script>
-</body>
+	if ($("#code").val() == "") {
+		showTipMsg("请输入验证码！");
+		flag = false;
+		return false;
+	}
+	if ($("#idNo").val().replace(/\s/g,"") == "") {
+		showTipMsg("请输入身份证号码！");
+		flag = false;
+		return false;
+	}else{
+		if(chinese.test(isCardID($("#idNo").val().replace(/\s/g,"")))){
+			showTipMsg(isCardID($("#idNo").val()));
+			flag = false;
+			return false;
+		}else{
+			showTipMsg("");
+		}
+	}
+	return flag;
+}
 
-</html>
+
+function showTipMsg(msg) {
+	$("#error-box").show();
+	$("#error-box").html(msg);
+}
+
+
+function forgetPwd1(){
+	/*
+	if(!codeValid){
+		showTipMsg("验证码已失效，请重新获取");
+		return;
+	}
+	*/
+	if(!checkPhone()){
+		showTipMsg("手机号未注册");
+		return;
+	}
+	var code = $("#code").val().replace(/\s/g,"");
+	if(!num.test(code)){
+		showTipMsg("请输入合法短信验证码");
+		return;
+	}
+	if(!checkform()){
+		return;
+	}
+	var param = {};
+	param["phoneNumber"] = $("#phoneNo").val().replace(/\s/g,"");
+	param["code"] = $("#code").val().replace(/\s/g,"");
+	param["idNo"] = $("#idNo").val().replace(/\s/g,"");
+	$.ajax({
+		type : "POST",
+		cache : false,
+		async : false,// 设置异步为false,重要！
+		dataType : "json",
+		url : $("#basePath").val() + "account/forgetPwd1.html",
+		data : param,
+		success : function(data) {
+			if (data.result == 0) {
+				window.location.href = $("#basePath").val()+"account/forgetPwd2Index.html?pn="+data.msg;
+			}else{
+				showTipMsg(data.msg)
+			}
+		}
+	});
+}
+</script>
+
+</body></html>

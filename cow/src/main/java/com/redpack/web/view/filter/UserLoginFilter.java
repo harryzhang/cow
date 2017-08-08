@@ -57,11 +57,18 @@ public class UserLoginFilter  extends OncePerRequestFilter {
 	 
 
 	public boolean isFilterUri(String uri){
+		return true;
+		/*
 		return uri.indexOf("/imageCode/imageCode") != -1
 			 ||uri.indexOf("/res/") != -1
 			 ||uri.indexOf("/login/") != -1
 			 ||uri.indexOf("/common/imageCode") != -1
 			 ||uri.indexOf("/account/register") != -1
+			 ||uri.indexOf("/account/reg_step1") != -1
+			 ||uri.indexOf("/account/reg_step2") != -1
+			 ||uri.indexOf("/account/reg_step3") != -1
+			 ||uri.indexOf("/account/saveRegStep1") != -1
+			 ||uri.indexOf("/account/saveRegStep2") != -1
 			 ||uri.indexOf("/redPack/personalCenter") != -1
 			 ||uri.indexOf("/company/") != -1
 			 ||uri.indexOf("/notice/") != -1
@@ -77,6 +84,7 @@ public class UserLoginFilter  extends OncePerRequestFilter {
 		     ||uri.indexOf("/account/restLoginPwd") != -1
 		     ||uri.indexOf("/member/userManager") != -1
 		     ||uri.indexOf("/fh/fh") != -1;
+		     */
 	}
 	
     /**

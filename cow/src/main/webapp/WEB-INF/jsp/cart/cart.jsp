@@ -44,7 +44,7 @@
 					<div class="snap_up"></div>
 							<div class="list">
 								<div class="video" display:inline><a style="color:#d73e2e;" href="javascript:tou();">推荐有礼</a></div>
-            					<a href=https://www.lenongzhijia.com:443/lnwxfront/productDetail?bId=15009446367253 class="btn">立 即<br />领养</a>
+            					<a href="<c:url value='/cart/productDetail?bId=15009446367253'/>" class="btn">立 即<br />领养</a>
 								<div class="text">养成收益<br />
 									<span>￥1.20</span>
 								</div>

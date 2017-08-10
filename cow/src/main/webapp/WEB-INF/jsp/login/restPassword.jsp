@@ -39,20 +39,23 @@
         	<!--忘记密码-->
             <form action="<c:url value='/account/forgetPwd1.html'/>" class="form_wrap">
             	<div class="formStyle1">
+	            	<div class="form_box clearfix">
+	                	<img src="<c:url value='/res-qiquan/images/form_icon4.png'/>" alt="">
+	                    <input type="text" placeholder="请输入您的登录账号" class="phone_input" id="username">
+	                </div>
+	                
 	            	<div class="form_box form_line clearfix">
 	                	<img src="<c:url value='/res-qiquan/images/form_icon1.png'/>" alt="">
-	                    <input type="text" placeholder="请输入手机号" class="phone_input" id="phoneNo">
+	                    <input type="text" placeholder="请输入你的邮箱" class="phone_input" id="mailtxt">
 	                </div>
+	                
+	                
 	            	<div class="form_box form_line clearfix">
 	                	<img src="<c:url value='/res-qiquan/images/form_icon3.png'/>" alt="">
 	                    <input type="text" placeholder="请输入验证码" class="code_input" id="code">
 	                    <a href="javascript:;" class="btn codeBtn btn_green code" id="phonecodesend">获取验证码</a>
 	                </div>
-	                
-					<div class="form_box clearfix">
-	                	<img src="<c:url value='/res-qiquan/images/form_icon4.png'/>" alt="">
-	                    <input type="text" placeholder="请输入您的身份证号" class="phone_input" id="idNo">
-	                </div>
+					
 	            </div>
 	                <div class="error_notice">
 	                	<p class="hide" id="error-box">错误提示</p>

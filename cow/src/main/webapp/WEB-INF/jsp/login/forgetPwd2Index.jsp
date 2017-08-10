@@ -35,7 +35,7 @@
             <form action="<c:url value='/account/confirmPassword.html'/>" class="form_wrap">
             <div class="formStyle2">
             <h2 class="tit1">
-            	请输入您要设置的提现密码<input id="dealpwd" type="hidden" value="">
+            	请输入您的新密码<input id="activeCodeByMail" type="hidden" value="${activeCodeByMail}">
             </h2>
                 <div class="form_item">
                     	<ul>

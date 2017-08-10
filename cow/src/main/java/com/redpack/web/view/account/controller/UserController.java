@@ -588,7 +588,8 @@ public class UserController extends BaseController{
 	public void saveRegStep2(HttpServletRequest request,
 			                 HttpServletResponse response,
 			                 Model model) {
-		String phoneNo = request.getParameter("phoneNo");
+		
+		String phoneNo = request.getParameter("mailtxt");
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("result", 0);
 		jsonObject.put("msg", phoneNo);

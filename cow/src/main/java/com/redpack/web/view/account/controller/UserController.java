@@ -431,11 +431,122 @@ public class UserController extends BaseController{
 	public void saveRegStep1(HttpServletRequest request,
 			                 HttpServletResponse response,
 			                 Model model) {
-		String phoneNo = request.getParameter("phoneNo");
-		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("result", 0);
-		jsonObject.put("msg", phoneNo);
-		ResponseUtils.renderText(response, "UTF-8", jsonObject.toString());
+		
+
+			JSONObject jsonObject = new JSONObject();
+			String mobilePhone = request.getParameter("username");
+			String pwd =  request.getParameter("password");
+			String referenceId =  request.getParameter("refferee");
+			String mobileCode =  request.getParameter("code");
+			
+			/*
+			Object vc = request.getSession().getAttribute(mobilePhone);
+			String verifyCode=null;
+			if(vc !=null){
+				verifyCode= String.valueOf(vc);
+			}
+			
+			String ifSend = paramService.getByName(WebConstants.IF_SEND_MESSAGE);
+			if(StringUtils.isNotBlank(ifSend) && "1".equals(ifSend)){
+				if(!mobileCode.equals(verifyCode) ){
+					logger.info("手机号:"+mobilePhone+"验证码失败 session verifycode:"+verifyCode+" 参数："+mobileCode);
+					jsonObject.put("result", "手机验证码有误");
+					ResponseUtils.renderText(response, "UTF-8", JSONObject.fromObject(jsonObject).toString());
+					return;
+				}
+			}
+			*/
+			
+			Map<String, Object> parameterMap = new HashMap<String, Object>();
+			parameterMap.put("userName", mobilePhone);
+			// 获取登录用户userId
+			UserDo temp = userService.getByUserDo(parameterMap);
+
+			if(temp!=null&&temp.getId()!=null){
+				jsonObject.put("result", "1");
+				jsonObject.put("msg", "输入的账号已存在");
+				ResponseUtils.renderText(response, "UTF-8", JSONObject.fromObject(jsonObject).toString());
+				return;
+			}
+//			if (StringUtils.isBlank(name)) {
+//				jsonObject.put("result", "请输入昵称");
+//				ResponseUtils.renderText(response, "UTF-8", JSONObject.fromObject(jsonObject).toString());
+//				return;
+//			}
+			if (StringUtils.isBlank(mobilePhone)) {
+				jsonObject.put("result", "1");
+				jsonObject.put("msg", "请输入账号");
+				ResponseUtils.renderText(response, "UTF-8", JSONObject.fromObject(jsonObject).toString());
+				return;
+			}
+			if (StringUtils.isBlank(referenceId)) {
+				jsonObject.put("result", "1");
+				jsonObject.put("msg", "请输入推荐人账号");
+				ResponseUtils.renderText(response, "UTF-8", JSONObject.fromObject(jsonObject).toString());
+				return;
+			}
+			
+//			if (StringUtils.isBlank(passwordTwo)) {
+//				jsonObject.put("result", "1");
+//				jsonObject.put("msg", "请输入二级密码");
+//				ResponseUtils.renderText(response, "UTF-8", JSONObject.fromObject(jsonObject).toString());
+//				return;
+//			}
+//			
+			//根据推荐人的手机号码查找推荐人
+			//parameterMap.put("mobile", referenceId);
+			parameterMap.clear();
+			parameterMap.put("userName", referenceId);
+			parameterMap.put("status", "1");
+			UserDo refUser = userService.getByUserDo(parameterMap);
+			if(refUser == null){
+				jsonObject.put("result", "1");
+				jsonObject.put("msg", "查找不到对应的推荐用户或者推荐用户为非正式会员");
+				ResponseUtils.renderText(response, "UTF-8", JSONObject.fromObject(jsonObject).toString());
+				return;
+			}
+			
+			String pwdMd5 =DigestUtils.md5Hex(pwd + WebConstants.PASS_KEY);
+//			String pwdTwoMd5 =DigestUtils.md5Hex(passwordTwo + WebConstants.PASS_KEY);
+			UserDo userDo =new UserDo();
+			userDo.setCreateUser(-1L);                 //当前用户是记录创建者
+			userDo.setUserName(mobilePhone);
+			userDo.setPassword(pwdMd5);
+			userDo.setTwoLevelPwd(pwdMd5);
+			userDo.setGrade(0);								//当前等级
+			userDo.setOrgan("0");								//组织机构
+			userDo.setEnabled("0");								//状态  默认激活
+		
+			Random ne=new Random();//实例化一个random的对象ne
+	        String activeNum="" + (ne.nextInt(9999-1000+1)+1000);
+			userDo.setRemark(activeNum);
+			userDo.setReferrerId(refUser.getId());				//推荐人ID
+			userDo.setParentId(0l);	
+			userDo.setStatus(1);//接点人ID
+			userDo.setTreeNode("");								//业务方向
+//			userDo.setName(name);
+//			userDo.setTwoLevelPwd(pwdTwoMd5);               //二级密码
+			UserInfoDo userInfoDo = new UserInfoDo();
+//			userInfoDo.setRealName(name);
+			userInfoDo.setMobile(mobilePhone);
+
+			userDo.setCreateTime(new Date());
+			userDo.setUserInfoDo(userInfoDo);
+			
+			//开始保存
+			IResult<Long> result = userService.saveUser(userDo);
+			if (result.isSuccess()) {
+				Long userId = userDo.getId();
+				userInfoDo.setUserId(userId);
+				userInfoService.saveUserInfo(userInfoDo);
+				jsonObject.put("result", "0");
+				ResponseUtils.renderText(response, null, JSONObject.fromObject(jsonObject).toString());
+			} else {
+				jsonObject.put("result", "1");
+				jsonObject.put("msg", "注册失败:"+result.getErrorMessage());
+				ResponseUtils.renderText(response,	"UTF-8",JSONObject.fromObject(jsonObject).toString());
+			}
+	
 	}
 	
 	 /**

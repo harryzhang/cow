@@ -77,7 +77,7 @@
                 <div class="formStyle1">
                 	<div class="form_box form_line clearfix">
                         <img src="<c:url value='/res-qiquan/images/form_icon1.png'/>" alt="" />
-                        <input type="text" placeholder="请输入手机号" id="emailphone">
+                        <input type="text" placeholder="请输入登录账号" id="emailphone">
                     </div>
                     <div class="form_box clearfix">
                         <img src="<c:url value='/res-qiquan/images/form_icon2.png'/>" alt="" />

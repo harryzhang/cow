@@ -33,7 +33,6 @@
 <input id="basePath" type="hidden" value="<c:url value='/'/>"/>
 <input id="efferPhoneNo" type="hidden" value="b61f4c4a5d1444e0"/>
 <input id="validcode" type="hidden" value="45690ea7687c35c3"/>
-<input id="refer_cust" name="refer_cust" type="hidden" value="https://www.lenongzhijia.com/h5/page/reg_step1.jsp" />
 	<div class="wrap">
 		<div class="logo_box">
             <img src="<c:url value='/res-qiquan/images/logo.png'/>" alt="">
@@ -44,20 +43,15 @@
             <form action="" class="form_wrap">
             	<div class="formStyle1">
 	                <div class="form_box form_line clearfix">
-                        <p class="verify_phone">确认手机号：<span>13815349876</span></p>
-                    </div>
-	                
-	            	 <div class="form_box clearfix">
-	                	<img src="<c:url value='/res-qiquan/images/form_icon3.png'/>" alt="">
-	                    <input type="text" placeholder="请输入验证码" class="code_input" id="phonecode">
-	                    <a href="#" class="btn codeBtn btn_green code" id="phonecodesend">获取验证码</a>
-	                </div> 
+	                	<span class="fl">邮箱：</span>
+	                    <input type="text" placeholder="请输入邮箱" class="phone_input" id="mailtxt">
+	                </div>
 	             </div>
 	
 	                <div class="error_notice">
 	                	<p class="hide" id="error-box">错误提示</p>
 	                </div>
-	                <a href="#" class="btn funcBtn btn_green login_btn" id="nextBtn">下一步</a>
+	                <a href="#" class="btn funcBtn btn_green login_btn" id="nextBtn">提交</a>
             </form>
         </div>
     </div>

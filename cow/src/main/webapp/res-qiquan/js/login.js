@@ -3,7 +3,7 @@ $(function() {
 	basePath = $("#basePath").val();
 	$("#emailphone").blur(function() {
 		if ($(this).val() == "") {
-			showTipMsg("请输入手机号！");
+			showTipMsg("请输入登录账号！");
 		}else{
 			showTipMsg("");
 		}
@@ -28,8 +28,8 @@ $(function() {
 
 // 登录
 function login() {
-		if ($("#emailphone").val() == "" || $("#emailphone").val() == "手机号") {
-			showTipMsg("请输入手机号！");
+		if ($("#emailphone").val() == "" || $("#emailphone").val() == "登录账号") {
+			showTipMsg("请输入登录账号！");
 			$("#emailphone").focus();
 			return;
 		}
@@ -59,12 +59,10 @@ function login() {
 					//普通href
                     }else if( toHerf >=0 && null !=$("#referer2").val()  && $("#referer2").val()!="" && 'null'!=$("#referer2").val()){
                     	window.location.href = $("#referer2").val();
-                    
                     }else if(null !=$("#referer").val()  && $("#referer").val()!="" && 'null'!=$("#referer").val()){
                     	window.location.href = $("#referer").val();
                     //默认首页	
                     }else{
-//                    	  window.location.href = basePath+"lnweixin/mynewdata";
                     	window.location.href = basePath+"login/main.html";//先跳转产品列表页面
                     }
 				} else{

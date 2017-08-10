@@ -1,8 +1,7 @@
 var flag = true;
 var flagEffer = true;
-//var regexPhone = /^13[0-9]{9}|15[012356789][0-9]{8}|18[012356789][0-9]{8}|147[0-9]{8}$/;
-
-var regexPhone =/^13[0-9]{9}|15[0123456789][0-9]{8}|17[0123456789][0-9]{8}|18[0123456789][0-9]{8}|147[0-9]{8}$/;
+//var regexPhone =/^13[0-9]{9}|15[0123456789][0-9]{8}|17[0123456789][0-9]{8}|18[0123456789][0-9]{8}|147[0-9]{8}$/;
+var regexPhone=/^[A-Za-z0-9_]{6,11}$/;
 var val=0;
 
 $(function(){
@@ -10,94 +9,64 @@ $(function(){
 		setCookie("usrChannel",$("#usrChannel").val());
 	}
 	switchCode();
-	if($("#refferee").val()!=null && $("#refferee").val()!=""){
-		$(".reg_recom li[val='1']").addClass("checked");
-		$(".reg_recom li[val='1']").siblings().removeClass("checked");
-		val = 1 ;
-		flagEffer = true;
-		//$(".reg_recom li").attr("val");
-		$(".reg_recom li").parent().siblings(".input_box2").show();
-	}
 	
 	
 	$("#phoneNo").focus();
-	$(".reg_recom li").click(function() {
-		val = $(this).attr("val");
-        $(this).siblings().removeClass("checked");
-		$(this).addClass("checked");
-		if(val==1){
-			$(this).parent().siblings(".input_box2").show();
-		}else{
-			$(this).parent().siblings(".input_box2").hide();
-		}
-    });
+
 	
 	$("#nextBtn").click(function(){
 		var phoneNo = $("#phoneNo").val();
 		var code=$("#code").val();  
-		var referFlag = $("#referFlag").attr("class");
+		//var referFlag = $("#referFlag").attr("class");
 		var efferPhoneNo = $("#efferPhoneNo").val(); 
 		var phoneNum = $("#phoneNo").val();
 		if (!regexPhone.test(phoneNum)) {
 			flag=false;
-			showTipMsg("手机号格式不正确,请重新输入");
+			showTipMsg("登录账号不正确,请重新输入");
 			return;
-		}else if(phoneNum.length>11){
+		}else if(phoneNum.length>11 || phoneNum.length<6 ){
 			flag=false;
-			showTipMsg("手机号格式不正确,请重新输入");
+			showTipMsg("登录账号长度为6-11位");
 			return;
 		}
-		
 		
 		if(code == null || code==""){
 			showTipMsg("验证码必须填写");
 			return;
 		}
-		if(efferPhoneNo==""&&referFlag=="checked"){
-			showTipMsg("请填写推荐人");
+		if(efferPhoneNo==""){
+			showTipMsg("请填写推荐人账号");
 			return;
 		}
-		if(referFlag=="checked"){
-			if (!regexPhone.test($("#efferPhoneNo").val())) {
-				flagEffer=false;
-				showTipMsg("推荐人手机号格式不正确,请重新输入");
-				return;
-			}
-			if($("#efferPhoneNo").val().length>11){
-				flagEffer=false;
-				showTipMsg("推荐人手机号格式不正确,请重新输入");
-				return;
-			}
-			if(checkPhone($("#efferPhoneNo").val())){
-				flagEffer=false;
-				showTipMsg("推荐人不存在");
-				return;
-			}
-			if(checkReffereePhone($("#efferPhoneNo").val())){
-				flagEffer=false;
-				showTipMsg("推荐人异常");
-				return;
-			}
-		}else{
-			showTipMsg("");
-			flagEffer=true;
-		}
-		if(!flagEffer){
+
+		if(checkPhone(phoneNum)){
+			showTipMsg("账号已注册");
 			return;
 		}
+		
+		if(checkPhone($("#efferPhoneNo").val())){
+			showTipMsg("推荐人不存在");
+			return;
+		}
+		
+		var chkPwdMsg = pwdCheckout();
+		
+		if(chkPwdMsg !=""){
+			showTipMsg(chkPwdMsg);
+			return;
+		}
+		
 		if(!flag){
 			return;
 		}
-		var param = {};
-		param["phoneNo"] = phoneNo;
-		param["code"] = code;  
-
 		
-		if(val == 0){
-			efferPhoneNo=null;
-		}
-		param["efferPhoneNo"] = efferPhoneNo;  
-		param["hasEffer"] = val;    //0 无，1有
+		var param = {};
+		param["username"] = phoneNo;
+		param["code"] = code;  
+		param["refferee"] = efferPhoneNo;
+		param["password"] = $("#password").val();
+		
+		//param["hasEffer"] = val;    //0 无，1有
 		$.ajax({
 			type : "POST",
 			cache : false,
@@ -122,10 +91,10 @@ $(function(){
 		var phoneNum = $("#phoneNo").val();
 		if (!regexPhone.test(phoneNum)) {
 			flag=false;
-			showTipMsg("手机号格式不正确,请重新输入");
-		}else if(phoneNum.length>11){
+			showTipMsg("账号格式不正确,请重新输入");
+		}else if(phoneNum.length>11||phoneNum.length<6){
 			flag=false;
-			showTipMsg("手机号格式不正确,请重新输入");
+			showTipMsg("账号格长度正确,请重新输入");
 		}else{
 			flag=true;
 			showTipMsg("");
@@ -136,22 +105,22 @@ $(function(){
 	
 	$("#efferPhoneNo").blur(function() {
 		if (!regexPhone.test($("#efferPhoneNo").val())) {
-			flagEffer=false;
-			showTipMsg("推荐人手机号格式不正确,请重新输入");
+			flag=false;
+			showTipMsg("推荐人账号格式不正确,请重新输入");
 			return;
 		}
-		if($("#efferPhoneNo").val().length>11){
-			flagEffer=false;
-			showTipMsg("推荐人手机号格式不正确,请重新输入");
+		if($("#efferPhoneNo").val().length>11||$("#efferPhoneNo").val().length<6){
+			flag=false;
+			showTipMsg("推荐人账号长度不正确,请重新输入");
 			return;
 		}
-		if(checkReffereePhone($("#efferPhoneNo").val())){
-			flagEffer=false;
-			showTipMsg("推荐人异常");
+		if(checkPhone($("#efferPhoneNo").val())){
+			flag=false;
+			showTipMsg("推荐人不存在");
 			return;
 		}else{
 			showTipMsg("");
-			flagEffer=true;
+			flag=true;
 		}
 	});
 	
@@ -166,50 +135,21 @@ function checkPhone(phoneNo){
 			cache : false,
 			async : false,// 设置异步为false,重要！
 			dataType : "json",
-			url : $("#basePath").val() + "front/checkphonenum",
-			data : {"mobilePhone" : phoneNo},
+			url : $("#basePath").val() + "account/checkAccount.html",
+			data : {"username" : phoneNo},
 			success : function(data) {
-				if(data.state!=0){
-				//	showTipMsg("手机号被使用，请重新输入");
+				if(data.result!=0){
 					phoneflag = false;
 					return false;
 				}else{
-				//	showTipMsg("");
 					phoneflag = true;
 					return true;
 				}
 			}
-
 		});
 		return phoneflag;
 	}
 	
-	//校验推荐人的手机号码
-	function checkReffereePhone(phoneNo){
-		var phoneflag = false;
-		$.ajax({
-			type : "POST",
-			cache : false,
-			async : false,// 设置异步为false,重要！
-			dataType : "json",
-			url : $("#basePath").val() + "front/checkReffereePhone",
-			data : {"refferee" : phoneNo},
-			success : function(data) {
-				if(data.state!=0){
-				//	showTipMsg("手机号被使用，请重新输入");
-					phoneflag = false;
-					return false;
-				}else{
-				//	showTipMsg("");
-					phoneflag = true;
-					return true;
-				}
-			}
-		});
-		return phoneflag;
-		
-}
-
 
 //刷新验证码
 function switchCode() {
@@ -226,6 +166,31 @@ function showTipMsg(msg) {
 	$("#error-box").show();
 	$("#error-box").html(msg);
 }
+
+function pwdCheckout(){
+	
+	var password = $("#password").val();
+	
+	var lowercase = /[a-z]{1,}/;
+	var capital = /[A-Z]{1,}/;
+	var num = /[0-9]{1,}/;
+	
+	if(password.length <6){
+		console.log("密码至少要有6位数");
+		return "密码至少要有6位数";
+	}
+	
+	if(!lowercase.test(password) || !capital.test(password) || !num.test(password)){
+		console.log("密码必须同时包含大小写字母及数字");
+		return "密码必须同时包含大小写字母及数字" ;
+	}
+	var password2 = $("#password").val();
+	if(password != password2){
+		return "密码和确认密码不一致" ;
+	}
+	return "";
+}
+
 
 //写cookies
 function setCookie(name,value)

@@ -58,14 +58,6 @@ public class LoginController extends BaseController {
 	@RequestMapping(value = "index")
 	public String index(HttpServletRequest request) {
 		logger.info("----loginInit(初始化登录页面);----");
-		int loginStrategy = super.getSessionIntAttr(request,"loginStrategy", 0);
-		String userLocal = (String) request.getParameter("userLocal");
-		//System.out.println("====" + userLocal);
-		request.setAttribute("loginStrategyInfo", loginStrategy >= 5);
-		request.setAttribute("userLocal", userLocal);
-		//if(null == userLocal || "en".equalsIgnoreCase(userLocal)  ){
-		//	return "page_en/login/login";
-		//}
 		return "login/login";
 	}
 
@@ -100,7 +92,6 @@ public class LoginController extends BaseController {
 		//微信openId
 		//String openId = request.getParameter("openId");
 		//String openId = (String)request.getSession().getAttribute("openId");
-		
 		//logger.debug(loginInfo+"  login  his  openId============================"+openId);
 		
 		// 输入用户名密码
@@ -137,43 +128,22 @@ public class LoginController extends BaseController {
 			UserDo parentDo = userService.getById(parentId);
 			loginUser.setParentDo(parentDo);
 		}
-		//loginUser.setOpenId(openId);
 		session.setAttribute(WebConstants.SESSION_USER, loginUser);
-		//WebThreadVariable.setUserDo(loginUser);
 
-		//微信登录，保存此ID进用户表 
-		/*
-		if( StringUtils.isNotBlank(openId)){
-			UserDo tempUser = new UserDo();
-			tempUser.setId(loginUser.getId());
-			tempUser.setOpenId(openId);
-			userService.updateUser(tempUser);
-		}
-		*/
+	
 		// 取缓存登录信息
-		// String fromUrl = request.getHeader("referer");
 		jsonObject.put("result", 0);
-		//jsonObject.put("fromUrl", "/redPack/personalCenter.html");
-		// String userLocal = super.getSessionStrAttr("userLocal");
 		String userLocal =request.getParameter("userLocal");
 		loginUser.setUserLocal(userLocal);
 		
 		
 		//检查个人资料是否完善
-//		UserInfoDo userInfo = userInfoService.getByUserId(loginUser.getId());
-//		if(null == userInfo || StringUtils.isBlank(userInfo.getWeixiNumber())  ){
-//			jsonObject.put("result", 4);
-//		}
-		
-		 
-		if("en".equalsIgnoreCase(userLocal)){
-				 jsonObject.put("fromUrl", "/page_en/login/main.html");
-//				 jsonObject.put("fromUrl", "/page_en/notice/notice.html");
-		}else{
-				 jsonObject.put("fromUrl", "/login/main.html");
-//				 jsonObject.put("fromUrl", "/notice/notice.html");
+		/*
+		UserInfoDo userInfo = userInfoService.getByUserId(loginUser.getId());
+		if(null == userInfo || StringUtils.isBlank(userInfo.getWeixiNumber())  ){
+			jsonObject.put("result", 4);
 		}
-		
+		*/
 		
 		userService.saveLoginlog(loginUser.getId());
 		

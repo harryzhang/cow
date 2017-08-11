@@ -6,14 +6,6 @@ import java.util.Date;
 public class NotifyDo implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    /**
-     * 消息类型：邮件
-     */
-    public static final String MAIL = "MAIL";
-    /**
-     * 消息类型：短信
-     */
-    public static final String SMS = "SMS";
 
     private Long messageId;
 
@@ -33,7 +25,6 @@ public class NotifyDo implements Serializable {
 
     private String messageType;
 
-    private String smsType;
 
     private String isValidate;
 
@@ -49,6 +40,12 @@ public class NotifyDo implements Serializable {
      * 是否异步
      */
     protected boolean async;
+    
+    public NotifyDo(String subject,String message, String recievers){
+    	this.subject = subject;
+    	this.message = message;
+    	this.recievers = recievers;
+    }
 
     /**
      * 如果指发送一个简单的消息，建议直接调用这个方法 这个方法会构造一个简单的JSON字符串，并以 content作为key 应用默认的消息模板
@@ -150,13 +147,6 @@ public class NotifyDo implements Serializable {
         this.messageType = messageType;
     }
 
-    public String getSmsType() {
-        return smsType;
-    }
-
-    public void setSmsType(String smsType) {
-        this.smsType = smsType;
-    }
 
     public String getIsValidate() {
         return isValidate;

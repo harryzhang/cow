@@ -170,4 +170,12 @@ public interface IUserDao {
 	 */
 	void saveLoginlog(Long id);
 
+	/**
+	 * 维护激活码和账号的关系
+	 * @param actCode
+	 * @param userName
+	 * @param action
+	 */
+	void saveActCode(@Param("actCode")String actCode, @Param("userName")String userName, @Param("action")String action);
+
 }

@@ -7,7 +7,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
 <meta http-equiv="expires" content="0">
 
-<link rel="shortcut icon" href="https://www.lenongzhijia.com/static/images/logo.ico">
+<link rel="shortcut icon" href="images/logo.ico">
 
 
 
@@ -39,7 +39,7 @@
         	<!--忘记密码-->
             <form action="<c:url value='/account/forgetPwd1.html'/>" class="form_wrap">
             	<div class="formStyle1">
-	            	<div class="form_box clearfix">
+	            	<div class="form_box form_line clearfix">
 	                	<img src="<c:url value='/res-qiquan/images/form_icon4.png'/>" alt="">
 	                    <input type="text" placeholder="请输入您的登录账号" class="phone_input" id="username">
 	                </div>

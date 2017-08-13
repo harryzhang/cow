@@ -17,7 +17,7 @@
 	<style>
     .notice_box{
 		width:100%;
-		height:5rem;
+		height:10rem;
 		background:#fff;
 		margin-bottom:1.5rem;
 	}
@@ -43,7 +43,9 @@
 <body>
 	<div class="wrap">
         <div class="notice_box">
-        	<p class="clearfix"><img src="<c:url value='/res-qiquan/images/true.png'/>" alt=""><span>注册成功啦...系统刚刚给你的邮箱发送了一封邮件，请先激活</span></p>
+        	<p class="clearfix"><img src="<c:url value='/res-qiquan/images/true.png'/>" alt=""><span>注册成功啦...</span></p>
+        	
+        	<p class="clearfix"><span>系统刚刚给你的邮箱发送了一封邮件，请先激活</span></p>
         </div>
         <a href="<c:url value='/login/main.html#account'/>" class="btn funcBtn btn_green notice_btn">我的牧场</a>
     </div>   

@@ -629,5 +629,17 @@ public class UserServiceImpl implements IUserService {
 		userDao.saveLoginlog(id);
 		
 	}
+
+
+	/**
+	 * 维护激活码和账号的关系
+	 * @param regUUID
+	 * @param phoneNo
+	 * @param string
+	 */
+	@Override
+	public void saveActCode(String regUUID, String phoneNo, String action) {
+		userDao.saveActCode(regUUID, phoneNo, action);		
+	}
 		
 }

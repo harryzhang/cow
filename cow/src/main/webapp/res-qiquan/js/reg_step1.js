@@ -44,7 +44,7 @@ $(function(){
 			return;
 		}
 		
-		if(checkPhone($("#efferPhoneNo").val())){
+		if(!checkPhone($("#efferPhoneNo").val())){
 			showTipMsg("推荐人不存在");
 			return;
 		}
@@ -114,7 +114,7 @@ $(function(){
 			showTipMsg("推荐人账号长度不正确,请重新输入");
 			return;
 		}
-		if(checkPhone($("#efferPhoneNo").val())){
+		if(!checkPhone($("#efferPhoneNo").val())){
 			flag=false;
 			showTipMsg("推荐人不存在");
 			return;

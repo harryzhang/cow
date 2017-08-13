@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -41,6 +42,8 @@ import com.redpack.common.base.param.IParamService;
 import com.redpack.common.base.result.IResult;
 import com.redpack.common.constant.WebConstants;
 import com.redpack.common.sms.ISmsService;
+import com.redpack.service.mail.INotifyComponent;
+import com.redpack.service.mail.NotifyDo;
 import com.redpack.utils.ResponseUtils;
 import com.redpack.web.view.base.controller.BaseController;
 
@@ -60,6 +63,9 @@ public class UserController extends BaseController{
 	@Autowired
 	private ISmsService smsService;
 
+	@Autowired
+	private INotifyComponent mailService;
+	
 	@Autowired	
     private IParamService  paramService;
 
@@ -540,6 +546,7 @@ public class UserController extends BaseController{
 				userInfoDo.setUserId(userId);
 				userInfoService.saveUserInfo(userInfoDo);
 				jsonObject.put("result", "0");
+				jsonObject.put("msg", mobilePhone);
 				ResponseUtils.renderText(response, null, JSONObject.fromObject(jsonObject).toString());
 			} else {
 				jsonObject.put("result", "1");
@@ -562,17 +569,11 @@ public class UserController extends BaseController{
 		
 		String view = getLocalPath(request,"redPack/reg_step2");
 		
-		//推荐人电话号码
-		String refMobile = request.getParameter("mobile");
+		//登录账号
+		String userName = request.getParameter("phoneNo");
+		model.addAttribute("username",userName);
 		
-		//A网B网
-		String netWork = request.getParameter("netWork");
-		
-		//推荐人手机
-		model.addAttribute("refMobile",refMobile);
-		model.addAttribute("netWork",netWork);
-		
-		logger.info("----注册用户跳转页面----");
+		logger.info("----注册用户第二个页面----");
 		
 		return view;
 	}
@@ -589,7 +590,29 @@ public class UserController extends BaseController{
 			                 HttpServletResponse response,
 			                 Model model) {
 		
-		String phoneNo = request.getParameter("mailtxt");
+		String mailtxt = request.getParameter("mailtxt");
+		String phoneNo = request.getParameter("phoneNo");
+		UUID uuid = UUID.randomUUID();
+		String regUUID = UUID.randomUUID().toString().replaceAll("-", "");
+		
+		
+		Map<String, Object> parameterMap = new HashMap<String, Object>();
+		parameterMap.put("userName", phoneNo);
+		UserDo temp = userService.getByUserDo(parameterMap);
+		if(null == temp){
+			JSONObject jsonObject = new JSONObject();
+			jsonObject.put("result", 1);
+			jsonObject.put("msg", "账号不存在");
+			ResponseUtils.renderText(response, "UTF-8", jsonObject.toString());
+			return;
+		}
+		temp.setMail(mailtxt);
+		userService.updateUser(temp);
+		
+		NotifyDo notifyDo = new NotifyDo("注册激活通知","请点击下面链接激活账号： http://localhost:8080/account/actAccountByMail.html?actCode="+regUUID,mailtxt);
+		mailService.send(notifyDo );
+		userService.saveActCode(regUUID,phoneNo,"reg");
+		
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("result", 0);
 		jsonObject.put("msg", phoneNo);
@@ -608,21 +631,90 @@ public class UserController extends BaseController{
 		
 		
 		String view = getLocalPath(request,"redPack/reg_suc");
-		
-		//推荐人电话号码
-		String refMobile = request.getParameter("mobile");
-		
-		//A网B网
-		String netWork = request.getParameter("netWork");
-		
-		//推荐人手机
-		model.addAttribute("refMobile",refMobile);
-		model.addAttribute("netWork",netWork);
-		
 		logger.info("----注册用户跳转页面----");
 		
 		return view;
 	}
+	
+	
+	
+	/**
+	 * 检查账号是否已注册
+	 * 
+	 * @return
+	 * @author: huangzl
+	 * @date 2015年8月2日 22:45:08
+	 */
+	@RequestMapping("checkAccount")
+	public void checkAccount(HttpServletRequest request,
+			                 HttpServletResponse response,
+			                 Model model) {
+		
+		String phoneNo = request.getParameter("username");
+		
+		Map<String, Object> parameterMap = new HashMap<String, Object>();
+		parameterMap.put("userName", phoneNo);
+		UserDo temp = userService.getByUserDo(parameterMap);
+
+		JSONObject jsonObject = new JSONObject();
+		if(temp!=null&&temp.getId()!=null){
+			jsonObject.put("result", 0);
+		}else{
+			jsonObject.put("result", 1);
+		}
+		ResponseUtils.renderText(response, "UTF-8", jsonObject.toString());
+	}
+	
+	/**
+	 * 检查邮箱是否已注册，  检查账号是否存在
+	 * 
+	 * @return
+	 * @author: huangzl
+	 * @date 2015年8月2日 22:45:08
+	 */
+	@RequestMapping("checkMail")
+	public void checkMail(HttpServletRequest request,
+			                 HttpServletResponse response,
+			                 Model model) {
+		
+		String phoneNo = request.getParameter("phoneNo");
+		String mailtxt = request.getParameter("mailtxt");
+		String action = request.getParameter("action");
+		
+	
+		
+		JSONObject jsonObject = new JSONObject();
+		
+		if("req".equals(action)){
+		
+			Map<String, Object> parameterMap = new HashMap<String, Object>();
+			parameterMap.put("mail", mailtxt);
+			UserDo temp = userService.getByUserDo(parameterMap);
+			
+			if(temp!=null&&temp.getId()!=null){
+				jsonObject.put("result", 1);
+				jsonObject.put("msg", "邮箱已存在");
+			}else{
+				jsonObject.put("result", 0);
+			}
+		}else{ //找回密码
+			Map<String, Object> parameterMap = new HashMap<String, Object>();
+			parameterMap.put("userName", phoneNo);
+			UserDo temp = userService.getByUserDo(parameterMap);
+			
+			if(temp ==null){
+				jsonObject.put("result", 1);
+				jsonObject.put("msg", "账号不存在");
+			}if(StringUtils.isBlank(temp.getMail()) || !temp.getMail().equals(mailtxt) ){
+				jsonObject.put("result", 1);
+				jsonObject.put("msg", "邮箱不存在");
+			}else{
+				jsonObject.put("result", 0);
+			}
+		}
+		ResponseUtils.renderText(response, "UTF-8", jsonObject.toString());
+	}
+	
 	
 	/**
 	 * 发送短信验证码

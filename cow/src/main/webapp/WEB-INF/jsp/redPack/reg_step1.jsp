@@ -39,20 +39,20 @@
             <form action="" class="form_wrap">
             	<div class="formStyle1">
 	            	<div class="form_box form_line clearfix">
-	                	<i src="<c:url value='/res-qiquan/imagesges/form_icon1.png'/>" alt="">
+	                	<img src="<c:url value='/res-qiquan/images/form_icon1.png'/>" alt="">
 	                    <input type="text" placeholder="请输入登录账号(6-11位大小字母和数字组成)" class="phone_input" id="phoneNo">
 	                </div>
 	                
-	                <div class="form_box form_line clearfix">
-	                	<span class="fl">密码：</span>
+					<div class="form_box form_line clearfix">
+	                	<img src="<c:url value='/res-qiquan/images/form_icon1.png'/>" alt="">
 	                    <input type="text" placeholder="请输入登录密码" class="phone_input" id="password">
 	                </div>
-	                
-	                <div class="form_box form_line clearfix">
-	                	<span class="fl">确认密码：</span>
+					
+					<div class="form_box form_line clearfix">
+	                	<img src="<c:url value='/res-qiquan/images/form_icon1.png'/>" alt="">
 	                    <input type="text" placeholder="确认登录密码" class="phone_input" id="password2">
 	                </div>
-	                
+					
 	                <div class="form_box form_line clearfix">
 	                    <img src="<c:url value='/res-qiquan/images/form_icon3.png'/>" alt="">
 	                    <input type="text" placeholder="请输入验证码" class="code_input" id="code">
@@ -62,16 +62,10 @@
 	                <div class="form_box clearfix reg_recom">
 	                    <span class="fl">推荐人：</span>
 	                   
-	                   <!-- 
-	                    <ul class="fl">
-	                        <li class="checked" val="0"><i></i>无</li>
-	                        <li val="1" id="referFlag"><i></i>有</li>
-	                    </ul>
-	                    -->
 	                    <div >
 	                        <input type="text"  class="push_phone_input" placeholder="推荐人登录账号"  autocomplete="off" value="" id="efferPhoneNo">
 	                    </div>
-	                </div>
+	                </div>					
 	              </div>
 	                <!--<p class="agreement"><a href="page/about/agreement.jsp">查看用户协议</a></p>-->
 	                <div class="error_notice">

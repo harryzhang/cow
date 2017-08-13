@@ -210,6 +210,14 @@ public interface IUserService {
 	 * @param id
 	 */
 	void saveLoginlog(Long id);
+
+	/**
+	 * 维护激活码和账号的关系
+	 * @param regUUID
+	 * @param phoneNo
+	 * @param action
+	 */
+	void saveActCode(String regUUID, String phoneNo, String action);
 	
 	
 }

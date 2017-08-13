@@ -31,8 +31,7 @@
 </head>
    <body>
 <input id="basePath" type="hidden" value="<c:url value='/'/>"/>
-<input id="efferPhoneNo" type="hidden" value="b61f4c4a5d1444e0"/>
-<input id="validcode" type="hidden" value="45690ea7687c35c3"/>
+<input id="phoneNo" type="hidden" value="${phoneNo}"/>
 	<div class="wrap">
 		<div class="logo_box">
             <img src="<c:url value='/res-qiquan/images/logo.png'/>" alt="">
@@ -42,16 +41,16 @@
         	<!--注册第二步-->
             <form action="" class="form_wrap">
             	<div class="formStyle1">
-	                <div class="form_box form_line clearfix">
-	                	<span class="fl">邮箱：</span>
+					<div class="form_box clearfix">
+	                	<img src="<c:url value='/res-qiquan/images/form_icon1.png'/>" alt="">
 	                    <input type="text" placeholder="请输入邮箱" class="phone_input" id="mailtxt">
-	                </div>
+	                </div>					
 	             </div>
-	
-	                <div class="error_notice">
-	                	<p class="hide" id="error-box">错误提示</p>
-	                </div>
-	                <a href="#" class="btn funcBtn btn_green login_btn" id="nextBtn"><span id="btTxt">提交</span></a>
+				<div class="error_notice">
+					<p class="hide" id="error-box">错误提示</p>
+				</div>
+				<a href="#" class="btn funcBtn btn_green login_btn" id="nextBtn"><span id="btTxt">提交</span></a>
+				
             </form>
         </div>
     </div>
@@ -68,6 +67,27 @@ $(function(){
 		if (!regMail.test(phoneNum)) {
 			flag=false;
 			showTipMsg("邮箱格式不正确,请重新输入");
+		}if else{
+			var param = {};
+			param["mailtxt"] =  $("#mailtxt").val();
+			param["phoneNo"] =  $("#phoneNo").val();
+			param["action"] =  "reg";
+			$.ajax({
+				type : "POST",
+				cache : false,
+				async : false,// 设置异步为false,重要！
+				dataType : "json",
+				url : $("#basePath").val() + "account/checkMail.html",
+				data : param,
+				success : function(data) {
+					if(data.result == 0){
+						flag=true;
+					}else{
+						flag=false;
+						showTipMsg(data.msg)
+					}
+				}
+			});
 		}else{
 			flag=true;
 			showTipMsg("");
@@ -83,6 +103,7 @@ $("#nextBtn").click(function(){
 	
 	var param = {};
 	param["mailtxt"] =  $("#mailtxt").val();
+	param["phoneNo"] =  $("#phoneNo").val();
 	$("#btTxt").html("正在发送邮件验证你的邮箱，请勿重复点击");
 	$.ajax({
 		type : "POST",
@@ -93,7 +114,7 @@ $("#nextBtn").click(function(){
 		data : param,
 		success : function(data) {
 			if(data.result == 0){
-				window.location.href=$("#basePath").val()+"account/reg_step3.html?phoneNo="+data.msg;
+				window.location.href=$("#basePath").val()+"account/reg_step3.html";
 			}else{
 				$("#btTxt").html("提交");
 				showTipMsg(data.msg)

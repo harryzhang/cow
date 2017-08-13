@@ -22,6 +22,7 @@
 		<result property="zhifubao" column="zhifubao" />
 		<result property="userCode" column="userCode" />
 		<result property="openId" column="openId" />
+		<result property="mail" column="mail" />
 	</resultMap>
 
 	
@@ -268,6 +269,9 @@
 			<if test="openId != null">  
 				openId = #{openId},
 			</if>
+			<if test="mail != null">  
+				mail = #{mail},
+			</if>
 			updateTime = NOW(),
 		</trim>
 		WHERE id = #{id}
@@ -350,5 +354,15 @@
 	<update id="saveLoginlog" parameterType="long" >
 	    update t_user set loginDate = now() where id = #{userId}
 	</update>
+	
+	<!-- 账号和激活码的关系 -->
+	<insert id="saveActCode" parameterType="map" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO 
+        t_user_act_code (actCode ,
+        userName , action , createTime 
+        )
+        VALUES ( 
+        #{actCode},#{userName},#{action},now()) 
+    </insert>
 	
 </mapper>

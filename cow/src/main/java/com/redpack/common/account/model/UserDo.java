@@ -65,6 +65,8 @@ public class UserDo implements Serializable {
 	private String userCode;			//用户编码
 	private BigDecimal bonus = BigDecimal.ZERO;                  //积分
 	private String userLocal;
+	
+	private String mail;
 
 	private List<UserDo> children;     //所有下级
 	
@@ -247,6 +249,14 @@ public class UserDo implements Serializable {
 	}
 	public void setOpenId(String openId) {
 		this.openId = openId;
+	}
+	
+	
+	public String getMail() {
+		return mail;
+	}
+	public void setMail(String mail) {
+		this.mail = mail;
 	}
 	@Override
 	public int hashCode() {

@@ -209,7 +209,7 @@ public interface IUserService {
 	 * 记录登录日期
 	 * @param id
 	 */
-	void saveLoginlog(Long id);
+	void saveLoginlog(Long userId,String actionType);
 
 	/**
 	 * 维护激活码和账号的关系
@@ -218,6 +218,14 @@ public interface IUserService {
 	 * @param action
 	 */
 	void saveActCode(String regUUID, String phoneNo, String action);
+
+	/**
+	 * 根据激活码激活账号
+	 * @param actCode 激活码
+	 * @param action  动作 reg, getpassword
+	 *
+	 */
+    String actAccountByMail(String actCode,String action);
 	
 	
 }

@@ -168,7 +168,7 @@ public interface IUserDao {
 	 * 记录登录日期
 	 * @param id
 	 */
-	void saveLoginlog(Long id);
+	void saveLoginlog(Map<String,Object> logMap);
 
 	/**
 	 * 维护激活码和账号的关系
@@ -177,5 +177,17 @@ public interface IUserDao {
 	 * @param action
 	 */
 	void saveActCode(@Param("actCode")String actCode, @Param("userName")String userName, @Param("action")String action);
+
+	/**
+	 * 根据激活码激活账号
+	 *
+	 */
+    Map<String, Object> getActLstByCode(String actCode);
+
+	/**
+	 *失效激活码 
+	 *
+	 */
+    void inValidActStatus(String actCode);
 
 }

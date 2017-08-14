@@ -12,6 +12,7 @@
 package com.redpack.service.account;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -23,6 +24,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import com.redpack.common.account.IUserService;
 import com.redpack.common.account.model.ApplyAgentDo;
@@ -37,6 +39,7 @@ import com.redpack.common.grade.model.GradeFeeDo;
 import com.redpack.common.grade.model.GroupUserDo;
 import com.redpack.common.member.model.KuangjiUserAccountDo;
 import com.redpack.common.sms.ISysSmsService;
+import com.redpack.common.util.DateUtil;
 import com.redpack.common.wallet.model.WalletDo;
 import com.redpack.dao.account.IUserAccountDetailDao;
 import com.redpack.dao.account.IUserAccountIncomeDao;
@@ -625,8 +628,11 @@ public class UserServiceImpl implements IUserService {
 
 
 	@Override
-	public void saveLoginlog(Long id) {
-		userDao.saveLoginlog(id);
+	public void saveLoginlog(Long userId,String actionType) {
+		Map<String,Object> logMap = new HashMap<String,Object>();
+		logMap.put("userId", userId);
+		logMap.put("actionType", actionType);
+		userDao.saveLoginlog(logMap);
 		
 	}
 
@@ -641,5 +647,57 @@ public class UserServiceImpl implements IUserService {
 	public void saveActCode(String regUUID, String phoneNo, String action) {
 		userDao.saveActCode(regUUID, phoneNo, action);		
 	}
+
+
+
+	/**
+	 * 根据激活码激活账号
+	 *
+	 */
+    public String actAccountByMail(String actCode,String action) {
+    	Map<String,Object> actMap = userDao.getActLstByCode(actCode);
+    	if(CollectionUtils.isEmpty(actMap)){
+    		return "无效的激活码";
+    	}
+    	
+    	String  tmpAction = (String)actMap.get("action");
+    	if(!tmpAction.equals(action)){
+    		return "无效的激活码";
+    	}
+    	
+    	Date createDate = (Date)actMap.get("createTime");
+    	Date currDate = new Date();
+    	long diffDay = DateUtil.diffDays(createDate, currDate);
+    	if(diffDay>2){
+    		return "激活码已过期";
+    	}
+    	
+    	Integer status = (Integer)actMap.get("status");
+    	if(status.intValue()  != 1){
+    		return "激活码已失效";
+    	}
+    	
+    	//失效激活码
+    	userDao.inValidActStatus(actCode);
+    	
+    	String  userName = (String)actMap.get("userName");
+    	
+    	Map<String, Object> parameterMap = new HashMap<String,Object>();
+    	parameterMap.put("userName", userName);
+		UserDo user = this.getByUserDo(parameterMap );
+		if(null == user){
+			return "激活码对应的用户不存在";
+		}
+		
+		if("reg".equals(action)){
+			if(user.getStatus().intValue() != 2){
+				return "用户不是待激活状态";
+			}
+			user.setStatus(1);
+			this.updateUser(user);
+		}
+    	
+	    return "成功";
+    }
 		
 }

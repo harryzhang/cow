@@ -35,6 +35,7 @@ import com.redpack.utils.IDCardUtil;
 import com.redpack.utils.IdCardUtils;
 import com.redpack.utils.ResponseUtils;
 import com.redpack.web.view.base.controller.BaseController;
+import com.redpack.web.view.base.controller.ValidCodeUtil;
 
 
 /**
@@ -78,24 +79,19 @@ public class CommonController extends BaseController{
 		g.setFont(new Font("Arial", Font.CENTER_BASELINE | Font.ITALIC, 18));
 		// 产生0条干扰线，
 		g.drawLine(0, 0, 0, 0);
-		// 取随机产生的认证码(4位数字)
-		String sRand = "";
-		for (int i = 0; i < 4; i++) {
-			String rand = String.valueOf(random.nextInt(10));
-			sRand += rand;
+		// 取随机产生的认证码(4位数字) 将验证码存入页面KEY值的SESSION里面
+		String sRand = ValidCodeUtil.putValidcode(request);
+		for (int i = 0; i < sRand.length(); i++) {
+			char rand = sRand.charAt(i);
 			// 将认证码显示到图象中
 			g.setColor(getRandColor(100, 150));// 调用函数出来的颜色相同，可能是因为种子太接近，所以只能直接生成
-			g.drawString(rand, 15 * i + 6, 16);
+			g.drawString(String.valueOf(rand), 15 * i + 6, 16);
 		}
 		  for(int i=0;i<(random.nextInt(5)+5);i++){  
 		        g.setColor(new Color(random.nextInt(255)+1,random.nextInt(255)+1,random.nextInt(255)+1));  
 		        g.drawLine(random.nextInt(100),random.nextInt(30),random.nextInt(100),random.nextInt(30));  
 		}
-		String pageId = request.getParameter("pageId");
-		String key = pageId + "_checkCode";
-		// 将验证码存入页面KEY值的SESSION里面
-		request.getSession().setAttribute(key, sRand);
-		request.getSession().setAttribute("keys", sRand);
+		
 		// 图象生效
 		g.dispose();
 		ServletOutputStream responseOutputStream = response.getOutputStream();

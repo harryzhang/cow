@@ -351,18 +351,28 @@
     	update t_user_agent_apply  set status =#{status},approvTime = NOW() where id = #{id}
     </update>
     
-	<update id="saveLoginlog" parameterType="long" >
-	    update t_user set loginDate = now() where id = #{userId}
+	<update id="saveLoginlog" parameterType="Map" >
+	    insert into t_user_login_log(userid, actionType, createTime) values(#{userId},#{actionType},now())
 	</update>
 	
 	<!-- 账号和激活码的关系 -->
 	<insert id="saveActCode" parameterType="map" keyProperty="id" useGeneratedKeys="true">
         INSERT INTO 
         t_user_act_code (actCode ,
-        userName , action , createTime 
+        userName , action , status,createTime 
         )
         VALUES ( 
-        #{actCode},#{userName},#{action},now()) 
+        #{actCode},#{userName},#{action},1,now()) 
     </insert>
+	
+	<select id="getActLstByCode" parameterType="String" resultType="Map">
+		SELECT   * 
+		 FROM t_user_act_code where actCode = #{actCode}
+	</select>
+	
+	<update id="inValidActStatus" parameterType="String" >
+	    update t_user_act_code set status = 0  where actCode = #{actCode}
+	</update>
+	
 	
 </mapper>

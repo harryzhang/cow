@@ -89,10 +89,6 @@ public class LoginController extends BaseController {
 		String password = request.getParameter("password");
 		String code = request.getParameter("code");
 		
-		//微信openId
-		//String openId = request.getParameter("openId");
-		//String openId = (String)request.getSession().getAttribute("openId");
-		//logger.debug(loginInfo+"  login  his  openId============================"+openId);
 		
 		// 输入用户名密码
 		if (StringUtils.isBlank(loginInfo) || StringUtils.isBlank(password)) {
@@ -120,6 +116,8 @@ public class LoginController extends BaseController {
 			ResponseUtils.renderText(response, null, jsonObject.toString());
 			return;
 		}
+		
+				
 		UserInfoDo userInfoDo = userInfoService.getByUserId(loginUser.getId());
 		loginUser.setUserInfoDo(userInfoDo);
 		
@@ -136,16 +134,7 @@ public class LoginController extends BaseController {
 		String userLocal =request.getParameter("userLocal");
 		loginUser.setUserLocal(userLocal);
 		
-		
-		//检查个人资料是否完善
-		/*
-		UserInfoDo userInfo = userInfoService.getByUserId(loginUser.getId());
-		if(null == userInfo || StringUtils.isBlank(userInfo.getWeixiNumber())  ){
-			jsonObject.put("result", 4);
-		}
-		*/
-		
-		userService.saveLoginlog(loginUser.getId());
+		userService.saveLoginlog(loginUser.getId(),"login");
 		
 		// 登陆成功
 		ResponseUtils.renderText(response, "UTF-8", jsonObject.toString());

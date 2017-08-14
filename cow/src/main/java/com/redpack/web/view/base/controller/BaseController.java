@@ -34,17 +34,17 @@ import com.redpack.utils.CommonUtils;
 public class BaseController {
 	
 	protected String  getLocalPath(HttpServletRequest request,String path) {
-		UserDo currentUser = (UserDo)  request.getSession().getAttribute(WebConstants.SESSION_USER);
-		if( null != currentUser){
-			String userLocal = currentUser.getUserLocal();
-			if("en".equals(userLocal)){
-				if(path.startsWith("/")){
-					path = "/page_en" + path;
-				}else{
-					path = "page_en/" + path;
-				}
-			}
-		}
+//		UserDo currentUser = (UserDo)  request.getSession().getAttribute(WebConstants.SESSION_USER);
+//		if( null != currentUser){
+//			String userLocal = currentUser.getUserLocal();
+//			if("en".equals(userLocal)){
+//				if(path.startsWith("/")){
+//					path = "/page_en" + path;
+//				}else{
+//					path = "page_en/" + path;
+//				}
+//			}
+//		}
 		
 		return path;
 	}

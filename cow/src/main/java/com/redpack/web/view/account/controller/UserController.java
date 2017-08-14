@@ -46,6 +46,8 @@ import com.redpack.service.mail.INotifyComponent;
 import com.redpack.service.mail.NotifyDo;
 import com.redpack.utils.ResponseUtils;
 import com.redpack.web.view.base.controller.BaseController;
+import com.redpack.web.view.base.controller.TokenUtil;
+import com.redpack.web.view.base.controller.ValidCodeUtil;
 
 /**
  * 
@@ -443,25 +445,29 @@ public class UserController extends BaseController{
 			String mobilePhone = request.getParameter("username");
 			String pwd =  request.getParameter("password");
 			String referenceId =  request.getParameter("refferee");
-			String mobileCode =  request.getParameter("code");
 			
-			/*
-			Object vc = request.getSession().getAttribute(mobilePhone);
-			String verifyCode=null;
-			if(vc !=null){
-				verifyCode= String.valueOf(vc);
+			if(ValidCodeUtil.checkValidcode(request)){
+				jsonObject.put("result", "1");
+				jsonObject.put("msg", "验证码不正确");
+				ResponseUtils.renderText(response, "UTF-8", JSONObject.fromObject(jsonObject).toString());
+				return;
 			}
 			
-			String ifSend = paramService.getByName(WebConstants.IF_SEND_MESSAGE);
-			if(StringUtils.isNotBlank(ifSend) && "1".equals(ifSend)){
-				if(!mobileCode.equals(verifyCode) ){
-					logger.info("手机号:"+mobilePhone+"验证码失败 session verifycode:"+verifyCode+" 参数："+mobileCode);
-					jsonObject.put("result", "手机验证码有误");
-					ResponseUtils.renderText(response, "UTF-8", JSONObject.fromObject(jsonObject).toString());
-					return;
-				}
+
+			if (StringUtils.isBlank(mobilePhone)) {
+				jsonObject.put("result", "1");
+				jsonObject.put("msg", "请输入账号");
+				ResponseUtils.renderText(response, "UTF-8", JSONObject.fromObject(jsonObject).toString());
+				return;
 			}
-			*/
+			
+			if (StringUtils.isBlank(referenceId)) {
+				jsonObject.put("result", "1");
+				jsonObject.put("msg", "请输入推荐人账号");
+				ResponseUtils.renderText(response, "UTF-8", JSONObject.fromObject(jsonObject).toString());
+				return;
+			}
+			
 			
 			Map<String, Object> parameterMap = new HashMap<String, Object>();
 			parameterMap.put("userName", mobilePhone);
@@ -474,33 +480,8 @@ public class UserController extends BaseController{
 				ResponseUtils.renderText(response, "UTF-8", JSONObject.fromObject(jsonObject).toString());
 				return;
 			}
-//			if (StringUtils.isBlank(name)) {
-//				jsonObject.put("result", "请输入昵称");
-//				ResponseUtils.renderText(response, "UTF-8", JSONObject.fromObject(jsonObject).toString());
-//				return;
-//			}
-			if (StringUtils.isBlank(mobilePhone)) {
-				jsonObject.put("result", "1");
-				jsonObject.put("msg", "请输入账号");
-				ResponseUtils.renderText(response, "UTF-8", JSONObject.fromObject(jsonObject).toString());
-				return;
-			}
-			if (StringUtils.isBlank(referenceId)) {
-				jsonObject.put("result", "1");
-				jsonObject.put("msg", "请输入推荐人账号");
-				ResponseUtils.renderText(response, "UTF-8", JSONObject.fromObject(jsonObject).toString());
-				return;
-			}
-			
-//			if (StringUtils.isBlank(passwordTwo)) {
-//				jsonObject.put("result", "1");
-//				jsonObject.put("msg", "请输入二级密码");
-//				ResponseUtils.renderText(response, "UTF-8", JSONObject.fromObject(jsonObject).toString());
-//				return;
-//			}
-//			
+
 			//根据推荐人的手机号码查找推荐人
-			//parameterMap.put("mobile", referenceId);
 			parameterMap.clear();
 			parameterMap.put("userName", referenceId);
 			parameterMap.put("status", "1");
@@ -513,7 +494,6 @@ public class UserController extends BaseController{
 			}
 			
 			String pwdMd5 =DigestUtils.md5Hex(pwd + WebConstants.PASS_KEY);
-//			String pwdTwoMd5 =DigestUtils.md5Hex(passwordTwo + WebConstants.PASS_KEY);
 			UserDo userDo =new UserDo();
 			userDo.setCreateUser(-1L);                 //当前用户是记录创建者
 			userDo.setUserName(mobilePhone);
@@ -528,14 +508,10 @@ public class UserController extends BaseController{
 			userDo.setRemark(activeNum);
 			userDo.setReferrerId(refUser.getId());				//推荐人ID
 			userDo.setParentId(0l);	
-			userDo.setStatus(1);//接点人ID
+			userDo.setStatus(2);//    未激活
 			userDo.setTreeNode("");								//业务方向
-//			userDo.setName(name);
-//			userDo.setTwoLevelPwd(pwdTwoMd5);               //二级密码
 			UserInfoDo userInfoDo = new UserInfoDo();
-//			userInfoDo.setRealName(name);
 			userInfoDo.setMobile(mobilePhone);
-
 			userDo.setCreateTime(new Date());
 			userDo.setUserInfoDo(userInfoDo);
 			
@@ -592,28 +568,49 @@ public class UserController extends BaseController{
 		
 		String mailtxt = request.getParameter("mailtxt");
 		String phoneNo = request.getParameter("phoneNo");
-		UUID uuid = UUID.randomUUID();
 		String regUUID = UUID.randomUUID().toString().replaceAll("-", "");
+		JSONObject jsonObject = new JSONObject();
 		
+		if(StringUtils.isBlank(mailtxt)){
+			jsonObject.put("result", 1);
+			jsonObject.put("msg", "无效的邮箱地址");
+			ResponseUtils.renderText(response, "UTF-8", jsonObject.toString());
+			return;
+		}
+		
+		if(StringUtils.isBlank(phoneNo)){
+			jsonObject.put("result", 1);
+			jsonObject.put("msg", "无效的账号");
+			ResponseUtils.renderText(response, "UTF-8", jsonObject.toString());
+			return;
+		}
 		
 		Map<String, Object> parameterMap = new HashMap<String, Object>();
 		parameterMap.put("userName", phoneNo);
 		UserDo temp = userService.getByUserDo(parameterMap);
 		if(null == temp){
-			JSONObject jsonObject = new JSONObject();
 			jsonObject.put("result", 1);
 			jsonObject.put("msg", "账号不存在");
+			ResponseUtils.renderText(response, "UTF-8", jsonObject.toString());
+			return;
+		}
+		
+		parameterMap.clear();
+		parameterMap.put("mail", mailtxt);
+		temp = userService.getByUserDo(parameterMap);
+		if(null != temp && !phoneNo.equals(temp.getUserName())){
+			jsonObject.put("result", 1);
+			jsonObject.put("msg", "邮箱已被注册存在");
 			ResponseUtils.renderText(response, "UTF-8", jsonObject.toString());
 			return;
 		}
 		temp.setMail(mailtxt);
 		userService.updateUser(temp);
 		
-		NotifyDo notifyDo = new NotifyDo("注册激活通知","请点击下面链接激活账号： http://localhost:8080/account/actAccountByMail.html?actCode="+regUUID,mailtxt);
+		NotifyDo notifyDo = new NotifyDo("注册激活通知","请点击下面链接激活账号： http://localhost:8080/account/actAccountByMail.html?actAction=reg&&actCode="+regUUID,mailtxt);
 		mailService.send(notifyDo );
 		userService.saveActCode(regUUID,phoneNo,"reg");
 		
-		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("result", 0);
 		jsonObject.put("msg", phoneNo);
 		ResponseUtils.renderText(response, "UTF-8", jsonObject.toString());
@@ -632,6 +629,41 @@ public class UserController extends BaseController{
 		
 		String view = getLocalPath(request,"redPack/reg_suc");
 		logger.info("----注册用户跳转页面----");
+		
+		return view;
+	}
+	
+	
+	/**
+	 * 通过邮箱激活
+	 * 
+	 * @return
+	 */
+	@RequestMapping("actAccountByMail")
+	public String actAccountByMail(HttpServletRequest request,
+			                 HttpServletResponse response,
+			                 Model model) {
+		
+		String actCode = request.getParameter("actCode");
+		String actAction = request.getParameter("actAction");
+		String view= "redPack/act_suc";
+		if(StringUtils.isBlank(actCode)){
+			model.addAttribute("msg", "无效的激活码");
+			return view;
+		}
+		
+		if(StringUtils.isBlank(actAction)){
+			model.addAttribute("msg", "无效参数");
+			return view;
+		}
+		
+		String msg = userService.actAccountByMail(actCode,actAction);
+		model.addAttribute("msg", msg);
+		
+		if("forgetpassword".equals(actAction) && "成功".equals(msg)){
+			TokenUtil.putToken(request, "forgetpassword");
+			return "";
+		}
 		
 		return view;
 	}
@@ -691,7 +723,7 @@ public class UserController extends BaseController{
 			parameterMap.put("mail", mailtxt);
 			UserDo temp = userService.getByUserDo(parameterMap);
 			
-			if(temp!=null&&temp.getId()!=null){
+			if(temp!=null && !temp.getUserName().equals(phoneNo)){
 				jsonObject.put("result", 1);
 				jsonObject.put("msg", "邮箱已存在");
 			}else{

@@ -1,0 +1,7 @@
+create table       t_user_act_code (id int, actCode  varchar(50),
+        userName varchar(50) , `action` varchar(20)  , `status` int ,createTime date);
+        
+      create table     t_user_login_log( userid bigint, actionType varchar(20),  createTime date );
+
+      
+ALTER TABLE  t_user ADD (mail varchar(50));

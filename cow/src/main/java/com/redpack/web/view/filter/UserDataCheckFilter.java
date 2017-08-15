@@ -71,17 +71,19 @@ public class UserDataCheckFilter  extends OncePerRequestFilter {
         
         //未激活，跳转去激活页面
         UserDo  user = (UserDo)session.getAttribute(WebConstants.SESSION_USER);
-        if(user.getStatus().intValue() == 2){
-        	String toUrl = getActiveUrl(req,user.getUserName(),user.getMail());
-        	resp.sendRedirect(toUrl.toString());
-        	return;
-        }
-        
-        //未完善资料，去完善资料
-        if(StringUtils.isBlank(user.getName()) || StringUtils.isBlank(user.getTwoLevelPwd())){
-        	String toUrl = getFinishDataUrl(req);
-        	resp.sendRedirect(toUrl.toString());
-        	return;
+        if(user != null){
+        	if(user.getStatus().intValue() == 2){
+            	String toUrl = getActiveUrl(req,user.getUserName(),user.getMail());
+            	resp.sendRedirect(toUrl.toString());
+            	return;
+            }
+            
+            //未完善资料，去完善资料
+            if(StringUtils.isBlank(user.getName()) || StringUtils.isBlank(user.getTwoLevelPwd())){
+            	String toUrl = getFinishDataUrl(req);
+            	resp.sendRedirect(toUrl.toString());
+            	return;
+            }
         }
     	chain.doFilter(request, response);
     }
@@ -109,7 +111,7 @@ public class UserDataCheckFilter  extends OncePerRequestFilter {
 	private String getActiveUrl(HttpServletRequest req,String userName,String mail){
 		 StringBuilder toUrl = new StringBuilder();
 		 String serverAddress = this.getServerAddress(req);
-	     toUrl.append(serverAddress).append("account/reg_step2.html?phoneNo=").append(userName);
+	     toUrl.append(serverAddress).append("/account/reg_step2.html?phoneNo=").append(userName);
 	     if(StringUtils.isNotBlank(mail)){
 	    	 toUrl.append("&mail=").append(mail);
 	     }

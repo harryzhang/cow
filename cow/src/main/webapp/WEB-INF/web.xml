@@ -71,6 +71,15 @@
 		<url-pattern>*.html</url-pattern>
 	</filter-mapping>
 	
+	<filter>
+		<filter-name>userDataCheckFilter</filter-name>
+		<filter-class>com.redpack.web.view.filter.UserDataCheckFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>userDataCheckFilter</filter-name>
+		<url-pattern>*.html</url-pattern>
+	</filter-mapping>
+	
 	<!-- 利用tomcat默认servlet处理静态文件和资源 -->
 	<servlet-mapping>
 		<servlet-name>default</servlet-name>

@@ -129,6 +129,9 @@
 			<if test="openId != null">  
 				AND openId = #{openId}
 			</if>
+			<if test="mail != null">  
+				AND mail = #{mail}
+			</if>
 	 	</trim>
 	</select>
 	

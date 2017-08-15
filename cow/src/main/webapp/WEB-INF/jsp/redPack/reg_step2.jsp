@@ -31,7 +31,7 @@
 </head>
    <body>
 <input id="basePath" type="hidden" value="<c:url value='/'/>"/>
-<input id="phoneNo" type="hidden" value="${phoneNo}"/>
+<input id="phoneNo" type="hidden" value="${username}"/>
 	<div class="wrap">
 		<div class="logo_box">
             <img src="<c:url value='/res-qiquan/images/logo.png'/>" alt="">
@@ -67,7 +67,7 @@ $(function(){
 		if (!regMail.test(phoneNum)) {
 			flag=false;
 			showTipMsg("邮箱格式不正确,请重新输入");
-		}if else{
+		}else{
 			var param = {};
 			param["mailtxt"] =  $("#mailtxt").val();
 			param["phoneNo"] =  $("#phoneNo").val();
@@ -88,9 +88,6 @@ $(function(){
 					}
 				}
 			});
-		}else{
-			flag=true;
-			showTipMsg("");
 		}
 	});
 	
@@ -104,6 +101,7 @@ $("#nextBtn").click(function(){
 	var param = {};
 	param["mailtxt"] =  $("#mailtxt").val();
 	param["phoneNo"] =  $("#phoneNo").val();
+	param["action"] =  "reg";
 	$("#btTxt").html("正在发送邮件验证你的邮箱，请勿重复点击");
 	$.ajax({
 		type : "POST",

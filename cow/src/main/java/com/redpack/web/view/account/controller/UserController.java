@@ -593,8 +593,8 @@ public class UserController extends BaseController{
 		
 		Map<String, Object> parameterMap = new HashMap<String, Object>();
 		parameterMap.put("userName", phoneNo);
-		UserDo temp = userService.getByUserDo(parameterMap);
-		if(null == temp){
+		UserDo temp1 = userService.getByUserDo(parameterMap);
+		if(null == temp1){
 			jsonObject.put("result", 1);
 			jsonObject.put("msg", "账号不存在");
 			ResponseUtils.renderText(response, "UTF-8", jsonObject.toString());
@@ -603,23 +603,39 @@ public class UserController extends BaseController{
 		
 		parameterMap.clear();
 		parameterMap.put("mail", mailtxt);
-		temp = userService.getByUserDo(parameterMap);
+		UserDo temp = userService.getByUserDo(parameterMap);
 		if(null != temp && !phoneNo.equals(temp.getUserName())){
 			jsonObject.put("result", 1);
 			jsonObject.put("msg", "邮箱已被注册存在");
 			ResponseUtils.renderText(response, "UTF-8", jsonObject.toString());
 			return;
 		}
-		temp.setMail(mailtxt);
-		userService.updateUser(temp);
+		temp1.setMail(mailtxt);
+		userService.updateUser(temp1);
 		
-		NotifyDo notifyDo = new NotifyDo("注册激活通知","请点击下面链接激活账号： http://localhost:8080/account/actAccountByMail.html?actAction=reg&&actCode="+regUUID,mailtxt);
+		String serverAddr=getServerAddress(request);
+		NotifyDo notifyDo = new NotifyDo("注册激活通知","请点击下面链接激活账号："+serverAddr+"/account/actAccountByMail.html?actAction=reg&&actCode="+regUUID,mailtxt);
 		mailService.send(notifyDo );
 		userService.saveActCode(regUUID,phoneNo,"reg");
 		
 		jsonObject.put("result", 0);
 		jsonObject.put("msg", phoneNo);
 		ResponseUtils.renderText(response, "UTF-8", jsonObject.toString());
+	}
+	
+	/**
+	 * 
+	 * 本应用的地址
+	 *
+	 */
+	private String getServerAddress(HttpServletRequest req){
+		StringBuilder severAddress = new StringBuilder();
+		severAddress.append(req.getScheme()).append("://").append(req.getServerName());
+		int port = req.getServerPort();
+		if(80 != port){
+			severAddress.append(":").append( req.getServerPort());
+		}
+		return severAddress.toString();
 	}
 		
 	/**
@@ -723,7 +739,7 @@ public class UserController extends BaseController{
 		
 		JSONObject jsonObject = new JSONObject();
 		
-		if("req".equals(action)){
+		if("reg".equals(action)){
 		
 			Map<String, Object> parameterMap = new HashMap<String, Object>();
 			parameterMap.put("mail", mailtxt);

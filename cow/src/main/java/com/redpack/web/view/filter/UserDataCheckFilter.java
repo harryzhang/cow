@@ -34,7 +34,6 @@ public class UserDataCheckFilter  extends OncePerRequestFilter {
     
     Logger logger = Logger.getLogger(this.getClass());
     
-    
 	@Override
 	protected void initFilterBean() throws ServletException {
 		super.initFilterBean();
@@ -69,48 +68,65 @@ public class UserDataCheckFilter  extends OncePerRequestFilter {
         HttpSession session = req.getSession();
         String contextPath = session.getServletContext().getContextPath();
         
-        boolean isOKFlag = false; //是否放行通过标记
         
-        //已登录不拦截
+        //未激活，跳转去激活页面
         UserDo  user = (UserDo)session.getAttribute(WebConstants.SESSION_USER);
+        if(user.getStatus().intValue() == 2){
+        	String toUrl = getActiveUrl(req,user.getUserName(),user.getMail());
+        	resp.sendRedirect(toUrl.toString());
+        	return;
+        }
         
-      //get fromurl
-    	StringBuilder severAddress = new StringBuilder();
+        //未完善资料，去完善资料
+        if(StringUtils.isBlank(user.getName()) || StringUtils.isBlank(user.getTwoLevelPwd())){
+        	String toUrl = getFinishDataUrl(req);
+        	resp.sendRedirect(toUrl.toString());
+        	return;
+        }
+    	chain.doFilter(request, response);
+    }
+	
+	/**
+	 * 
+	 * 本应用的地址
+	 *
+	 */
+	private String getServerAddress(HttpServletRequest req){
+		StringBuilder severAddress = new StringBuilder();
 		severAddress.append(req.getScheme()).append("://").append(req.getServerName());
 		int port = req.getServerPort();
 		if(80 != port){
 			severAddress.append(":").append( req.getServerPort());
 		}
-    	String fromUrl=severAddress.toString()+uri;
-    	String queryParams = req.getQueryString();
-    	if(StringUtils.isNotBlank(queryParams)){
-    		fromUrl = fromUrl+"?"+ queryParams;
-    	}
-    	
-    	String requestType = req.getHeader("X-Requested-With"); 
-    	if (requestType != null && requestType.equals("XMLHttpRequest")) {
-	        JSONObject json = new JSONObject();  
-	        json.put("resultCode", "-1");  
-	        json.put("fromUrl", fromUrl);  
-	        PrintWriter pw = response.getWriter();  
-	        pw.print(json.toString());  
-	        pw.close();  
-    	}else{
-    		StringBuilder loginUrl = new StringBuilder();
-    		loginUrl.append(severAddress+"/login/index.html").append("?fromUrl=");
-    		//加refer 地址， 从哪个页面过来的
-    		loginUrl.append(URLEncoder.encode(fromUrl,"utf-8"));
-        	resp.sendRedirect(loginUrl.toString());
-    	}
-    	
-        
-        if(isOKFlag){
-        	chain.doFilter(request, response);
-        }else{//提示登录
-        	
-        	
-        }
-    }
+		return severAddress.toString();
+	}
+	
+	/**
+	 * 
+	 * 发邮件激活地址
+	 *
+	 */
+	private String getActiveUrl(HttpServletRequest req,String userName,String mail){
+		 StringBuilder toUrl = new StringBuilder();
+		 String serverAddress = this.getServerAddress(req);
+	     toUrl.append(serverAddress).append("account/reg_step2.html?phoneNo=").append(userName);
+	     if(StringUtils.isNotBlank(mail)){
+	    	 toUrl.append("&mail=").append(mail);
+	     }
+	     return toUrl.toString();
+	}
+	
+	/**
+	 * 
+	 * 完善资料地址
+	 *
+	 */
+	private String getFinishDataUrl(HttpServletRequest req){
+		StringBuilder toUrl = new StringBuilder();
+		String serverAddress = this.getServerAddress(req);
+		toUrl.append(serverAddress).append("/account/reg_step2.html");
+		return toUrl.toString();
+	}
 
 
 }

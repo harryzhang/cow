@@ -43,7 +43,7 @@
             	<div class="formStyle1">
 					<div class="form_box clearfix">
 	                	<img src="<c:url value='/res-qiquan/images/form_icon1.png'/>" alt="">
-	                    <input type="text" placeholder="请输入邮箱" class="phone_input" id="mailtxt">
+	                    <input type="text" placeholder="请输入邮箱" class="phone_input" id="mailtxt" value="${mail}">
 	                </div>					
 	             </div>
 				<div class="error_notice">

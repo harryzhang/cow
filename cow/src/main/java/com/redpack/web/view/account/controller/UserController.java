@@ -547,7 +547,13 @@ public class UserController extends BaseController{
 		
 		//登录账号
 		String userName = request.getParameter("phoneNo");
+		String mail = request.getParameter("mail");
 		model.addAttribute("username",userName);
+		if(StringUtils.isNotBlank(mail)){
+			model.addAttribute("mail",mail);
+		}else{
+			model.addAttribute("mail","");
+		}
 		
 		logger.info("----注册用户第二个页面----");
 		

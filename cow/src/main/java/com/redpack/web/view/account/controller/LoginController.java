@@ -135,6 +135,8 @@ public class LoginController extends BaseController {
 		loginUser.setUserLocal(userLocal);
 		
 		userService.saveLoginlog(loginUser.getId(),"login");
+		String afterUrl = LoginCheckUtil.getUrlAfterLogin(request, loginUser);
+		jsonObject.put("afterUrl", afterUrl);
 		
 		// 登陆成功
 		ResponseUtils.renderText(response, "UTF-8", jsonObject.toString());

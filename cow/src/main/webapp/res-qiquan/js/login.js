@@ -63,7 +63,8 @@ function login() {
                     	window.location.href = $("#referer").val();
                     //默认首页	
                     }else{
-                    	window.location.href = basePath+"login/main.html";//先跳转产品列表页面
+                    	//window.location.href = basePath+"login/main.html";//先跳转产品列表页面
+                    	window.location.href =  data.afterUrl;
                     }
 				} else{
 					$('#btn_login').val('登录');

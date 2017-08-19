@@ -30,6 +30,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -71,109 +72,109 @@ public class UserController extends BaseController{
 	@Autowired	
     private IParamService  paramService;
 
+	/**********************************start 忘记密码************************************************/
 
 	/**
-	 * 重置密码跳转页面
-	 * 
-	 * @return
-	 * @author: huangzl
-	 * @date 2015年8月2日 22:45:08
-	 */
-	@RequestMapping("resetPwdIndex")
-	public String resetPwdIndex(String pwdFlag,Model model,HttpServletRequest request) {
-		logger.info("----重置密码跳转页面----");
-		model.addAttribute("pwdFlag", pwdFlag);
-		
-		String pwdType = request.getParameter("pwdType");
-		if(StringUtils.isNotBlank(pwdType)){
-			model.addAttribute("pwdType", pwdType);
-		}
-		model.addAttribute("pwdFlag", pwdFlag);
-		return "login/restPassword";
-	}
-	
-	
-	/**
-	 * 重置密码跳转页面
+	 * 忘记密码第一步
 	 * 
 	 * @return
 	 * @author: huangzl
 	 * @date 2015年8月2日 22:45:08
 	 */
 	@RequestMapping("forgetPwd1")
-	public void forgetPwd1(String pwdFlag,Model model,HttpServletRequest request,HttpServletResponse response) {
-		String phoneNo = request.getParameter("phoneNo");
-		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("result", 0);
-		jsonObject.put("msg", phoneNo);
-		ResponseUtils.renderText(response, "UTF-8", jsonObject.toString());
+	public String forgetPwd1(String pwdFlag,Model model,HttpServletRequest request) {
+		logger.info("----重置密码跳转页面----");
+		return "user/forgetPwd1";
 	}
 	
 	
 	/**
-	 * 重置密码跳转页面
+	 * 忘记密码第二步
 	 * 
 	 * @return
 	 * @author: huangzl
 	 * @date 2015年8月2日 22:45:08
 	 */
-	@RequestMapping("forgetPwd2Index")
-	public String forgetPwd2Index(String pwdFlag,Model model,HttpServletRequest request) {
+	@RequestMapping("saveForgetPwd1")
+	public void saveForgetPwd1(String pwdFlag,Model model,HttpServletRequest request,HttpServletResponse response) {
+		JSONObject jsonObject = new JSONObject();
 		
-		return "login/forgetPwd2Index";
+		String phoneNo = request.getParameter("username");
+		try{
+			if(ValidCodeUtil.checkValidcode(request)){
+				jsonObject.put("msg","无效的验证码");
+				return;
+			}
+			
+			String mail = request.getParameter("mail");
+			
+			sendActMail(request, mail, phoneNo,"forgetpassword","找回密码");
+			
+			jsonObject.put("result", 0);
+		
+		}catch(Exception e){
+			jsonObject.put("msg", e.getMessage());
+		}finally{
+			ResponseUtils.renderText(response, "UTF-8", jsonObject.toString());
+		}
 	}
 	
-	/**
-	 * 用户信息修改查看
-	 * 
-	 */
-	@RequestMapping("updateUserInfoView")
-	public String updateUserInfoView(String pwdFlag,Model model) {
-		logger.info("----更新用户信息跳转页面----");
-		return "redPack/updateUserInfo";
-	}
 	
+
 	/**
 	 * 修改密码
-	 * @param pwdFlag
 	 * @param model
 	 * @return
 	 */
 	@RequestMapping("confirmPassword")
-	public void confirmPassword(String password,String newPassword,Model model, 
-			HttpSession session,HttpServletResponse response) {
-		/*
+	public void confirmPassword(HttpServletRequest request,HttpServletResponse response,Model model) {
+		
 		logger.info("----修改密码----");
-		UserDo user = (UserDo) session.getAttribute(WebConstants.SESSION_USER);
-		user=userService.getById(user.getId());
-		session.setAttribute(WebConstants.SESSION_USER, user);
 		JSONObject jsonObject = new JSONObject();
 		
-		if(user == null){
-			jsonObject.put("result", 5); //账号有误或者会话信息超时
+		try{
+			if(TokenUtil.checkToken(request, "forgetpassword")==false){
+				jsonObject.put("msg","无效的token");
+				return;
+			}
+			
+			UserDo user = (UserDo) request.getSession().getAttribute(WebConstants.SESSION_USER);
+			user=userService.getById(user.getId());
+			if(user == null){
+				jsonObject.put("msg", "账号有误或者会话信息超时"); //账号有误或者会话信息超时
+				return;
+			}
+			
+			String newPassword = request.getParameter("password");
+			if(StringUtils.isBlank(newPassword)){
+				jsonObject.put("msg", "密码不能为空"); 
+				return;
+			}
+			
+			String newPass =DigestUtils.md5Hex(newPassword + WebConstants.PASS_KEY);
+			UserDo tempSave =new UserDo();
+			tempSave.setId(user.getId());
+			tempSave.setPassword(newPass);
+			
+			userService.updateUser(tempSave);//修改登录密码
+			jsonObject.put("result", 0);
+			
+		}catch(Exception e){
+			jsonObject.put("msg", e.getMessage());
+		}finally{
+			String newToken = TokenUtil.putToken(request, "forgetpassword");
+			jsonObject.put("token", newToken);
 			ResponseUtils.renderText(response, "UTF-8", jsonObject.toString());
-			return;
-		}
-		String oldPass = DigestUtils.md5Hex(password + WebConstants.PASS_KEY);
-		String newPass =DigestUtils.md5Hex(newPassword + WebConstants.PASS_KEY);
-		if(oldPass != user.getPassword()){
-			jsonObject.put("result", 6); //账号密码有误
-			ResponseUtils.renderText(response, "UTF-8", jsonObject.toString());
-			return;
 		}
 		
-		int result = 0;
-		UserDo tempSave =new UserDo();
 		
-		tempSave.setId(user.getId());
-		tempSave.setPassword(newPass);
-		result = userService.updateUser(tempSave);//修改登录密码
-		ResponseUtils.renderText(response, "UTF-8", jsonObject.toString());
-		*/
-		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("result", 0);
-		ResponseUtils.renderText(response, "UTF-8", jsonObject.toString());
 	}
+	/**********************************end 忘记密码************************************************/
+	
+
+	
+	
+	/********************************** start 登录后修改密码************************************************/
 	
 	/**
 	 * 重置密码跳转页面
@@ -183,245 +184,108 @@ public class UserController extends BaseController{
 	 * @date 2015年8月2日 22:45:08
 	 */
 	@RequestMapping("modifyPassword")
-	public String account(String pwdFlag,Model model) {
+	public String modifyPassword(HttpServletRequest request,Model model) {
 		logger.info("----修改密码跳转页面----");
-		model.addAttribute("pwdFlag", pwdFlag);
-		return "login/modifyPwd";
+		String pwdType = request.getParameter("pwdType");
+		if(StringUtils.isBlank(pwdType)){
+			pwdType="loginPwd";
+		}
+		model.addAttribute("pwdType", pwdType);
+		return "user/modifyPassword";
 	}
 
-	/**
-	 * 支付密码修改成功
-	 */
-    @RequestMapping(value = "resetPaySucc")
-    public String resetPaySucc(){
-    	return "login/resetSucc";
-    }
+	
     /**
-     * @Description 密码重置
-     * @author huangzl QQ: 272950754
-     * @date 2015-8-7 下午09:41:54
-     * @Project redpack-web
-     * @Package com.redpack.web.view.account.controller
+     * @Description 登录后修改， 输入二级密码才可以修改
      * @File UserController.java
      * @param request
      * @param response
      * @param session
     */
-    @RequestMapping(value = "updateLoginPwd")
-    public void updateLoginPwd(HttpServletRequest request,HttpServletResponse response, HttpSession session){
-    	logger.info("----密码重置----");
-     	String pwdFlag = request.getParameter("pwdFlag");
+    @RequestMapping(value = "updatePwd")
+    public void updatePwd(HttpServletRequest request,HttpServletResponse response, HttpSession session){
+    	logger.info("---- 登录后修改----");
+     	
     	JSONObject jsonObject = new JSONObject();
-    	String password = request.getParameter("pwd");
-		String confirmPass = request.getParameter("confirmPwd");
-		if(StringUtils.isBlank(password)){
-			 jsonObject.put("result", 1);
-			 ResponseUtils.renderText(response, "UTF-8", jsonObject.toString());
-			 return;
-		}
-		 if(password.length()<6 || password.length()>20){
-			 jsonObject.put("result", 1);
-			 ResponseUtils.renderText(response, "UTF-8", jsonObject.toString());
-			 return;
-		 }
-		 if(!password.endsWith(confirmPass)){
-			 jsonObject.put("result", 2);
-			 ResponseUtils.renderText(response, "UTF-8", jsonObject.toString());
-			 return;
-		}
-		//userId
-		UserDo user = (UserDo) session.getAttribute(WebConstants.SESSION_USER);
-		user=userService.getById(user.getId());
-		session.setAttribute(WebConstants.SESSION_USER, user);
+    	String password = request.getParameter("password");
+    	String twoPassword = request.getParameter("twoPassword");
+    	
 		try{
+			
+			if(StringUtils.isBlank(password)){
+				 jsonObject.put("msg", "新密码不能为空");
+				 return;
+			}
+			
+			if(password.length()<6 || password.length()>20){
+				 jsonObject.put("msg", "新密码长度不够");
+				 return;
+			 }
+			
+			if(StringUtils.isBlank(twoPassword)){
+				 jsonObject.put("msg", "二级密码不能为空");
+				 return;
+			}
+			
+			//userId
+			UserDo user = (UserDo) session.getAttribute(WebConstants.SESSION_USER);
 			if(user == null){
-				jsonObject.put("result", 5); //账号有误或者会话信息超时
+				jsonObject.put("msg", "账号有误或者会话超时重新登录"); //账号有误或者会话信息超时
 				ResponseUtils.renderText(response, "UTF-8", jsonObject.toString());
 				return;
 			}
-			String newPass =DigestUtils.md5Hex(confirmPass + WebConstants.PASS_KEY);
-			int result = 0;
+			
+			
+			UserDo oldUser = userService.getById(user.getId());
+			String twoPwd =DigestUtils.md5Hex(twoPassword + WebConstants.PASS_KEY);
+			if(!oldUser.getTwoLevelPwd().equals(twoPwd)){
+				jsonObject.put("msg", "二级密码不对,修改失败");
+				 return;
+			}
+			
 			UserDo tempSave =new UserDo();
-			if(pwdFlag.equals("pay")){
-				String userPwd = user.getTwoLevelPwd();//新密码不能与原密码相同
-				if(newPass.equals(userPwd)){
-					 jsonObject.put("result", 3);
-					 ResponseUtils.renderText(response, "UTF-8", jsonObject.toString());
-					 return;
-				}
-				tempSave.setId(user.getId());
-				tempSave.setTwoLevelPwd(newPass);
-				result = userService.updateUser(tempSave);//修改支付密码
-			}else{
-				String userPwd = user.getPassword();
-				if(newPass.equals(userPwd)){
-					 jsonObject.put("result", 3);
-					 ResponseUtils.renderText(response, "UTF-8", jsonObject.toString());
-					 return;
-				}
-				tempSave.setId(user.getId());
-				tempSave.setPassword(newPass);
-				result = userService.updateUser(tempSave);//修改登录密码
-			}
-			if(result > 0){
-				//添加日志
-				logger.info("----t_user"+ user.getUserName()+ "修改会员密码----");
-//				operationLogService.addOperationLog("t_user", aud.getUsername(), IConstants.UPDATE, aud.getLastIP(), 0d, "修改会员密码", 1);
-				jsonObject.put("result",result > 0?0:4);
-			}
-		}catch (Exception e) {
-			logger.error(e.getMessage());
-			e.printStackTrace();
-		}
-		ResponseUtils.renderText(response, "UTF-8", jsonObject.toString());
-    }
-    
-    
-
-    /**
-     * @Description 密码重置
-     * @author huangzl QQ: 272950754
-     * @date 2015-8-7 下午09:41:54
-     * @Project redpack-web
-     * @Package com.redpack.web.view.account.controller
-     * @File UserController.java
-     * @param request
-     * @param response
-     * @param session
-    */
-    @RequestMapping(value = "restLoginPwd")
-    public void restLoginPwd(HttpServletRequest request,HttpServletResponse response, HttpSession session){
-    	logger.info("----密码重置----");
-     	String pwdFlag = request.getParameter("pwdFlag");
-     	String pwdType = request.getParameter("pwdType");
-    	JSONObject jsonObject = new JSONObject();
-    	String password = request.getParameter("password");
-		String confirmPass = request.getParameter("confirmPwd");
-		//验证手机码
-		String mobileCode =  request.getParameter("mobile");
-		String sendCode =  request.getParameter("mobileCode");
-		Object vc =session.getAttribute(mobileCode);
-		String verifyCode=null;
-		if(vc !=null){
-			verifyCode= String.valueOf(vc);
-		}
-		//验证手机号码  测试时注释此地方
-		
-		if(!sendCode.equals(verifyCode) ){
-			jsonObject.put("result", "手机验证码有误");
-			ResponseUtils.renderText(response, "UTF-8", JSONObject.fromObject(jsonObject).toString());
-			return;
-		}	
-			
-		if(StringUtils.isBlank(password)){
-			 jsonObject.put("result", 1);
-			 ResponseUtils.renderText(response, "UTF-8", jsonObject.toString());
-			 return;
-		}
-		 if(password.length()<6 || password.length()>20){
-			 jsonObject.put("result", 1);
-			 ResponseUtils.renderText(response, "UTF-8", jsonObject.toString());
-			 return;
-		 }
-
-		 UserDo user = (UserDo) session.getAttribute(WebConstants.SESSION_USER);
-	
-		
-		//如果是手机号码，根据手机号码获取用户信息
-		if(user == null){
-			Map parameterMap = new HashMap();
-			parameterMap.put("userName", mobileCode);
-			user = userService.getByUserDo(parameterMap);
-		}
-		user=userService.getById(user.getId());
-		session.setAttribute(WebConstants.SESSION_USER, user);
-		
-		if(user == null){
-			jsonObject.put("result", 5); //账号有误或者会话信息超时
-			ResponseUtils.renderText(response, "UTF-8", jsonObject.toString());
-			return;
-		}
-		
-		try{
-			
+			tempSave.setId(user.getId());
 			String newPass =DigestUtils.md5Hex(password + WebConstants.PASS_KEY);
-			int result = 0;
-			UserDo tmpUser =new UserDo();
-			tmpUser.setId(user.getId());
-			if("twoPwd".equalsIgnoreCase(pwdType)){
-				tmpUser.setTwoLevelPwd(newPass);
+			String  pwdType = request.getParameter("pwdType");
+			if("twoPwd".equals(pwdType)){
+				tempSave.setTwoLevelPwd(newPass);//修改二级密码
 			}else{
-				tmpUser.setPassword(newPass);
+				tempSave.setPassword(newPass);
 			}
-			result = userService.updateUser(tmpUser);//修改登录密码
-			if(result > 0){
-				//添加日志
-				logger.info("----t_user"+ user.getUserName()+ "修改会员密码----");
-				jsonObject.put("result",result > 0?0:4);
-			}
+
+			userService.updateUser(tempSave);//修改密码
+			jsonObject.put("result",0);
+			
+			
 		}catch (Exception e) {
 			logger.error(e.getMessage());
-			e.printStackTrace();
-		}
-		ResponseUtils.renderText(response, "UTF-8", jsonObject.toString());
-    }
- 
-    /**
-     * 更新用户信息
-     * @param request
-     * @param response
-     * @param session
-     */
-    @RequestMapping(value = "updateUserInfo")
-    public void updateUserInfo(HttpServletRequest request,HttpServletResponse response, HttpSession session){
-		String zhifubao =  request.getParameter("zhifubao");
-		String weixin =  request.getParameter("weixin");
-		JSONObject jsonObject = new JSONObject();
-		
-		UserDo user = (UserDo) session.getAttribute(WebConstants.SESSION_USER);
-		
-		UserDo userDo =new UserDo();
-		userDo.setId(user.getId());                 //当前用户是记录创建者
-		userDo.setZhifubao(zhifubao);
-		userDo.setTwoLevelPwd(weixin);
-		
-		int i = userService.updateUser(userDo);
-		
-		//userDo.setParentId(Long.valueOf(recieveUserId));					//接点人ID
-		//开始保存
-//		IResult<Long> result = userService.saveUser(userDo);
-		if ( i >0 ) {
-			jsonObject.put("result", "用户信息更新成功");
-			ResponseUtils.renderText(response, null, JSONObject.fromObject(jsonObject).toString());
-		} else {
-			jsonObject.put("result", "用户信息更新失败:");
-			ResponseUtils.renderText(response,
-			null,JSONObject.fromObject(jsonObject).toString());
+		}finally{
+			ResponseUtils.renderText(response, "UTF-8", jsonObject.toString());
 		}
     }
     
+    /********************************** end 登录后修改密码************************************************/
+
+  
+   
+    /**********************************start 注册***************************************/
     /**
 	 * 注册用户跳转页面
 	 * 
 	 * @return
-	 * @author: huangzl
-	 * @date 2015年8月2日 22:45:08
 	 */
 	@RequestMapping("reg_step1")
 	public String reg_step1(HttpServletRequest request,Model model) {
 		
 		
-		String view = getLocalPath(request,"redPack/reg_step1");
+		String view = getLocalPath(request,"user/reg_step1");
 		
 		//推荐人电话号码
 		String refMobile = request.getParameter("mobile");
 		
-		//A网B网
-		String netWork = request.getParameter("netWork");
 		
 		//推荐人手机
 		model.addAttribute("refMobile",refMobile);
-		model.addAttribute("netWork",netWork);
 		
 		logger.info("----注册用户跳转页面----");
 		
@@ -432,8 +296,6 @@ public class UserController extends BaseController{
 	 * 注册用户跳转页面
 	 * 
 	 * @return
-	 * @author: huangzl
-	 * @date 2015年8月2日 22:45:08
 	 */
 	@RequestMapping("saveRegStep1")
 	public void saveRegStep1(HttpServletRequest request,
@@ -503,9 +365,6 @@ public class UserController extends BaseController{
 			userDo.setOrgan("0");								//组织机构
 			userDo.setEnabled("0");								//状态  默认激活
 		
-			Random ne=new Random();//实例化一个random的对象ne
-	        String activeNum="" + (ne.nextInt(9999-1000+1)+1000);
-			userDo.setRemark(activeNum);
 			userDo.setReferrerId(refUser.getId());				//推荐人ID
 			userDo.setParentId(0l);	
 			userDo.setStatus(2);//    未激活
@@ -543,7 +402,7 @@ public class UserController extends BaseController{
 	public String reg_step2(HttpServletRequest request,Model model) {
 		
 		
-		String view = getLocalPath(request,"redPack/reg_step2");
+		String view = getLocalPath(request,"user/reg_step2");
 		
 		//登录账号
 		String userName = request.getParameter("phoneNo");
@@ -574,7 +433,7 @@ public class UserController extends BaseController{
 		
 		String mailtxt = request.getParameter("mailtxt");
 		String phoneNo = request.getParameter("phoneNo");
-		String regUUID = UUID.randomUUID().toString().replaceAll("-", "");
+		
 		JSONObject jsonObject = new JSONObject();
 		
 		if(StringUtils.isBlank(mailtxt)){
@@ -613,14 +472,31 @@ public class UserController extends BaseController{
 		temp1.setMail(mailtxt);
 		userService.updateUser(temp1);
 		
-		String serverAddr=getServerAddress(request);
-		NotifyDo notifyDo = new NotifyDo("注册激活通知","请点击下面链接激活账号："+serverAddr+"/account/actAccountByMail.html?actAction=reg&&actCode="+regUUID,mailtxt);
-		mailService.send(notifyDo );
-		userService.saveActCode(regUUID,phoneNo,"reg");
+		sendActMail(request, mailtxt, phoneNo,"reg","激活账号");
 		
 		jsonObject.put("result", 0);
 		jsonObject.put("msg", phoneNo);
 		ResponseUtils.renderText(response, "UTF-8", jsonObject.toString());
+	}
+
+
+	private void sendActMail(HttpServletRequest request, String mailtxt,String phoneNo,String actionType,String mailTitle) {
+		String regUUID = UUID.randomUUID().toString().replaceAll("-", "");
+		String serverAddr=getServerAddress(request);
+		StringBuilder  sb = new StringBuilder();
+		sb.append("请点击下面链接")
+		  .append(mailTitle)
+		  .append(":  ")
+		  .append(serverAddr)
+		  .append("/account/actAccountByMail.html?actAction=")
+		  .append(actionType)
+		  .append("&actCode=")
+		  .append(regUUID);
+		  
+		   
+		NotifyDo notifyDo = new NotifyDo(mailTitle,sb.toString(),mailtxt);
+		mailService.send(notifyDo );
+		userService.saveActCode(regUUID,phoneNo,actionType);
 	}
 	
 	/**
@@ -649,7 +525,7 @@ public class UserController extends BaseController{
 	public String reg_step3(HttpServletRequest request,Model model) {
 		
 		
-		String view = getLocalPath(request,"redPack/reg_suc");
+		String view = getLocalPath(request,"user/reg_suc");
 		logger.info("----注册用户跳转页面----");
 		
 		return view;
@@ -668,7 +544,7 @@ public class UserController extends BaseController{
 		
 		String actCode = request.getParameter("actCode");
 		String actAction = request.getParameter("actAction");
-		String view= "redPack/act_suc";
+		String view= "user/act_suc";
 		if(StringUtils.isBlank(actCode)){
 			model.addAttribute("msg", "无效的激活码");
 			return view;
@@ -684,7 +560,11 @@ public class UserController extends BaseController{
 		
 		if("forgetpassword".equals(actAction) && "成功".equals(msg)){
 			TokenUtil.putToken(request, "forgetpassword");
-			return "";
+			UserDo user = userService.getUserByActCode(actCode);
+			if(null != user){
+				request.getSession().setAttribute(WebConstants.SESSION_USER, user);
+			}
+			return "user/forgetPwd2Index";
 		}
 		
 		return view;
@@ -723,8 +603,6 @@ public class UserController extends BaseController{
 	 * 检查邮箱是否已注册，  检查账号是否存在
 	 * 
 	 * @return
-	 * @author: huangzl
-	 * @date 2015年8月2日 22:45:08
 	 */
 	@RequestMapping("checkMail")
 	public void checkMail(HttpServletRequest request,
@@ -769,6 +647,7 @@ public class UserController extends BaseController{
 		ResponseUtils.renderText(response, "UTF-8", jsonObject.toString());
 	}
 	
+	/**********************************end 注册***************************************/
 	
 	/**
 	 * 发送短信验证码
@@ -973,11 +852,7 @@ public class UserController extends BaseController{
 	}
 	
 	
-	/*************************************************
-	 * 
-	 * 申请代理
-	 * 
-	 * ***********************************************/
+	/********************start 申请代理 ******************/
 	
 	/**
 	 * 申请代理页面
@@ -995,7 +870,6 @@ public class UserController extends BaseController{
 	 * 设置报单中心
 	 * 
 	 * @return
-	 * @author: huangzl
 	 */
 	@RequestMapping("/reportCenter")
 	public String reportCenter(HttpServletRequest request,Model model) {
@@ -1008,7 +882,6 @@ public class UserController extends BaseController{
 	 * 保存报单中以
 	 * 
 	 * @return
-	 * @author: huangzl
 	 */
 	@RequestMapping("/saveCenter")
 	public void saveCenter(HttpServletRequest request,HttpServletResponse response,Model model) {
@@ -1178,6 +1051,121 @@ public class UserController extends BaseController{
 			ResponseUtils.renderText(response,null,JSONObject.fromObject(jsonObject).toString());
 		}
 	}
-	
 
+	
+	/********************end 申请代理 ******************/
+	
+	
+	
+	
+  /**************************start 用户信息修改********************/
+	
+	/**
+	 * 用户信息修改查看
+	 * 
+	 */
+	@RequestMapping("viewUserInfo")
+	public String viewUserInfo(String pwdFlag,Model model) {
+		logger.info("----更新用户信息跳转页面----");
+		return "user/viewuserinfo";
+	}
+	
+	
+	/**
+	 * 修改资料跳转方法
+	 * 
+	 * @param model
+	 * @param session
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/modifyInfo")
+	public String modifyInfo(Model model, HttpSession session, HttpServletRequest request) {
+		logger.info("----------修改用户资料---------");
+		UserDo user = (UserDo) session.getAttribute(WebConstants.SESSION_USER);
+		return "user/userInfo";
+	}
+	
+	/**
+	 * 修改资料保存方法
+	 *  
+	 * @param model
+	 * @param session
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/modifyUserinfo", method = RequestMethod.POST)
+	public void modifyUserinfo(HttpServletRequest request,
+							HttpServletResponse response,Model model) {
+		
+		JSONObject jsonObject = new JSONObject();
+		try{
+			UserDo user = (UserDo) request.getSession().getAttribute(WebConstants.SESSION_USER);
+			if(user == null){
+				jsonObject.put("msg", "请重新登录");
+				return;
+			}
+			
+			String wx = request.getParameter("weixin");
+			if(StringUtils.isBlank(wx)){
+				jsonObject.put("msg", "微信账号不能为空");
+				ResponseUtils.renderText(response, "UTF-8", JSONObject.fromObject(jsonObject).toString());
+				return;
+			}
+			
+			String name = request.getParameter("name");
+			if(StringUtils.isBlank(name)){
+				jsonObject.put("msg", "真实姓名不能为空");
+				return;
+			}
+			
+			String password = request.getParameter("password");
+			if(StringUtils.isBlank(password)){
+				jsonObject.put("msg", "二级密码不能为空");
+				return;
+			}
+			
+			//更新用户表的name
+			UserDo tempSave = new UserDo();
+			tempSave.setId(user.getId());
+			tempSave.setName(name);
+			tempSave.setWeixin(wx);
+			String pwdMd5 = DigestUtils.md5Hex(password + WebConstants.PASS_KEY);
+			tempSave.setTwoLevelPwd(pwdMd5);
+			userService.updateUser(tempSave);
+			
+			/*
+			UserInfoDo userInfo = userInfoService.getByUserId(user.getId());
+			if(null == userInfo ){
+				userInfo = new UserInfoDo();
+				userInfo.setUserId(user.getId());
+			}
+			userInfo.setRealName(userInfoDo.getRealName());
+			userInfo.setZfbNumber(userInfoDo.getZfbNumber());
+			userInfo.setWeixiNumber(userInfoDo.getWeixiNumber());
+			userInfo.setBankName(userInfoDo.getBankName());
+			userInfo.setBankSubbranch(userInfoDo.getBankSubbranch());
+			userInfo.setBankAccount(userInfoDo.getBankAccount());
+			userInfo.setRealName(userInfoDo.getRealName());
+			userInfo.setIdCardNo(userInfoDo.getIdCardNo());
+			userInfo.setIdCardNoString(userInfoDo.getIdCardNoString());
+			userInfo.setContactAddress(userInfoDo.getContactAddress());
+			userInfo.setProvince(userInfoDo.getProvince());
+			userInfo.setCity(userInfoDo.getCity());
+			if(userInfo.getId() == null){
+				userInfoService.saveUserInfo(userInfo);
+			}else{
+				userInfoService.updataUserInfo(userInfo);
+			}
+			*/
+			request.getSession().setAttribute(WebConstants.SESSION_USER, user);
+			jsonObject.put("result", 0);
+		}catch(Exception e){
+			jsonObject.put("msg", e.getMessage());
+		}finally{
+			ResponseUtils.renderText(response, "UTF-8", JSONObject.fromObject(jsonObject).toString());
+		}
+	}
+	
+	 /**************************end 用户信息修改********************/
 }

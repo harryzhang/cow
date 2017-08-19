@@ -153,7 +153,7 @@ public class LoginController extends BaseController {
 	@RequestMapping(value = "loginout")
 	public String loginout(HttpServletRequest request, HttpServletResponse response) {
 		request.getSession().invalidate();
-		return "redirect:/login/index.do";
+		return "redirect:/login/index.html";
 	}
 
 }

@@ -1,9 +1,9 @@
 @charset "utf-8";
 /* ***************************************
-** ÎÄ¼şËµÃ÷£ºÊ×Ò³£¬ÄÁ³¡£¬ÎÒµÄÄÁ³¡µÈÒ³ÃæÑùÊ½
-** ×÷Õß£ºÁõ¸Õ
-** Ê±¼ä£º2016-2-19
-** ×îºóĞŞ¸ÄÊ±¼ä£º	
+** æ–‡ä»¶è¯´æ˜ï¼šé¦–é¡µï¼Œç‰§åœºï¼Œæˆ‘çš„ç‰§åœºç­‰é¡µé¢æ ·å¼
+** ä½œè€…ï¼šåˆ˜åˆš
+** æ—¶é—´ï¼š2016-2-19
+** æœ€åä¿®æ”¹æ—¶é—´ï¼š	
 *****************************************/
 .main{
 	height:100%;
@@ -68,7 +68,7 @@
 	right:0;
 }
 
-/* ÄÁ³¡ÁĞ±íÒ³ */
+/* ç‰§åœºåˆ—è¡¨é¡µ */
 .list{
 	width:100%;
 	margin-top:10px;
@@ -144,7 +144,7 @@
 .flag_green{ background:#76c13f;}
 .flag_orange{ background:#fc9b00;}
 .flag_grey{ background:#c9c9ca;}
-/*ÄÁ³¡ÏêÇé*/
+/*ç‰§åœºè¯¦æƒ…*/
 .product_detail{
 	width:100%;
 	height:4.2rem;
@@ -429,7 +429,7 @@
 	line-height:1.8rem;
 	color:#333;
 }
-/*ÕË»§ÖĞĞÄ*/
+/*è´¦æˆ·ä¸­å¿ƒ*/
 .account_detail{
 	width:100%;
 	height:5.3125rem;
@@ -510,7 +510,7 @@
 	padding:0 5px;
 }
 
-/*Í¶×Ê¼ÇÂ¼*/
+/*æŠ•èµ„è®°å½•*/
 .record_wrap{
 	width:100%;
 }
@@ -627,7 +627,7 @@
 .invest_record_box h3 a,.invest_record_box h3 a:link{
 	color:#54b668;
 }
-/*×Ê½ğ¼ÇÂ¼*/
+/*èµ„é‡‘è®°å½•*/
 .money_record{
 	width:100%;
 	padding-top:10px;
@@ -663,7 +663,7 @@
 .money_record_list li span.minus{
 	color:#59bb9c;
 }
-/*·ÃÎÊ´íÎó*/
+/*è®¿é—®é”™è¯¯*/
 .error{
 	position:absolute;
 	top:50%;
@@ -707,7 +707,7 @@
 	background:url(../images/error_404.png) no-repeat;
 	margin: -311px 0 0 -268px;
 }
-/*µÖÓÃÈ¯*/
+/*æŠµç”¨åˆ¸*/
 .ticket{
 	width:100%;
 }
@@ -733,24 +733,22 @@
 }
 .ticket_list li{
 	margin:0 3% 10px;
-	height:2.78125rem;
-	background:url(../images/ticket_bg1.png) no-repeat;
-	background-size:contain;
+	height: 1.5rem;
+	border-bottom: 1px solid #F44336;;
 	position:relative;
 }
 .ticket_left{
-	width:30%;
-	height:2rem;
+	width:20%;
+	height: 100%;
 	float:left;
 	border-right:1px dashed #fc9b00;
-	margin-top:0.38rem;
+	/*margin-top:0.38rem;*/
 }
 .ticket_left .ticket_money{
-	width:1.5rem;
-	height:1.6rem;
-	background:url(../images/ticket_money_bg1.png) no-repeat;
-	background-size:contain;
+	/*width:1.5rem;
+	height:1.6rem;	
 	margin:0.3rem 0 0 0.7rem;
+	*/
 	font-size:0.5rem;
 	color:#ff6a39;
 	text-align:center;
@@ -758,8 +756,8 @@
 }
 .ticket_money span{ font-size:0.25rem;}
 .ticket_right{
-	width:69%;
-	height:2rem;
+	width:78%;
+	height:100%;
 	float: left;
 
 }
@@ -767,8 +765,8 @@
 .ticket_right h3{
 	font-size:0.4rem;
 	color:#fc9b00;
-	margin-top:0.4rem;
-	margin-bottom:0.35rem;
+	/*margin-top:0.4rem;
+	margin-bottom:0.35rem;*/
 }
 .ticket_right p{
 	font-size:0.35rem;
@@ -796,12 +794,10 @@
 	overflow:auto;
 }
 .ticket_use .ticket_list{ padding-bottom:1.6rem;}
-/*¹ıÆÚµÖÓÃÈ¯*/
+/*è¿‡æœŸæŠµç”¨åˆ¸*/
 .ticket_list .ticket_out{ background:url(../images/ticket_bg2.png) no-repeat; background-size:contain;}
 .ticket_out .ticket_left{ border-right:1px dashed #e2e2e2;}
-.ticket_out .ticket_money{
-	background:url(../images/ticket_money_bg2.png) no-repeat;
-	background-size:contain;
+.ticket_out .ticket_money{	
 	color:#ddd;
 }
 .ticket_out .ticket_right h3,.ticket_out .ticket_right p{ color:#ddd;}
@@ -825,7 +821,7 @@ a.ticket_use_btn,a.ticket_use_btn:link{
 	color:#fff;
 	border-radius:5px;
 }
-/*µÖÓÃÈ¯¹æÔò*/
+/*æŠµç”¨åˆ¸è§„åˆ™*/
 .ticket_rule{
 	margin:0 3%;
 	padding-top:0.5rem;
@@ -844,7 +840,7 @@ a.ticket_use_btn,a.ticket_use_btn:link{
 	line-height:0.8rem;
 	margin-bottom:0.3rem;
 }
-/*ºÃÓÑÍÆ¼ö*/
+/*å¥½å‹æ¨è*/
 .recommend{
 	width:100%;
 	text-align:center;
@@ -917,7 +913,7 @@ a.ticket_use_btn,a.ticket_use_btn:link{
 	z-index:2;
 	display:none;
 }
-/*»î¶¯ÁĞ±íÒ³*/
+/*æ´»åŠ¨åˆ—è¡¨é¡µ*/
 .activity_list{
 	margin:0 3%;
 	padding-top:15px;

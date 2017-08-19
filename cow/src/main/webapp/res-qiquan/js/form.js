@@ -19,3 +19,20 @@ $(function(){
 	});
 	
 });
+
+
+function showTipMsg(msg) {
+	$("#error-box").show();
+	$("#error-box").html(msg);
+}
+
+//刷新验证码
+function switchCode(pageId) {
+/* 
+	$("#code").css({
+		color : '#999'
+	}); */
+	var url = $('#basePath').val() + 'common/imageCode.html?pageId='+pageId+'&t=' + Math.random();
+	$('#codeNum').attr('src', url);
+}
+

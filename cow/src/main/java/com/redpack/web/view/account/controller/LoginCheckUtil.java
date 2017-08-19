@@ -74,7 +74,7 @@ public class LoginCheckUtil  {
 	public static String getFinishDataUrl(HttpServletRequest req){
 		StringBuilder toUrl = new StringBuilder();
 		String serverAddress = getServerAddress(req);
-		toUrl.append(serverAddress).append("/common//modifyInfo.html");
+		toUrl.append(serverAddress).append("/account/modifyInfo.html");
 		return toUrl.toString();
 	}
 	

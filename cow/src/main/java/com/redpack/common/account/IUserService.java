@@ -226,6 +226,12 @@ public interface IUserService {
 	 *
 	 */
     String actAccountByMail(String actCode,String action);
+    /**
+     * 根据激活码获取用户
+     * @param actCode
+     * @return
+     */
+	UserDo getUserByActCode(String actCode);
 	
 	
 }

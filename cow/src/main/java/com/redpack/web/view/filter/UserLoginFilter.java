@@ -57,18 +57,23 @@ public class UserLoginFilter  extends OncePerRequestFilter {
 	 
 
 	public boolean isFilterUri(String uri){
-		return true;
-		/*
-		return uri.indexOf("/imageCode/imageCode") != -1
-			 ||uri.indexOf("/res/") != -1
-			 ||uri.indexOf("/login/") != -1
+		return uri.indexOf("/res-qiquan/") != -1
+			 ||uri.indexOf("/uploadimages/") != -1
+			 ||uri.indexOf("/login/login") != -1
+			 ||uri.indexOf("/login/loginout") != -1
+			 ||uri.indexOf("/login/index") != -1
 			 ||uri.indexOf("/common/imageCode") != -1
-			 ||uri.indexOf("/account/register") != -1
 			 ||uri.indexOf("/account/reg_step1") != -1
 			 ||uri.indexOf("/account/reg_step2") != -1
 			 ||uri.indexOf("/account/reg_step3") != -1
 			 ||uri.indexOf("/account/saveRegStep1") != -1
 			 ||uri.indexOf("/account/saveRegStep2") != -1
+			 ||uri.indexOf("/account/forgetPwd1") != -1
+			 ||uri.indexOf("/account/resetPwdIndex") != -1
+			 ||uri.indexOf("/account/checkAccount") != -1
+			 ||uri.indexOf("/account/checkMail") != -1
+			 ||uri.indexOf("/account/actAccountByMail") != -1
+					 
 			 ||uri.indexOf("/redPack/personalCenter") != -1
 			 ||uri.indexOf("/company/") != -1
 			 ||uri.indexOf("/notice/") != -1
@@ -84,7 +89,6 @@ public class UserLoginFilter  extends OncePerRequestFilter {
 		     ||uri.indexOf("/account/restLoginPwd") != -1
 		     ||uri.indexOf("/member/userManager") != -1
 		     ||uri.indexOf("/fh/fh") != -1;
-		     */
 	}
 	
     /**
@@ -109,8 +113,6 @@ public class UserLoginFilter  extends OncePerRequestFilter {
     		logger.debug("sessionId:======================"+session.getId());
     	}
         String contextPath = session.getServletContext().getContextPath();
-        
-        //MemcachedClient memcacheClient = new MemcachedClient(new BinaryConnectionFactory(),AddrUtil.getAddresses("10.50.10.208:11222"));
         boolean isOKFlag = false; //是否放行通过标记
         
         //已登录不拦截

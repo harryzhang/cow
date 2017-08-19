@@ -120,6 +120,22 @@
 		<url-pattern>/res-qiquan/images/*</url-pattern>
 	</servlet-mapping>
 	
+	<!-- 
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>/res-kuangji/js/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>/res-kuangji/css/*</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>/res-kuangji/images/*</url-pattern>
+	</servlet-mapping>
+	 -->
+	 
 	<servlet-mapping>
 		<servlet-name>default</servlet-name>
 		<url-pattern>/uploadimages/*</url-pattern>

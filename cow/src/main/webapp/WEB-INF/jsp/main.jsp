@@ -122,7 +122,7 @@
         width:0.5797rem;
         height:0.5797rem;;
         display:block;
-        background:url(https://www.lenongzhijia.com:443/h5/images/page/ends.png) no-repeat;
+        background:url("<c:url value='/res-qiquan/images/page/ends.png'/>") no-repeat;
         background-size:contain;
         position:absolute;
         right:0.48rem;
@@ -147,7 +147,8 @@
 <body>
 	<div class="wrap">
 	<input type="hidden" value="<c:url value='/'/>" id="basePath">
-	<input type="hidden" value="com.wjs.vo.BusUserBean@7ea30c96" id="loginUser">
+	<input type="hidden" value="${userDo.userName}" id="loginUser">
+	
 	<!-- 提示窗 -->
         <div class="mee"></div>
         <div class="bnak">
@@ -230,43 +231,43 @@
 	            <div class="account_module">
 	            	<ul class="clearfix">
 	            		<li style="width: 213.333px; height: 213.333px;">
-                    	<a href="https://www.lenongzhijia.com/lnweixin/newWithdrawtInit?isRecharge=yes">
+                    	<a href="<c:url value='/pay/toChongzhi.html'/>">
                             <img src="<c:url value='/res-qiquan/images/cen_icon1.png'/>" alt="">
                             <p>充值</p>
                         </a>
                     </li>
                     <li style="width: 213.333px; height: 213.333px;">
-                    	<a href="https://www.lenongzhijia.com/lnweixin/newWithdrawtInit?isRecharge=no">
+                    	<a href="<c:url value='/member/withdraw.html'/>">
                             <img src="<c:url value='/res-qiquan/images/cen_icon2.png'/>" alt="">
-                            <p>兑现</p>
+                            <p>提现</p>
                         </a>
                     </li>
                     <li style="width: 213.333px; height: 213.333px;">
-                    	<a href="https://www.lenongzhijia.com/lnweixin/moneyRecordIndex">
+                    	<a href="<c:url value='/member/userIncome.html'/>">
                             <img src="<c:url value='/res-qiquan/images/cen_icon3.png'/>" alt="">
                             <p>财富记录</p>
                         </a>
                     </li>
                     <li style="width: 213.333px; height: 213.333px;">
-                    	<a href="https://www.lenongzhijia.com/lnweixin/goactivityCentre?type=9">
+                    	<a href="javascript:;">
                             <img src="<c:url value='/res-qiquan/images/cen_icon4.png'/>" alt="">
                             <p>活动中心</p>
                         </a>
                     </li>
                     <li style="width: 213.333px; height: 213.333px;">
-                    	<a href="https://www.lenongzhijia.com/lnweixin/goRealred">
+                    	<a href="javascript:;">
                             <img src="<c:url value='/res-qiquan/images/cen_icon5.png'/>" alt="">
                             <p>优惠券</p>
                         </a>
                     </li>
                     <li style="width: 213.333px; height: 213.333px;">
-                    	<a href="https://www.lenongzhijia.com/lnweixin/goContractList">
+                    	<a href="javascript:;">
                             <img src="<c:url value='/res-qiquan/images/cen_icon6.png'/>" alt="">
                             <p>认养合同</p>
                         </a>
                     </li>
                     <li style="width: 213.333px; height: 213.333px;">
-                    	<a href="https://www.lenongzhijia.com/lnweixin/myinvest">
+                    	<a href="javascript:;">
                             <img src="<c:url value='/res-qiquan/images/cen_icon7.png'/>" alt="">
                             <p>我的舍棚</p>
                         </a>

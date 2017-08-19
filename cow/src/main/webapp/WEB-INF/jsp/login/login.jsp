@@ -89,7 +89,7 @@
                 	<p class="hide" id="error-box">错误提示</p>
                 </div>
                 <a href="javascript:login();" class="btn funcBtn btn_green login_btn">登录</a>
-                 <p class="forget clearfix"><a href="<c:url value='/account/reg_step1.html'/>" class="fl">新用户注册>></a> <a href="<c:url value='/account/resetPwdIndex.html'/>" class="fr">忘记密码？</a></p>
+                 <p class="forget clearfix"><a href="<c:url value='/account/reg_step1.html'/>" class="fl">新用户注册>></a> <a href="<c:url value='/account/forgetPwd1.html'/>" class="fr">忘记密码？</a></p>
             </form>
         </div>
     </div>  

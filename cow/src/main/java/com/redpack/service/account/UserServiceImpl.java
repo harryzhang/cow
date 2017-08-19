@@ -699,5 +699,21 @@ public class UserServiceImpl implements IUserService {
     	
 	    return "成功";
     }
+
+
+
+	@Override
+	public UserDo getUserByActCode(String actCode) {
+		Map<String,Object> actMap = userDao.getActLstByCode(actCode);
+    	if(CollectionUtils.isEmpty(actMap)){
+    		return null;
+    	}
+    	
+    	String  userName = (String)actMap.get("userName");
+    	
+    	Map<String, Object> parameterMap = new HashMap<String,Object>();
+    	parameterMap.put("userName", userName);
+		return this.getByUserDo(parameterMap );
+	}
 		
 }

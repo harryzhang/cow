@@ -13,26 +13,15 @@ import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import net.sf.json.JSONObject;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.redpack.common.account.IUserInfoService;
-import com.redpack.common.account.IUserService;
-import com.redpack.common.account.model.UserDo;
-import com.redpack.common.account.model.UserInfoDo;
-import com.redpack.common.constant.WebConstants;
 import com.redpack.utils.IDCardUtil;
-import com.redpack.utils.IdCardUtils;
 import com.redpack.utils.ResponseUtils;
 import com.redpack.web.view.base.controller.BaseController;
 import com.redpack.web.view.base.controller.ValidCodeUtil;
@@ -40,10 +29,7 @@ import com.redpack.web.view.base.controller.ValidCodeUtil;
 
 /**
  * @Description 描述方法作用
- * @author huangzl QQ: 272950754
  * @date 2015年5月27日 下午5:33:52
- * @Project hehenian-lend-login
- * @Package com.hehenian.login.account 
  * @File CommonController.java
 */
 @Controller
@@ -51,10 +37,7 @@ import com.redpack.web.view.base.controller.ValidCodeUtil;
 public class CommonController extends BaseController{
 	
 	private static final Logger logger = Logger.getLogger(CommonController.class);
-	@Autowired
-	private IUserService userService;
-	@Autowired
-	private IUserInfoService userInfoService;
+
 	/**
 	 * 生成验证码
 	 * @param request
@@ -131,7 +114,6 @@ public class CommonController extends BaseController{
 	 * @throws IOException
 	 * @throws NumberFormatException
 	 * @throws ParseException
-	 * @author: chenzhpmf
 	 * @date 2015-4-4 上午12:02:52
 	 */
 	@RequestMapping(value = "isIDNO")
@@ -182,93 +164,6 @@ public class CommonController extends BaseController{
 				object.put("c"+code, cityEntry.getValue());
 			}
 		}
-	}
-	
-	/**
-	 * 跳转首页
-	 * @author  huangzl QQ:272950754
-	 * @version 创建时间：2015-7-26 下午09:53:32 
-	 * @param model
-	 * @param session
-	 * @param request
-	 * @return
-	 */
-	@RequestMapping("/welcome")
-	public String welcome(Model model, HttpSession session, HttpServletRequest request) {
-		return "redPack/index";
-	}
-
-	/**
-	 * 修改资料跳转方法
-	 * 
-	 * @author huangzl QQ:272950754
-	 * @version 创建时间：2015-7-26 下午09:05:57
-	 * @param model
-	 * @param session
-	 * @param request
-	 * @return
-	 */
-	@RequestMapping("/modifyInfo")
-	public String modifyInfo(Model model, HttpSession session, HttpServletRequest request) {
-		logger.info("----------修改用户资料---------");
-		UserDo user = (UserDo) session.getAttribute(WebConstants.SESSION_USER);
-		
-		return "member/userInfo";
-	}
-	/**
-	 * 修改资料保存方法
-	 *  
-	 * @author huangzl QQ:272950754
-	 * @version 创建时间：2015-7-26 下午09:50:57
-	 * @param model
-	 * @param session
-	 * @param request
-	 * @return
-	 */
-	@RequestMapping(value = "/modifyUpdata", method = RequestMethod.POST)
-	public void modifyUpdata(@ModelAttribute UserInfoDo userInfoDo,Model model, HttpSession session, 
-			HttpServletRequest request,
-			HttpServletResponse response) {
-//		userInfoService.updataUserInfo(userInfoDo);
-		
-		UserDo user = (UserDo) session.getAttribute(WebConstants.SESSION_USER);
-		//更新用户表的name
-		UserDo tempSave = new UserDo();
-		tempSave.setId(user.getId());
-		tempSave.setName(userInfoDo.getRealName());
-		userService.updateUser(tempSave);
-		
-		UserInfoDo userInfo = userInfoService.getByUserId(user.getId());
-		if(null == userInfo ){
-			userInfo = new UserInfoDo();
-			userInfo.setUserId(user.getId());
-		}
-		userInfo.setRealName(userInfoDo.getRealName());
-		userInfo.setZfbNumber(userInfoDo.getZfbNumber());
-		userInfo.setWeixiNumber(userInfoDo.getWeixiNumber());
-		userInfo.setBankName(userInfoDo.getBankName());
-		userInfo.setBankSubbranch(userInfoDo.getBankSubbranch());
-		userInfo.setBankAccount(userInfoDo.getBankAccount());
-		userInfo.setRealName(userInfoDo.getRealName());
-		userInfo.setIdCardNo(userInfoDo.getIdCardNo());
-		userInfo.setIdCardNoString(userInfoDo.getIdCardNoString());
-		userInfo.setContactAddress(userInfoDo.getContactAddress());
-		userInfo.setProvince(userInfoDo.getProvince());
-		userInfo.setCity(userInfoDo.getCity());
-		
-		if(userInfo.getId() == null){
-			userInfoService.saveUserInfo(userInfo);
-		}else{
-			userInfoService.updataUserInfo(userInfo);
-		}
-		
-		user.setUserInfoDo(userInfo);
-		session.setAttribute(WebConstants.SESSION_USER, user);
-		
-		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("result", "修改成功");
-		ResponseUtils.renderText(response, "UTF-8", JSONObject.fromObject(jsonObject).toString());
-		return;
 	}
 	
 }

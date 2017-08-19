@@ -34,7 +34,7 @@
 			</a>
         </div>
         
-        <p class="invite_code">邀请码：<span>13692177359</span></p>
+        <p class="invite_code">邀请码：<span>${userDo.userName}</span></p>
 
 		<div class="main">
         	<!--账户管理-->
@@ -42,57 +42,65 @@
             	<div class="account_item">
                 	 <ul>
                     	<li class="clearfix">
-                           	<a href="https://www.lenongzhijia.com/lnweixin/modifyRealnameIdNoIndex">
-              		 				<p><img src="<c:url value='/res-qiquan/images/account_icon1.png'/>" alt="">身份证认证</p>
-              		 				<span><em>未认证</em><img src="<c:url value='/res-qiquan/images/arrow1.png'/>" alt=""></span></a>
+                           	<a href="<c:url value='/account/viewUserInfo.html'/>">
+              		 				<p><img src="<c:url value='/res-qiquan/images/account_icon1.png'/>" alt="">个人信息</p>
+              		 				<span><em>已完善</em><img src="<c:url value='/res-qiquan/images/arrow1.png'/>" alt=""></span></a>
                				</li>
                     </ul>
                 </div>
                 <div class="account_item">
                 	<ul>
+                	   <!-- 
                     	<li class="line clearfix">
                     		<a href="https://www.lenongzhijia.com/lnweixin/newWithdrawtInit?isRecharge=no">
                             	<p><img src="<c:url value='/res-qiquan/images/account_icon2.png'/>" alt="">我要提现</p>
                                 <span><em>&nbsp;</em><img src="<c:url value='/res-qiquan/images/arrow1.png'/>" alt=""></span>
                             </a>
                         </li>
+                       -->
                          <li class="line clearfix">
-                            <a href="https://www.lenongzhijia.com/lnweixin/getSecUserBankList"><p><img src="<c:url value='/res-qiquan/images/account_icon3.png'/>" alt="">绑定银行卡</p>
-                            <span><em>未绑定</em><img src="<c:url value='/res-qiquan/images/arrow1.png'/>" alt=""></span>
-								</a>
+                            <a href="<c:url value='/account/modifyPassword.html?pwdType=loginPwd'/>"><p><img src="<c:url value='/res-qiquan/images/account_icon3.png'/>" alt="">修改登录密码</p>
+                            <span><em>&nbsp;</em><img src="<c:url value='/res-qiquan/images/arrow1.png'/>" alt=""></span>
+							</a>
                         </li> 
-                        
+                         
+                         
                         <li class="line clearfix">
-                    	<a href="https://www.lenongzhijia.com/lnweixin/newpeModifyPaycode">
-                            	<p><img src="<c:url value='/res-qiquan/images/account_icon4.png'/>" alt="">修改提现密码</p>
+                    	<a href="<c:url value='/account/modifyPassword.html?pwdType=twoPwd'/>">
+                            	<p><img src="<c:url value='/res-qiquan/images/account_icon4.png'/>" alt="">修改二级密码</p>
                                 <span><em>&nbsp;</em><img src="<c:url value='/res-qiquan/images/arrow1.png'/>" alt=""></span>
                           </a>  
                         </li>
                     </ul>
                 </div> 
+                
+               
                 <div class="account_item">
                 	<ul>
+                	 	<!-- 
                         <li class="line clearfix">
                         	<a href="https://www.lenongzhijia.com/lnweixin/goRealred">
                             	<p><img src="<c:url value='/res-qiquan/images/account_icon7.png'/>" alt="">抵用券</p>
                                 <span><em class="ticket_num">19</em><img src="<c:url value='/res-qiquan/images/arrow1.png'/>" alt=""></span>
                             </a>
                         </li>
+                         -->
+                        
                         <li class="clearfix">
-                        	<a href="https://www.lenongzhijia.com/lnwxfront/clientlist?refferee=c04219de834b457dfe0567a34750b8f2">
-                            	<p><img src="<c:url value='/res-qiquan/images/account_icon8.png'/>" alt="">推荐有奖</p>
+                        	<a href="<c:url value='/member/refUser.html'/>">
+                            	<p><img src="<c:url value='/res-qiquan/images/account_icon8.png'/>" alt="">我的推荐</p>
                                 <span><em>&nbsp;</em><img src="<c:url value='/res-qiquan/images/arrow1.png'/>" alt=""></span>
                             </a>
                         </li>
                     </ul>
                 </div>
-                
+               
                 <div class="account_item">
                 	<ul>
                         <li class="line clearfix">
-                        	<a href="tel:4008-168-803">
+                        	<a href="tel:4008 169 03">
                             	<p><img src="<c:url value='/res-qiquan/images/account_icon5.png'/>" alt="">客服热线</p>
-                                <span><em class="light_color">4008 168 803</em><img src="<c:url value='/res-qiquan/images/arrow1.png'/>" alt=""></span>
+                                <span><em class="light_color">4008 169 03</em><img src="<c:url value='/res-qiquan/images/arrow1.png'/>" alt=""></span>
                             </a>
                         </li>
 <!--                         <li class="clearfix"> -->

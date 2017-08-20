@@ -6,11 +6,13 @@
 
 package com.redpack.common.goods.model;
 
-import org.apache.ibatis.type.Alias;
+import java.math.BigDecimal;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.apache.ibatis.type.Alias;
 
 /**
  * @author  huangzl QQ: 272950754
@@ -36,12 +38,17 @@ public class GoodsDo  implements java.io.Serializable{
 	private java.lang.String gcode;
 	private java.lang.String gcate;
 	private java.lang.String gunite;
-	private java.math.BigDecimal price;
+	private BigDecimal price;
 	private java.lang.String gkind;
 	private java.util.Date createTime;
 	private String imageSrc;
 	private String bigImageSrc; //大图
 	private String bandName; //品牌
+	
+	
+	private BigDecimal income; //收益
+	private BigDecimal costPrice; //成本价
+	private Integer peroid; //周期
 	
 	//购物车使用的属性
 	private int  buyQty;
@@ -148,6 +155,32 @@ public class GoodsDo  implements java.io.Serializable{
 
 	public void setBandName(String bandName) {
 		this.bandName = bandName;
+	}
+
+	
+	
+	public BigDecimal getIncome() {
+		return income;
+	}
+
+	public void setIncome(BigDecimal income) {
+		this.income = income;
+	}
+
+	public BigDecimal getCostPrice() {
+		return costPrice;
+	}
+
+	public void setCostPrice(BigDecimal costPrice) {
+		this.costPrice = costPrice;
+	}
+
+	public Integer getPeroid() {
+		return peroid;
+	}
+
+	public void setPeroid(Integer peroid) {
+		this.peroid = peroid;
 	}
 
 	public String toString() {

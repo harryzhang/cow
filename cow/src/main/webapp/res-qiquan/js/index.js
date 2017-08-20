@@ -53,6 +53,7 @@
 				switch(target){
 					case 'index':
 						Nav(1);
+						funcIndex();
 						break;
 					case 'list':
 						Nav(2);
@@ -164,4 +165,23 @@
 				
 			}
 			});
+	}
+	
+	
+	//加载首页
+	function funcIndex(){
+		
+		$.ajax({
+			type : "POST",
+			cache : false,
+			async : false,// 设置异步为false,重要！
+			dataType : "html",
+			url :$("#basePath").val() + 'firstpage/toFirstpage.html',
+			data : {},
+			success : function(data) {
+				$("#index_content").html(data);
+			}
+			});
+		
+		//window.location.href= $("#basePath").val() + 'firstpage/toFirstpage.html';
 	}

@@ -19,6 +19,7 @@
     
     <link type="text/css" href="<c:url value='/res-qiquan/css/base.css'/>" rel="stylesheet"/>
     <link type="text/css" href="<c:url value='/res-qiquan/css/common.css'/>" rel="stylesheet"/>
+    <link type="text/css" href="<c:url value='/res-qiquan/css/account.css'/>" rel="stylesheet"/>
     <link type="text/css" href="<c:url value='/res-qiquan/css/layout.css'/>" rel="stylesheet"/>
     <script type="text/jscript" src="<c:url value='/res-qiquan/js/jquery-1.8.3.js'/>"></script>
     <script>
@@ -29,6 +30,15 @@
 
 <body>
 	<div class="wrap">
+		<div class="account_detail clearfix">
+           	<div class="c_logo">
+            	<a href="/member/userSettle.html">
+               		<img src="/res-qiquan/images/logo.png" alt="">
+                   <p>查看个人设置中心</p>
+                </a>
+           	</div>
+        </div>
+        
 		<div class="ticket">
         	<div id="ticketList">      	
 			<ul>

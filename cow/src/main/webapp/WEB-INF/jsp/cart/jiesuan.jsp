@@ -1,301 +1,270 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"    pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<!DOCTYPE html>
+<html style="font-size: 60px;"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>乐农之家</title>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        
-        <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=0">
-        <meta name="apple-touch-fullscreen" content="yes">
-        <meta name="apple-mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-status-bar-style" content="black">
-        <meta name="format-detection" content="telephone=no">
+<meta content="yes" name="apple-mobile-web-app-capable">
+<meta content="black" name="apple-mobile-web-app-status-bar-style">
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+<meta http-equiv="expires" content="0">
 
+<link rel="shortcut icon" href="/res-qiquan/images/logo.ico">
+<meta content="telephone=no" name="format-detection">
 
-        <title>购物车</title>
-
-		<link href="<c:url value ='/res-kuangji/css/global.css'/>" rel="stylesheet" type="text/css">
-        <link href="<c:url value ='/res-kuangji/css/shoppingCart.css'/>" rel="stylesheet" type="text/css">
-
-        <script type="text/javascript" src="<c:url value ='/res-kuangji/js/jquery-2.1.1.min.js'/>"></script>
-        <script type="text/javascript" src="<c:url value ='/res-kuangji/js/top.js'/>"></script>
-		<script type="text/javascript" src="<c:url value ='/res-kuangji/js/shoppingCart.js'/>"></script>
-		
-		
-		
-<script>
-    $(document).ready(function () {
-    	getCartTotal();
-    })
-    
-    
-    function getCartTotal() {
-	    var rec_ids = '';
-	    $("input[name^='ckgoods']:checkbox").each(function () {
-		    if ($(this).hasClass('active')) {
-		    	rec_ids += $(this).val() ;
-		    }
-	    });
-	   
-	    if (!rec_ids) {
-	        $("#totalAmount").html(0);
-	    	return false;
-	    }
-	    
-	    var token = "ZvL0EsRqGaHp6eIMAedm7QqkKFohqpu5KDMH77cP";
-	    $.ajax({
-	    type: "POST",
-	            url: "<c:url value='/cart/getCartGoods.html'/>",
-	            data: {goods: rec_ids, _token: token},
-	            dataType: "json",
-	            success: function (res) {
-		            if (res) {
-		            	//不再验证余额足不足
-			           if (res.err_msg.length == 0){
-				            $("#totalAmount").html(res.result);
-				            $("#totalRes").html('运费:'+res.res);
-				            $("#jsbtn").removeAttr("disabled");
-			           } else {
-			            	alert(res.err_msg);
-			            	$("#jsbtn").attr({"disabled":"disabled"});
-			            }
-		            }
-	            }
-	    });
-    }
-    
-    function cart() {
-	    var rs = '';
-	    $("input[name^='ckgoods']:checkbox").each(function () {
-		    if ($(this).hasClass('active')) {
-		    	rs += $(this).val() ;
-	    	}
-	    });
-	    if (rs == '') {
-	    	alert('请选择要购买的商品');
-	    	return false;
-	    } else {
-			// $("#formCart").submit();
-	    	location.href = "<c:url value='/cart/pay.html'/>" + "?ckgoods=" + rs;
-	    }
-    }
-
-    function delCartGoods(e, rec_id) {
-	    var token = "ZvL0EsRqGaHp6eIMAedm7QqkKFohqpu5KDMH77cP";
-	    $.ajax({
-	    type: "POST",
-	            url: "<c:url value='/cart/delCartGoods.html'/>",
-	            data: {goods: rec_id, _token: token},
-	            dataType: "json",
-	            success: function (res) {
-		            if (res){
-		            	var glen = $(e).parents('.order').children('.goods').size();
-			            if (glen > 1) {
-			            	$(e).parents('.goods').remove();
-			            } else {
-			            	$(e).parents('.order').remove();
-			            }
-			            $('.notice').show().fadeOut(2000, function(){
-			            if ($('.main').find('div').filter('.order').length <= 0){
-			                $(".total").hide();
-			            	$(".main").prepend("<a href='javascript:;' ><dl class='default'><dt><img src='<c:url value='/res-kuangji/images/noshopping.png'/>' /></dt><dd>购物车空空如也~</dd><dd>快去逛逛吧！</dd></dl></a>");
-			            }
-			            });
-		            }
-	            }//end success
-	    });
-	    return false;
-    }
-
-	//计算是否超过库存
-    function goods_num_ty(rec_id, e){
-	    var num = isNaN($("#number" + rec_id).val())? 0 : $("#number" + rec_id).val() <= 0 ? 0 : $("#number" + rec_id).val();
-	    var shengyu = 1200;
-	    if (parseInt(num) > 1200)
-	    {
-	    alert("您的购买数量超出限制！");
-	    $("#number" + rec_id).val(shengyu);
-	    return;
-	    } else if (parseInt(num) <= 0)
-	    {
-	
-	    $("#number" + rec_id).val(1);
-	    }
-	
-	    changeCartPrice(rec_id);
-    }
-    
-	//加的效果
-    function  plus(rec_id, e) {
-	    if (!rec_id) {
-	    	return false;
-	    }
-	    var n = $("#number" + rec_id).val();
-	    var num = parseInt(n) + 1;
-	    if (num == 0) {
-	    	return;
-	    }
-	    if (num > parseInt($(e).attr("name"))){
-	    	alert("您的购买数量超出库存！");
-	    	return;
-	    }
-	    $("#number" + rec_id).val(num);
-	    	changeCartPrice(rec_id);
-    }
-    
-	//减的效果
-    function minus(rec_id, e) {
-	    if (!rec_id) {
-	    return false;
-	    }
-	    var n = $("#number" + rec_id).val();
-	    var num = parseInt(n) - 1;
-	    if (num == 0) {
-	    	return
-	    }
-	    $("#number" + rec_id).val(num);
-	    changeCartPrice(rec_id);
-    }
-
-
-    /**
-     * 点选可选属性或改变数量时修改商品价格的函数
-     */
-    function changeCartPrice(rec_id){
-
-	    if (!rec_id) {
-	    	return false;
-	    }
-	    var qty = !isNaN($('#number' + rec_id).val())?parseInt($('#number' + rec_id).val()):1;
-	    var token = "ZvL0EsRqGaHp6eIMAedm7QqkKFohqpu5KDMH77cP";
-	    $.ajax({
-	    type: "POST",
-	            url: "<c:url value='/cart/changeCartPrice.html'/>",
-	            data: {rec_id: rec_id, _token: token, number: qty},
-	            dataType: "json",
-	            success: function (res) {
-		            getCartTotal();
-		            changeCartPriceResponse(res);
-	            }
-	    });
-    }
-
-    
-    /**
-     * 接收返回的信息
-     */
-    function changeCartPriceResponse(res){
-	    if (res.err_msg.length == 0){
-	// alert(res.err_msg);
-	//   $('.shopping').hide();
-	//     $('.mengban').hide();
-	// $('.notice').html(res.message).show().fadeOut(2500);
-	
-	    $("#number" + res.rec_id).val(res.qty);
-	    $("#number_cart" + res.rec_id).html("X" + res.qty);
-	//   document.forms['formCart'].elements['number'+res.rec_id].value = res.qty;
-	    /*   if (document.getElementById('ECS_GOODS_AMOUNT'))
-	     document.getElementById('ECS_GOODS_AMOUNT').innerHTML = res.result;*/
-	    }
-    }
-</script>
+<script type="text/jscript" src="<c:url value='/res-qiquan/js/jquery-1.8.3.js'/>"></script>
+<script type="text/jscript" src="<c:url value='/res-qiquan/js/product_detail2.js'/>"></script>
+<script type="text/jscript" src="<c:url value='/res-qiquan/js/formValidatorRegex.js'/>"></script>
+<link type="text/css" href="<c:url value='/res-qiquan/css/orderToPay.css'/>" rel="stylesheet"/>
+<script type="text/jscript" src="<c:url value='/res-qiquan/js/download_base.js'/>"></script>
+<meta name="viewport" content="width=640, user-scalable=no">
 
 </head>
-
-<body >
-        
-<!-- <div class="top">购物车</div> -->
- <div class="top">
-    	<b
-			onclick="javascript:window.location.href=&#39;<c:url value='/redPack/personalCenter.html'/>&#39;"></b>
-		<dd>购物车</dd>
-   		 <span></span>
-
-</div>
-<div class="main" style="background-color: #009688;">    
-    
-    <div class="order">
-        <div class="odtop">
-        </div>
-
-        <div class="goods">
-            <input name="ckgoods[]" type="checkbox" value="${goods.goodsId}">
-            <label for="ckgoods[]"></label>
-            <!-- 
-            <div class="goodsPic">
-                <img src="<c:url value ='/res-kuangji/images/339_thumb_G_1469070102895.jpg'/>">
-            </div>
-             -->
-            <div class="goodsInfo">
-                <dd class="gname">${goods.gname}</dd>
-                <dd class="gprice">
-                    <span>￥<fmt:formatNumber  value="${goods.price}" pattern="##,###,###.00"/></span>
-                    <font id="number_cart${goods.goodsId}">X1</font>
-                    <span> </span>
-                </dd>
-            </div>
-            <div class="modifyInfo">
-                <dd class="caozuo">
-                    <div class="gnumber">
-                        <span name="1000" onclick="minus(${goods.goodsId}, this)">－</span>
-                        <input type="text" value="1" name="number${goods.goodsId}" id="number${goods.goodsId}" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,&#39;&#39;)}else{this.value=this.value.replace(/\D/g,&#39;&#39;)}; goods_num_ty(${goods.goodsId}, this);" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,&#39;0&#39;)}else{this.value=this.value.replace(/\D/g,&#39;&#39;)}">
-                        <span name="1000" onclick="plus(${goods.goodsId}, this)">＋</span>
+    <body>
+        <div class="wrap" style="height: 758px;">
+            <div class="content">
+                <div class="center">
+                	<input type="hidden" value="<c:url value='/'/>" id="basePath">
+                	<input type="hidden" value="15006003486783" id="bid">
+                	<input type="hidden" value="2" id="borrowWay">
+                	<input type="hidden" value="5000.00" id="amount">
+                	<input type="hidden" value="1" id="num">
+                	<input type="hidden" value="170722180335887480" id="ordId">
+                	<input type="hidden" value="0" id="redId">
+                	<input type="hidden" value="0" id="fare">
+                	<input type="hidden" value="0" id="smsType">
+                	<input type="hidden" value="" id="address">
+                	<input type="hidden" value="0" id="isAuth">
+                    <div class="column">
+                       <p>订单号：170722180335887480</p> 
+                       <p>总计金额<span>5000.00</span>元</p>
                     </div>
-                </dd>
+                    <div class="zfs">支付方式</div>
+                </div>
+                <div class="guild">
+                    <div class="center">
+                        <div class="menu clear">
+                            <i class="d_true" flag="1"></i>
+                            <img src="<c:url value='/res-qiquan/images/zf.png'/>" height="41" width="48" alt="">
+                            <p>
+                                <em>余额支付</em>
+                                <span>账户余额：<strong>0.0</strong>元</span>
+                            </p>
+                        </div><!-- menu end -->
+                        <div class="menu clear">
+                            <i flag="2"></i>
+                            <img src="<c:url value='/res-qiquan/images/zf.png'/>" height="41" width="48" alt="">
+                            <p>
+                                <em>快捷支付</em>
+                                <span>支付各大银行卡，限额由发卡行限定</span>
+                            </p>
+                        </div><!-- menu end -->
+                    </div>
+                </div>
+                <div class="side">
+                    <div class="center">
+                        <p>请填写银行卡预留信息</p>
+                        <p class="text">*温馨提示：后续银行卡操作只能在绑定的银行卡上操作</p>
+                        <div class="bank clear">
+                            <em>银行卡</em>
+                            <input type="hidden" value="" id="bankCardId">
+                            <input type="hidden" value="" id="bankCode">
+                            <input type="hidden" value="" id="bankName">
+                            <div class="bank_card"><span></span></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 提示 -->
+		        <div class="mee2 hide"></div>
+				<!-- 验证码 -->
+		        <div class="sideTip hide">
+		            <p class="yz">输入验证码</p>
+		            <p><input class="validation" type="text" id="rechargeCode" placeholder="请输入6位短信验证码"><a class="h_btn" href="javascript:" id="reSendCode">获取验证码</a></p>
+		            <i id="validateMsg"></i>
+		            <div class="button">
+		            	<input type="hidden" id="requestNo" value="">
+		                <a href="javascript:" class="qx">取 消</a>
+		                <a href="javascript:" class="bt_s" id="confirmCode">确 定</a>
+		            </div>
+		        </div>
+                
+                <div class="bt">
+                    <a href="javascript:" class="btn">支付</a>
+                </div>
             </div>
-        </div>
-    </div>
+        </div>     
+    <script>
+             var docEl = document.documentElement;        
+                function getSize() {// 获取屏幕的宽度
+                    var screenWidth = docEl.clientWidth; 
+                    docEl.style.fontSize =  screenWidth / (640/60)  + 'px';
+                }
+                getSize();// 页面加载完执行一次
+                window.onresize = function() {
+                    getSize();
+            	}   
+            $(function(){
+                var timer2 = 120;
+                var tipId2;
+            	var basePath = $("#basePath").val();
+                $(".menu i").click(function(){
+                    $(this).addClass('d_true').parent().siblings('.menu').find("i").removeClass('d_true');
+                    var fn = $(".menu").eq(1).find("i");
+                    var flag = $(this).attr('flag');
+                    var isAuth = $("#isAuth").val()
+                    if(flag==2&& isAuth ==0){
+                    	window.location.href = 'https://lnweixin/getSecUserBankList';
+                    	return;
+                    }
+                    if(fn.hasClass('d_true')){
+                        $(".side").show();
+                    }else{
+                        $(".side").hide();
+                    }
+                })
+                 $(".ment i").toggle(function(){
+                    $(this).addClass("radio_yes");
+                },function(){
+                	$(this).removeClass("radio_yes");
+                })
+                
+                $(".btn").click(function(){
+                	var _index = null;
+                    
+                    $(".menu i").each(function(index){
+            			if($(".menu i").eq(index).hasClass("d_true")){
+            				_index = $(".menu i").eq(index).attr("flag");
+            			}
+            		});
+                    
+                    var bid = $("#bid").val();
+                    var amount = $("#amount").val();
+                    var num = $("#num").val();
+                    var borrowWay = $("#borrowWay").val();
+                    var ordId = $("#ordId").val();
+                    var redId = $("#redId").val();
+                    var smsType = $("#smsType").val();
+                    if(_index==1){//从账户扣款
+                    	sub_account_invest(bid,amount,num,borrowWay,redId,smsType,ordId);
+                    	return;
+                    }
+    				if(_index==2){//从银行卡扣款
+    					$(".mee2,.sideTip").show();
+    					sub_bank_invest(bid,amount,num,borrowWay,redId,smsType,ordId);
+                    }
+                })
+                
+                $(".qx").click(function(){
+                	$("#reSendCode").html("获取验证码");
+                	 window.clearInterval(tipId2);
+                	 timer2 = 120;
+                    $(".mee2,.sideTip").hide();
+                	$("#validateMsg").html("");
+                })
+                
+                
+                 function rtimer2() {
+					if (timer2 >= 0) {
+						$("#reSendCode").html(timer2 + "秒后获取");
+						timer2--;
+					} else {
+						window.clearInterval(tipId2);
+						$("#reSendCode").html("重新发送");
+						timer2 = 30;
+						codeValid = false;
+					}
+				}
+                
+                function sub_account_invest(bid,amount,num,borrowWay,redId,smsType,ordId){
+                	var param = {};
+                	param['bid']=bid;
+                	param['amount']=amount;
+                	param['num']=num;
+                	param['bidSec']= "";
+                	param['borrowWay']= borrowWay;
+                	param['redId']= redId;
+                	param['smsType']= smsType;//是否发送短信
+                	param['fare']= $("#fare").val();
+                	param['address']= $("#address").val();
+                	param['ordId']= ordId;
+
+                	location.href= "<c:url value='/order/submitOrder.html'/>";
+                	/*
+                	$.ajax({
+            			type:"POST",
+            			cache : false,
+            			async : false,// 设置同步执行！
+            			url:"<c:url value='/order/submitOrder.html'/>",
+            			data:param,
+            			dataType:"json",
+            			success:function(data){
+            				if(data.msg==3){
+        						location.href=$("#basePath").val()+"login/index.html";
+        					}else if(data.msg == 0){//投资成功
+        						location.href=$("#basePath").val()+"order/success.html";
+        					}else{
+        						location.href=$("#basePath").val()+"order/success.html";
+        					}
+            			},
+            		});
+            		*/
+                }
+                
+                function sub_bank_invest(bid,amount,num,borrowWay,redId,smsType,ordId){
+                	
+                	var params = {};
+                	params['borrowId'] = bid;
+                	params['amount'] = amount;
+                	params['redId'] = redId;
+                	params['channel'] = 2;
+                	location.href= "<c:url value='/order/submitOrder.html'/>";
+                	/*
+                	$.ajax({
+                		type : "POST",
+                		cache : false,
+                		async : false,
+                		dataType : "json",
+                		url :"<c:url value='/order/submitOrder.html'/>",
+                		data :params,
+                		success : function(data) {
+                			//tipId2 = window.setInterval(rtimer2, 1000);
+                			$("#requestNo").val(data.msg);
+                		}
+                	});
+                	*/
+                }
+                
+                $("#confirmCode").click(function(){
+                	var params = {};
+                	var validateCode = $("#rechargeCode").val();
+                	if(validateCode==""){
+                		$("#validateMsg").html("请输入验证码");
+                		return;
+                	}
+                	params['requestNo'] = $("#requestNo").val();
+                	params['validateCode'] = $("#rechargeCode").val();
+                	params['channel'] = '2';
+                	$.ajax({
+                		type : "POST",
+                		cache : false,
+                		async : false,
+                		dataType : "json",
+                		url : $("#basePath").val()+"lnwxfront/ybOrders",
+                		data :params,
+                		success : function(data) {
+                			if(data.responseCode=="0000"){
+                				$("#validateMsg").html("");
+                				location.href=$("#basePath").val()+"login/main.html#account";
+                			}else{
+                				$("#validateMsg").html(data.message);
+                			}
+                		}
+                	})
+                 });
+            })
+        </script>
     
-    <div style="line-height: 150%;padding-left:10px;padding-right:5px;">
-		
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-		</div>
-</div>
-
-<div class="total" style="position: relative;">
-    <div class="all" style="background-color: #009688;margin-left:0px;">
-        <input name="a" type="checkbox">
-        <label for="a">全选</label>
-    </div>
-    <div class="tprice" style="background-color: #009688;">
-        <dd class="heji">合计：<span id="totalAmount">0</span></dd>
-        <!--<dd class="freight">不含运费</dd>-->
-        <dd id="totalRes" class="freight"></dd>
-    </div>
-    <input id="jsbtn" class="jsbtn" type="button" value="提交订单" onclick="cart()">
-</div>
-
-
-
-
-<div class="footer">
-    <dl onclick="javascript:window.location.href =&#39;<c:url value='/firstpage/toFirstpage.html'/>&#39;">
-         <dt></dt>
-        <dd>首页</dd>
-    </dl>
-     <dl  onclick="javascript:window.location.href =&#39;<c:url value='/redPack/personalCenter.html'/>&#39;">
-         <dt></dt>
-        <dd>个人中心</dd>
-    </dl>
-    <%--
-    <dl onclick="javascript:window.location.href =&#39;<c:url value='/goods/select.html'/>&#39;">
-         <dt></dt>
-        <dd>商品</dd>
-    </dl>
-    <dl class="cur" onclick="javascript:window.location.href =&#39;<c:url value='/cart/cart.html'/>&#39;">
-          <dt></dt>
-        <dd>购物车</dd>
-    </dl>
-     --%>
-    
-</div>
-
-<div class="mengban" style="height: 622px;"></div>    
-
-
 </body></html>

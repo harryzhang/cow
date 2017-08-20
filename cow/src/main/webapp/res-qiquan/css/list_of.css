@@ -1,6 +1,6 @@
 *{padding:0;margin:0;}
 html{font-size:100px;}
-body{font-family: Î¢ÈíÑÅºÚ;}
+body{font-family: Î¢ï¿½ï¿½ï¿½Åºï¿½;}
 li{list-style-type: none;}
 a{text-decoration: none;}
 i,em{font-style: normal;}
@@ -40,7 +40,7 @@ i,em{font-style: normal;}
     display:block;
 }
 .host{
-    width:6rem;
+    width:100%;
     background:#fff;
     border-radius: 0.1rem;
     margin:0.1rem auto 0;

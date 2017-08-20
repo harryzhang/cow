@@ -1,6 +1,8 @@
 package com.redpack.web.view.cart.controller;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -8,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONObject;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,7 +26,6 @@ import com.redpack.common.goods.IGoodsService;
 import com.redpack.common.goods.model.CartDo;
 import com.redpack.common.goods.model.GoodsDo;
 import com.redpack.common.order.IOrderService;
-import com.redpack.service.order.OrderServiceImpl;
 import com.redpack.utils.ResponseUtils;
 import com.redpack.web.view.base.controller.BaseController;
 import com.redpack.web.view.base.controller.TokenUtil;
@@ -60,6 +62,9 @@ public class CartController extends BaseController {
 	@RequestMapping(value = "/cart")
 	public String toCart(HttpServletRequest request) {
 		logger.debug("----CartController.toCart;----");
+		Map<String, Object> parameterMap= new HashMap<String,Object>();
+		List<GoodsDo> goodLst = goodsService.selectGoods(parameterMap);
+		request.setAttribute("goodLst", goodLst);
 		return getLocalPath(request,"cart/cart");
 	}
 	
@@ -85,7 +90,12 @@ public class CartController extends BaseController {
 	 */
 	@RequestMapping(value = "/productDetail")
 	public String productDetail(HttpServletRequest request) {
-		logger.debug("----CartController.productListEmpty;----");
+		logger.debug("----CartController.productDetail;----");
+		String goodsId = request.getParameter("bId");
+		if(StringUtils.isNotBlank(goodsId)){
+			GoodsDo goods = goodsService.getById(Long.valueOf(goodsId));
+			request.setAttribute("goods", goods);
+		}
 		return getLocalPath(request,"cart/productDetail");
 	}
 

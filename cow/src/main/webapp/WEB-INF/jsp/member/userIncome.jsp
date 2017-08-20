@@ -1,185 +1,82 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html lang="en">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="viewport"
-	content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=0">
-<meta name="apple-touch-fullscreen" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
-<meta name="format-detection" content="telephone=no">
+<%@ page language="java" contentType="text/html; charset=UTF-8"    pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<html style="font-size: 59.5px;"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+<meta http-equiv="expires" content="0">
+
+<link rel="shortcut icon" href="images/logo.ico">
 
 
-<title>账户预览</title>
 
-<link href="<c:url value ='/res-kuangji/css/global.css'/>"
-	rel="stylesheet" type="text/css" />
-<link href="<c:url value ='/res-kuangji/css/goodsDetails.css'/>"
-	rel="stylesheet" type="text/css" />
-<link href="<c:url value ='/res-kuangji/css/myWealth.css'/>"
-	rel="stylesheet" type="text/css" />
-		<link href='<c:url value="/res/js/plugins/modal/modal.css?"/>${jsversion}' type="text/css" rel="stylesheet">
-	
-<script type="text/javascript"
-	src="<c:url value ='/res-kuangji/js/jquery-2.1.1.min.js'/>"></script>
-<script type="text/javascript"
-	src="<c:url value ='/res-kuangji/js/top.js'/>"></script>
-<script type="text/javascript" src='<c:url value="/res/js/global.js?v="/>${jsversion}' ></script>
-<script type="text/javascript" src='<c:url value="/res/js/plugins/modal/modal.js?v="/>${jsversion}'></script>
-	
+    <title>乐农之家</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+	<link type="text/css" href="<c:url value='/res-qiquan/css/base.css'/>" rel="stylesheet">
+    <link type="text/css" href="<c:url value='/res-qiquan/css/common.css'/>" rel="stylesheet">
+    <link type="text/css" href="<c:url value='/res-qiquan/css/account.css'/>" rel="stylesheet">
+    <script type="text/jscript" src="<c:url value='/res-qiquan/js/jquery-1.8.3.js'/>"></script>
+    <script>
+	//定义屏幕字体大小
+	document.getElementsByTagName("html")[0].style.fontSize=document.documentElement.clientWidth/10+"px";
+	</script>
 </head>
+
 <body>
+	<div class="wrap">
+	    <div   style="width:100%;background: url(/res-qiquan/images/c_head.png) no-repeat top center;margin-bottom: 10px;">
+		<div class="logo_box">
+			<a href="<c:url value='/login/main.html'/>#account">
+	            <img src="<c:url value='/res-qiquan/images/logo.png'/>" alt="头像">
+			</a>
+        </div>
+        </div>
+		<div class="main">
+        	<!--账户管理-->
+            <div class="account_manage">
+                
+                <div class="account_item">
+                	<ul>
+                        <li class="line clearfix" style="height:3rem;">
+                    	<a href="javascript:;">
+                            	<p>
+                            		<img src="<c:url value='/res-qiquan/images/account_icon4.png'/>" alt="">
+                            		  余额<font> 80${userAccount.rmb} 元</font>                            		
+                            	</p>
+                                <span>
+                                		<em onclick="window.location.href='<c:url value='/member/withdraw.html'/>'">提现</em><img src="<c:url value='/res-qiquan/images/arrow1.png'/>" alt="">
+                                		<br>
+                                		<em onclick="window.location.href='<c:url value='/member/accountDetail.html?accountType=rmb'/>'">查看明细</em><img src="<c:url value='/res-qiquan/images/arrow1.png'/>" alt="" >
+                                </span>
+                          </a>  
+                        </li>
+                    </ul>
+                </div> 
+                
+                
+                <div class="account_item">
+                	<ul>
+                        <li class="line clearfix" style="height:3rem;">
+                    	<a href="javascript:;">
+                            	<p>
+                            		<img src="<c:url value='/res-qiquan/images/account_icon4.png'/>" alt="">
+                            		  奖金<font> 200${userAccount.rmb} 元</font>                            		
+                            	</p>
+                                <span>
+                                		<em onclick="window.location.href='<c:url value='/member/withdraw.html'/>'">提现</em><img src="<c:url value='/res-qiquan/images/arrow1.png'/>" alt="">
+                                		<br>
+                                		<em onclick="window.location.href='<c:url value='/member/accountDetail.html?accountType=rmb'/>'">查看明细</em><img src="<c:url value='/res-qiquan/images/arrow1.png'/>" alt="" >
+                                </span>
+                          </a>  
+                        </li>
+                    </ul>
+                </div> 
+                
+            </div>
+        </div>
+    </div>
 
 
-	<div class="top">
-		<b
-			onclick="javascript:window.location.href=&#39;<c:url value='/redPack/personalCenter.html'/>&#39;"></b>
-		<dd>账户预览</dd>
-		<span></span>
-		<ul>
-			<li class="index" onclick="">首 页</li>
-			<li class="member" onclick="">会员中心</li>
-			<li class="shoppingCart">购物车</li>
-		</ul>
-	</div>
-
-	<div class="topmoney">
-		<div class="balance">余额（现金豆）</div>
-		<div class="money">${userAccount.rmb}（欧）</div>
-
-	</div>
-	
-	<div class="centent">
-		<dl class="cenleft">
-			<dt class="exchange">
-				证券数量<font> ${userAccount.security} 股</font>
-			</dt>
-			<dd onclick="javascript:window.location.href ='<c:url value='/member/accountDetail.html?accountType=security'/>'">
-				<font>查看明细</font>
-			</dd>
-		</dl>
-		<dl class="" >
-				<dt></dt>
-				<dd></dd>
-				</dl>
-				<dl class="cenright xinzeng" onclick="javascript:window.location.href ='<c:url value='/member/unpayInfo.html'/>'">
-					<dt></dt>
-					<dd>退本</dd>
-		</dl>
-	</div>
-	
-	<div class="centent">
-		<dl class="cenleft">
-			<dt class="exchange">
-				余额(现金豆)<font> ${userAccount.rmb} 欧元</font>
-			</dt>
-			<dd onclick="javascript:window.location.href ='<c:url value='/member/accountDetail.html?accountType=rmb'/>'">
-				<font>查看明细</font>
-			</dd>
-		</dl>
-		<dl class="cenright xinzeng" onclick="window.location.href ='<c:url value='/member/transRmb.html'/>'">
-			<dt></dt>
-			<dd>转换</dd>
-		</dl>
-		<dl class="cenright xinzeng" onclick="window.location.href ='<c:url value='/member/withdraw.html'/>'">
-			<dt></dt>
-			<dd>提现</dd>
-		</dl>
-	</div>
-
-	<div class="centent">
-		<dl class="cenleft">
-			<dt class="exchange">
-				奖金豆<font> ${userAccount.jjd} 欧元</font>
-			</dt>
-			<dd onclick="javascript:window.location.href ='<c:url value='/member/accountDetail.html?accountType=jjd'/>'">
-				<font>查看明细</font>
-			</dd>
-		</dl>
-		<dl class="cenright xinzeng" onclick="window.location.href ='<c:url value='/member/withdrawJjd.html'/>'">
-			<dt></dt>
-			<dd>提现</dd>
-		</dl>
-		<dl class="cenright xinzeng" onclick="window.location.href ='<c:url value='/member/transJjd.html'/>'">
-			<dt></dt>
-			<dd>转换</dd>
-		</dl>
-	</div>
-	
-	<div class="centent">
-	    <dl class="cenleft">
-	        <dt class="exchange">激活豆<font> ${userAccount.pet} 个</font></dt>
-	        <dd onClick="javascript:window.location.href ='<c:url value='/member/accountDetail.html?accountType=pet'/>'"><font>查看明细</font></dd>
-	    </dl>
-	    <dl class="cenright xinzeng" onClick="javascript:window.location.href ='<c:url value='/pay/toChongzhi.html'/>'">
-	        <dt></dt>
-	        <dd>充值</dd>
-	    </dl>
-	</div>
-	<div class="centent">
-	    <dl class="cenleft">
-	        <dt class="exchange">储值豆<font> ${userAccount.point} 个</font></dt>
-	        <dd onClick="javascript:window.location.href ='<c:url value='/member/accountDetail.html?accountType=point'/>'"><font>查看明细</font></dd>
-	    </dl>
-	    <dl class="cenright xinzeng" onClick="javascript:window.location.href ='<c:url value='/member/transPoint.html'/>'">
-	        <dt></dt>
-	        <dd>转换</dd>
-	    </dl>
-	</div>
-	<div class="centent">
-	    <dl class="cenleft">
-	        <dt class="exchange">激活积分<font> ${userAccount.jifen} 个</font></dt>
-	        <dd onClick="javascript:window.location.href ='<c:url value='/member/accountDetail.html?accountType=jifen'/>'"><font>查看明细</font></dd>
-	    </dl>
-	    <dl class="cenright xinzeng" onClick="javascript:window.location.href ='<c:url value='/member/transJifeng.html'/>'">
-	        <dt></dt>
-	        <dd>转让</dd>
-	    </dl>
-	</div>
-
-<!-- 	<div class="centent" > -->
-<!-- 		    <dl class="cenleft"> -->
-<!-- 		        <dt class="exchange" onClick="#" >提现记录</font></dt> -->
-<!-- 		        <dd onClick="javascript:window.location.href ='<c:url value='/member/userWithdraw.html'/>'"><font>查看明细</font></dd> -->
-		  
-<!-- 		    </dl> -->
-<!-- 	</div> -->
-
-<script type="text/javascript">
-
-/*  function unpay(){
-	 var sec = ${userAccount.security};
-	 if(sec <1 ){
-		 HHN.popup("当前证券数量不足。");
-		 return;
-	 }
-	HHN.popupConfirm("你确定要退回本金?", 
-              function(){return true;}, 
-              function(){
-            	  submitConfirm(); 
-                       return true;});
-	
-	
- } */
-	//提交信息
- function submitConfirm(){
- 	$.post('<c:url value="/member/unPay.html"/>', '', function(data) {
- 		if(data.resultCode==1){
- 				HHN.popup(data.result);
-			}else{
-				alert("退本成功,请等待管理员审核");
-				location.reload();
-			}
- 		
-		},"json");
- }
-</script> 
-	
-
-
-</body>
-</html>
+</body></html>

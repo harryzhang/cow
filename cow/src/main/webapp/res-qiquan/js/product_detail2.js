@@ -99,8 +99,7 @@ $(function(){
 			return;
 		}
 		var bId = $("#borrowId").val(); 
-		location.href=basePath+"lnweixin/subOrder?bid="+bId+"&num="+$("#inputNum").val();
-//		location.href="http://192.168.0.57:8080/lenong/lnweixin/subOrder?bid="+bId+"&num="+$("#inputNum").val();
+		location.href=basePath+"cart/jiesuan.html?bid="+bId+"&num="+$("#inputNum").val();
 	 });
 	
 	

@@ -5,3 +5,17 @@ create table       t_user_act_code (id int, actCode  varchar(50),
 
       
 ALTER TABLE  t_user ADD (mail varchar(50));
+
+
+ALTER TABLE t_goods ADD (peroid INT(4));
+ALTER TABLE  t_goods ADD (costPrice DECIMAL(12,2));
+ALTER TABLE  t_goods ADD (income DECIMAL(8,2));
+
+
+
+delete from t_goods ;
+
+insert into t_goods (goodsId, gName, gDesc, status, gCode, gCate, gUnite, price, gkind, createTime, imageSrc, bigImageSrc, bandName, id, peroid, costPrice, income) values (1, '澳洲肉牛', '澳洲肉牛', '1', 'G_KUANGJI', '1', '元/头', 8000.00, '1', '2016-07-29 00:00:00', '/uploadimages/20170714/14999949700870.jpg', '/uploadimages/20170714/content3.jpg', '澳洲肉牛', 1, 720, 300.00, 4000.00);
+insert into t_goods (goodsId, gName, gDesc, status, gCode, gCate, gUnite, price, gkind, createTime, imageSrc, bigImageSrc, bandName, id, peroid, costPrice, income) values (2, '澳洲黑猪', '澳洲黑猪', '1', 'G_JIFENG', '1', '元/头', 2500.00, '1', '2016-09-02 00:00:00', '/uploadimages/20170714/15000128357700.jpg', '/uploadimages/20170714/content3.jpg', '澳洲黑猪', 2, 360, 400.00, 500.00);
+insert into t_goods (goodsId, gName, gDesc, status, gCode, gCate, gUnite, price, gkind, createTime, imageSrc, bigImageSrc, bandName, id, peroid, costPrice, income) values (3, '斐济蛋鸡', '三个月周期产蛋量50个', '2', 'G_JIFENG', '1', '元/只', 50.00, '1', '2016-09-02 00:00:00', '/uploadimages/20170714/15000128357700.jpg', '/uploadimages/20170714/content3.jpg', '斐济肉鸡', 3, 30, 300.00, 5.00);
+insert into t_goods (goodsId, gName, gDesc, status, gCode, gCate, gUnite, price, gkind, createTime, imageSrc, bigImageSrc, bandName, id, peroid, costPrice, income) values (4, '斐济蛋鸡', '三个月周期产蛋量50个', '1', 'G_JIFENG', '2', '元/只', 200.00, '1', '2016-09-02 00:00:00', '/uploadimages/20170714/15000188566300.jpg', '/uploadimages/20170714/content3.jpg', '斐济蛋鸡', 4, 180, 600.00, 18.00);

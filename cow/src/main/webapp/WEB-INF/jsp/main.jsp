@@ -149,7 +149,7 @@
 	<input type="hidden" value="<c:url value='/'/>" id="basePath">
 	<input type="hidden" value="${userDo.userName}" id="loginUser">
 	
-	<!-- 提示窗 -->
+		<!-- 提示窗 -->
         <div class="mee"></div>
         <div class="bnak">
             <div class="coom">
@@ -158,36 +158,19 @@
             <div class="txt">功能暂未开放，敬请期待</div>
         </div>
 	
-	
+		<!-- start页面内容 -->
     	<div class="main" style="padding-bottom: 1rem;">
+    	  
+    	    <!--  start首页 -->
     		<div class="page" data-hash="index" style="display: none;">
-    			<div class="index_content">
-	                <div class="news">
-	                    <div class="side">
-	                        <div class="swiper-container swiper-container-horizontal swiper-container-android">
-	                            <div class="swiper-wrapper" style="transform: translate3d(-748px, 0px, 0px); transition-duration: 300ms;"><div class="swiper-slide swiper-slide-duplicate" data-swiper-slide-index="1" style="width: 344px; margin-right: 30px;">
-	                                	<a href="https://www.lenongzhijia.com/h5/page/about/platform.jsp"><img src="<c:url value='/res-qiquan/images/slide2.jpg'/>" height="188" width="344" alt=""></a></div>
-	                                <div class="swiper-slide swiper-slide-prev" data-swiper-slide-index="0" style="width: 344px; margin-right: 30px;">
-	                                	<a href="https://www.lenongzhijia.com/h5/page/about/farmer.jsp"><img src="<c:url value='/res-qiquan/images/slide1.jpg'/>" height="188" width="344" alt=""></a>
-	                                </div>
-	                                <div class="swiper-slide swiper-slide-active" data-swiper-slide-index="1" style="width: 344px; margin-right: 30px;">
-	                                	<a href="https://www.lenongzhijia.com/h5/page/about/platform.jsp"><img src="<c:url value='/res-qiquan/images/slide2.jpg'/>" height="188" width="344" alt=""></a></div>
-	                            <div class="swiper-slide swiper-slide-duplicate swiper-slide-next" data-swiper-slide-index="0" style="width: 344px; margin-right: 30px;">
-	                                	<a href="https://www.lenongzhijia.com/h5/page/about/farmer.jsp"><img src="<c:url value='/res-qiquan/images/slide1.jpg'/>" height="188" width="344" alt=""></a>
-	                                </div></div>
-	                            <!-- Add Pagination -->
-	                            <div class="swiper-pagination swiper-pagination-clickable swiper-pagination-bullets"><span class="swiper-pagination-bullet"></span><span class="swiper-pagination-bullet swiper-pagination-bullet-active"></span></div>
-	                        </div>
-	                    </div>
-	                </div>
+    			<div id="index_content">
+	                
             	</div>
             </div>
+            <!--  end首页 -->
+            
+        	<!-- start产品列表 -->
         	<div class="page" style="display: none" data-hash="list">
-<!-- 				<div class="swiper-container"> -->
-<!-- 	                <div class="swiper-wrapper"> -->
-<!-- 	                </div> -->
-<!--            		</div> -->
-
 	            <div>
 	                <div class="list1">
 	                <input type="hidden" value="1" id="pagesCount"> 
@@ -198,8 +181,9 @@
 	                </div>
 	            </div>
 			</div>
+			<!-- end产品列表 -->
 			
-			
+			<!--  start个人中心 -->			
 			<div class="page" style="display: block;" data-hash="account">
 	        	<!--账户明细-->
 	            <div class="account_detail clearfix">
@@ -255,15 +239,15 @@
                         </a>
                     </li>
                     <li style="width: 213.333px; height: 213.333px;">
-                    	<a href="javascript:;">
+                    	<a href="<c:url value='/member/amountDetail.html'/>">
                             <img src="<c:url value='/res-qiquan/images/cen_icon5.png'/>" alt="">
-                            <p>优惠券</p>
+                            <p>资金明细</p>
                         </a>
                     </li>
                     <li style="width: 213.333px; height: 213.333px;">
                     	<a href="javascript:;">
                             <img src="<c:url value='/res-qiquan/images/cen_icon6.png'/>" alt="">
-                            <p>认养合同</p>
+                            <p>认养记录</p>
                         </a>
                     </li>
                     <li style="width: 213.333px; height: 213.333px;">
@@ -287,19 +271,24 @@
 	            	</ul>
 	            </div> 
 			</div>
+			<!--  end个人中心 -->
         </div>
+        <!-- end页面内容 -->
+        
+        <!-- start导航条 -->
         <div class="nav" style="height:1rem;">
              <a style="height:1rem" href="javascript:void(0);" data-hash="index" id="clickIndex" class=""><img style="width:0.32rem;height:0.32rem;" src="<c:url value='/res-qiquan/images/nav1.png'/>" alt=""><p style="font-size:0.24rem;">首页</p></a>
              <a style="height:1rem" href="javascript:void(0);" data-hash="list" id="clickProduct" class=""><img style="width:0.32rem;height:0.32rem;" src="<c:url value='/res-qiquan/images/nav2.png'/>" alt=""><p style="font-size:0.24rem;">牧场</p></a>
              <a style="height:1rem" href="javascript:void(0);" data-hash="account" id="clickAccount" class="nav_current"><img style="width:0.32rem;height:0.32rem;" src="<c:url value='/res-qiquan/images/nav03.png'/>" alt=""><p style="font-size:0.24rem;">我的牧场</p></a>
          </div>
-        
-    	</div>
+        <!-- end导航条 -->
+    </div>
     <script>
     	$(function(){
 			var _width = $(document).width();
 			$(".account_module ul li").css({'width':_width/3 , 'height':_width/3});
 		})
+		
 		$(function(){
         //提示框
             $(".k").click(function(){
@@ -311,6 +300,7 @@
 		})
 		
         </script>
+        <!-- 
         <script type="text/javascript">
         var swiper = new Swiper('.swiper-container', {
             pagination: '.swiper-pagination',
@@ -322,6 +312,6 @@
             autoplayDisableOnInteraction: false
         });
         </script>
-    
+        -->   
 
 </body></html>

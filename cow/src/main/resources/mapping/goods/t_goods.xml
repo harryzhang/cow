@@ -12,6 +12,11 @@
 		<result property="gunite" column="gUnite" />
 		<result property="price" column="price" />
 		<result property="gkind" column="gkind" />
+		
+		<result property="peroid" column="peroid" />
+		<result property="costPrice" column="costPrice" />
+		<result property="income" column="income" />
+		
 		<result property="createTime" column="createTime" />
 	</resultMap>
 
@@ -85,8 +90,16 @@
 		<if test="gkind != null">  
 				gkind = #{gkind},
 		</if>				
-		<if test="createTime != null">  
-				createTime = #{createTime},
+			
+		<if test="peroid != null">  
+				peroid = #{peroid},
+		</if>
+		
+		<if test="costPrice != null">  
+				costPrice = #{costPrice},
+		</if>
+		<if test="income != null">  
+				income = #{income},
 		</if>				
 		</trim>
 		WHERE goodsId = #{goodsId} 
@@ -103,6 +116,9 @@
 		,price
 		,gkind
 		,createTime
+		,income
+		,costPrice
+		,peroid
 )
 		     VALUES (		#{gname}
 		,#{gdesc}
@@ -112,7 +128,10 @@
 		,#{gunite}
 		,#{price}
 		,#{gkind}
-		,#{createTime}
+		,now()
+		,#{income}
+		,#{costPrice}
+		,#{peroid}
 )
 	</insert>
 	

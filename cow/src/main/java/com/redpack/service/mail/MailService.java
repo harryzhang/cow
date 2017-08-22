@@ -33,8 +33,8 @@ public class MailService implements INotifyComponent{
 	
 	private final static String mailUser="418403299@qq.com";
 	private final static String mailPassword="gbjgqgjdfnefcbag";
-	//private final static String host = "smtp.qq.com";
-	private final static String host = "smtp.exmail.qq.com";
+	private final static String host = "smtp.qq.com";
+	//private final static String host = "smtp.exmail.qq.com";
 	
 	private final static String port = "587";
 
@@ -99,7 +99,8 @@ public class MailService implements INotifyComponent{
 	
 	public static void main(String[] args) {
 		MailService m = new MailService();
-		NotifyDo notifyDo = new NotifyDo("subj","test","zhangyunhmf@fansfinancial.com");
+		//NotifyDo notifyDo = new NotifyDo("subj","test","zhangyunhmf@fansfinancial.com");
+		NotifyDo notifyDo = new NotifyDo("subj","test","418403299@qq.com");
 		m.send(notifyDo );
     }
 

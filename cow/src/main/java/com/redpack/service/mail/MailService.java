@@ -89,6 +89,7 @@ public class MailService implements INotifyComponent{
 			Transport.send(message);
 		} catch (Exception e) {
 			result = false;
+			e.printStackTrace();
 			logger.error(e);
 		} finally {
 			return result;

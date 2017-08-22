@@ -55,6 +55,7 @@ public class MailService implements INotifyComponent{
 			props.put("mail.user", mailUser);
 			// 此处的密码就是前面说的16位STMP口令
 			props.put("mail.password", mailPassword);
+			props.put("mail.smtp.localhost", "127.0.0.1");
 
 			// 构建授权信息，用于进行SMTP进行身份验证
 			Authenticator authenticator = new Authenticator() {

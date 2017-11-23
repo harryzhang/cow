@@ -1,73 +1,44 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"    pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ page language="java" contentType="text/html; charset=utf-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<html>
+  <head>
+ 	<link type="text/css" href="<c:url value='/res-qiquan/css/topnav.css" rel="stylesheet'/>"/>
+ 	
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no,minimal-ui">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"> 
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!-- UC默认竖屏，UC强制全屏 -->
+    <meta name="full-screen" content="yes">
+    <meta name="browsermode" content="application">
+    <!-- QQ浏览器强制竖屏 QQ浏览器强制全屏 -->
+    <meta name="x5-orientation" content="portrait">
+    <meta name="x5-fullscreen" content="true">
+    <meta name="x5-page-mode" content="app">
+    <meta name="fragment" content="!">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="stylesheet" href="<c:url value='/res-qiquan/css/home_base.css'/>">
+    <link rel="stylesheet" href="<c:url value='/res-qiquan/css/home_main.css'/>">
+    <script type="text/jscript" src="<c:url value='/res-qiquan/js/jquery-1.8.3.js'/>"></script>
+</head>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html lang="en">
-
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=0">
-        <meta name="apple-touch-fullscreen" content="yes">
-        <meta name="apple-mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-status-bar-style" content="black">
-        <meta name="format-detection" content="telephone=no">
-
-
-        <title>会员中心--订单</title>
-
-        <link href="<c:url value ='/res-kuangji/css/global.css'/>" rel="stylesheet" type="text/css">
-        <link href="<c:url value ='/res-kuangji/css/shoppingCart.css'/>" rel="stylesheet" type="text/css">
-		
-		
-		<style>
-		    .alert{padding:15px;margin-bottom:20px;border:1px solid transparent;border-radius:4px}
-		    .alert-success {
-		        color: #3c763d;
-		        background-color: #dff0d8;
-		        border-color: #d6e9c6;
-		    }
-		    .alert {
-		        padding: 15px;
-		        margin-bottom: 20px;
-		        border: 1px solid transparent;
-		        border-radius: 4px;
-		    }
-		</style>
-
-		<style>
-		    .alert{padding:15px;margin-bottom:20px;border:1px solid transparent;border-radius:4px}
-		    .alert-danger {
-		        color: #a94442;
-		        background-color: #f2dede;
-		        border-color: #ebccd1;
-		    }
-		    .alert {
-		        padding: 15px;
-		        margin-bottom: 20px;
-		        border: 1px solid transparent;
-		        border-radius: 4px;
-		    }
-		</style>
- 
-   </head>
-<body>
-
-<div class="top">
-		<b onclick="javascript:window.location.href=&#39;<c:url value='/redPack/personalCenter.html'/>&#39;" ></b><dd>操作成功
-</div>
-<div class="main">
-    <div class="tanceng cent_a" style="top: 285px;display:block">
-        <ul>
-        	<img src="<c:url  value='/res-kuangji/images/success.jpg' />">
-            <li style="text-align: center;font-size: large;">
-            	操作成功
-            </li>
-        </ul>
-    </div>
-</div>
+<body style="background:#fff">
+    <div class="oni-mmRouter-slide-wrapper">
+	    <div class="top-nav-new">
+	        <a class="link" href="#">返回</a>
+	        <h1>操作成功</h1>
+	    </div>
+		<img  src="<c:url value='/res-qiquan/images/success.png'/>" id="imgDiv"  style="width:50%;margin: 10% 20%">
+		<p style="margin-top:20px; font-size: x-large;text-align: center;">操作成功</p>
+	</div>
+	
 </body>
 </html>
+
+
 <script type="text/javascript">
-	var t=setTimeout("window.location.href='<c:url value='/redPack/personalCenter.html'/>'", 3000);
+	var t=setTimeout("window.location.href='<c:url value='/login/me.html'/>'", 3000);
 </script>

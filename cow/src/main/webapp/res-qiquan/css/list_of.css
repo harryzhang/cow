@@ -56,15 +56,17 @@ i,em{font-style: normal;}
     color:#7b7b7b;
     border-bottom: 0.01rem solid #d2d2d2;
 }
-.content .pag1{
-    width:1.64rem;
-    height:1rem;
-    display:block;
-    float:left;
-    margin-top:0.3rem;
+.content .pag1{	
+	width: 150px;
+    height: 1rem;
+    display: block;
+    float: left;
+    margin-left: 10px;
+    margin-right: 5px;
+	
 }
 .code{
-    width:3.4rem;
+    width:98%;
     float:right;
     margin-top: 0.3rem;
 }
@@ -75,11 +77,10 @@ i,em{font-style: normal;}
     color:#939ba1;
 }
 .code li .set1{
-    width:2.15rem;
+    width:150px;
     float:left;
 }
-.code li em{
-    width:1.26rem;
+.code li em{    
     font-size: 0.18rem;
     color:#939ba1;
     display:inline-block;
@@ -137,17 +138,18 @@ i,em{font-style: normal;}
     padding-left: 0.48rem;
     background:url(../images/page/camera.png) no-repeat left center;
 }
-.list .btn{
-    width:0.9rem;
-    height:0.75rem;
+.list .btn{	
+	width: 100px;
+    height: 75px;
     font-size: 0.22rem;
-    margin-right: 0.65rem;
-    color:#fff;
-    float:left;
-    background:#02bf6d;
+    margin-left: 40px;
+    color: #fff;
+    float: left;
+    background: #02bf6d;
     text-align: center;
     border-radius: 100%;
     padding-top: 0.15rem;
+	
 }
 .list .btn_end{
     width:0.9rem;

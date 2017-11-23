@@ -8,22 +8,20 @@
 	<title>收款记录</title>
 	<meta name="viewport" content="width=device-width,inital-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=nos"/>
 	
-	<link rel="stylesheet" href='<c:url value="/res/css/mainsm.css?v="/>${cssversion}'/>
+	<link rel="stylesheet" href='<c:url value="/res-qiquan/css/mainsm.css?v="/>${cssversion}'/>
+	<link href='<c:url value="/res-qiquan/js/plugins/modal/modal.css?"/>${jsversion}' type="text/css" rel="stylesheet">
+	<script type="text/jscript" src="<c:url value='/res-qiquan/js/jquery-1.8.3.js'/>"></script>
+	<script type="text/javascript" src='<c:url value="/res-qiquan/js/global.js?v="/>${jsversion}' ></script>
+	<script type="text/javascript" src='<c:url value="/res-qiquan/js/plugins/modal/modal.js?v="/>${jsversion}'></script>
 	
-	<link href='<c:url value="/res/css/mainsm.css?v="/>${jsversion}' type="text/css" rel="stylesheet">
-	<link href='<c:url value="/res/js/plugins/modal/modal.css?"/>${jsversion}' type="text/css" rel="stylesheet">
-	<script type="text/javascript" src='<c:url value="/res/js/libs/zepto.min.js?v="/>${jsversion}' ></script>
-	<script type="text/javascript" src='<c:url value="/res/js/global.js?v="/>${jsversion}' ></script>
-	<script type="text/javascript" src='<c:url value="/res/js/plugins/modal/modal.js?v="/>${jsversion}'></script>
-	<%--
-	<script type="text/javascript" src='<c:url value="/res/js/main.min.js?v="/>${jsversion}'></script>
-	 --%>
 	
 </head>
 <body>
 	<div class="wrap">
 		<header class="header">
-			<a class="header-left" href='<c:url value="/redPack/personalCenter.html"/>'><img src='<c:url value="/res/images/icon-back.png"/>' alt=""></a>
+			<a class="header-left" href='javascript:go(-1);'>
+				<img src='<c:url value="/res/images/icon-back.png"/>' alt="">
+			</a>
 			<h1 class="header-title">收款记录</h1>
 		</header>
 		<div class="content record">
@@ -71,7 +69,7 @@
 			</div>
 			<c:if test="${empty walletList}">
 				<div class="no-record">
-					<div class="imgs"><img src='<c:url value="/res/images/empty-tip.png"/>' alt=""></div>
+					<div class="imgs"><img src='<c:url value="/res-qiquan/images/empty-tip.png"/>' alt=""></div>
 					<p>亲，没有记录哦！</p>
 				</div>
 			</c:if>

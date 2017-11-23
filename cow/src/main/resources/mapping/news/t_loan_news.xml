@@ -1,0 +1,283 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.redpack.dao.news.ILoanNewsDao">
+    <resultMap type="newsDo" id="loanNewsResultMap">
+        <result property="id" column="id" />
+        <result property="newsTitle" column="newsTitle" />
+        <result property="newsClassification" column="newsClassification" />
+        <result property="newsState" column="newsState" />
+        <result property="newsContent" column="newsContent" />
+        <result property="createTime" column="createTime" />
+        <result property="updateTime" column="updateTime" />
+        <result property="strick" column="strick" />
+        <result property="recommend" column="recommend" />
+        <result property="origin" column="origin" />
+        <result property="bSummaryImgUrl" column="bSummaryImgUrl" />
+        <result property="bSummaryImgPath" column="bSummaryImgPath" />
+        <result property="mSummaryImgUrl" column="mSummaryImgUrl" />
+        <result property="mSummaryImgPath" column="mSummaryImgPath" />
+        <result property="sSummaryImgUrl" column="sSummaryImgUrl" />
+        <result property="sSummaryImgPath" column="sSummaryImgPath" />
+        <result property="sortPosition" column="sortPosition" />
+
+    </resultMap>
+
+    <select id="getById" parameterType="java.lang.Long" resultMap="loanNewsResultMap">
+		SELECT * 
+		  FROM t_loan_news WHERE id=#{id}
+	</select>
+    <select id="getLastNews" parameterType="map"  resultMap="loanNewsResultMap">
+		SELECT * 
+		  FROM t_loan_news  WHERE newsState = 1 order by createTime desc limit 1
+	</select>
+
+    <select id="selecteNews" parameterType="map" resultMap="loanNewsResultMap">
+        SELECT id,createTime,mSummaryImgPath,sSummaryImgPath,newsTitle
+        FROM t_loan_news
+        <trim prefix="WHERE" prefixOverrides="AND |OR ">
+            <if test="newsClassification != null">
+                AND newsClassification = #{newsClassification}
+            </if>
+            <if test="strick != null">
+                AND strick = #{strick}
+            </if>
+            <if test="recommend != null">
+                AND recommend = #{recommend}
+            </if>
+            <if test="newsState != null">
+                AND newsState = #{newsState}
+            </if>
+        </trim>
+    </select>
+
+    <select id="getNewsListByPage" parameterType="map" resultMap="loanNewsResultMap">
+        SELECT a.*
+        FROM t_loan_news a
+        <trim prefix="WHERE" prefixOverrides="AND |OR ">
+            <if test="id != null">
+                AND a.id  = #{id}
+            </if>
+            <if test="newsTitle != null">
+                AND a.newsTitle like #{newsTitle}
+            </if>
+            <if test="newsClassification != null">
+                AND a.newsClassification = #{newsClassification}
+            </if>
+            <if test="newsState != null">
+                AND a.newsState  =#{newsState}
+            </if>
+
+            <if test="resolvedTime != null">
+                AND a.resolvedTime  =#{resolvedTime}
+            </if>
+            <if test="unResolvedTime != null">
+                AND a.unResolvedTime  =#{unResolvedTime}
+            </if>
+            <if test="sortPosition != null">
+                AND a.sortPosition  =#{sortPosition}
+            </if>
+            <if test="newsContent != null">
+                AND a.newsContent like #{newsContent}
+            </if>
+            <if test="startDate != null and startDate != ''">
+                <![CDATA[
+				AND DATE_FORMAT(a.createTime,'%Y-%m-%d') >=
+				'${startDate}'
+				]]>
+            </if>
+            <if test="endDate != null and endDate != ''">
+                <![CDATA[
+				AND '${endDate}' >= DATE_FORMAT(a.createTime,'%Y-%m-%d')
+				]]>
+            </if>
+        </trim>
+        ORDER BY a.createTime DESC
+    </select>
+
+    <select id="getNewsDetail" parameterType="map" resultType="newsDo">
+        SELECT a.*
+        FROM t_loan_news a
+        <trim prefix="WHERE" prefixOverrides="AND |OR ">
+            <if test="id != null">
+                AND a.id = #{id}
+            </if>
+        </trim>
+    </select>
+
+    <update id="updateLoanNewsById" parameterType="newsDo">
+        UPDATE t_loan_news
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="newsTitle != null">
+                newsTitle = #{newsTitle},
+            </if>
+            <if test="newsClassification != null">
+                newsClassification = #{newsClassification},
+            </if>
+            <if test="newsState != null">
+                newsState = #{newsState},
+            </if>
+            <if test="newsContent != null">
+                newsContent = #{newsContent},
+            </if>
+            <if test="strick != null">
+                strick = #{strick},
+            </if>
+            <if test="recommend != null">
+                recommend = #{recommend},
+            </if>
+            <if test="origin != null">
+                origin = #{origin},
+            </if>
+            <if test="createTime != null">
+                createTime = #{createTime},
+            </if>
+            <if test="updateTime != null">
+                updateTime = #{updateTime},
+            </if>
+            <if test="summary != null">
+                summary = #{summary},
+            </if>
+            <if test="bSummaryImgUrl != null">
+                bSummaryImgUrl = #{bSummaryImgUrl},
+            </if>
+            <if test="bSummaryImgPath != null">
+                bSummaryImgPath = #{bSummaryImgPath},
+            </if>
+            <if test="mSummaryImgUrl != null">
+                mSummaryImgUrl = #{mSummaryImgUrl},
+            </if>
+            <if test="mSummaryImgPath != null">
+                mSummaryImgPath = #{mSummaryImgPath},
+            </if>
+            <if test="sSummaryImgUrl != null">
+                sSummaryImgUrl = #{sSummaryImgUrl},
+            </if>
+            <if test="sSummaryImgPath != null">
+                sSummaryImgPath = #{sSummaryImgPath},
+            </if>
+            <if test="sortPosition != null">
+                sortPosition = #{sortPosition},
+            </if>
+        </trim>
+        WHERE id = #{id}
+    </update>
+
+    <insert id="addLoanNews" parameterType="newsDo" keyProperty="id"
+            useGeneratedKeys="true">
+        insert into t_loan_news
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="newsTitle != null">
+                newsTitle,
+            </if>
+            <if test="newsClassification != null">
+                newsClassification,
+            </if>
+            <if test="newsState != null">
+                newsState,
+            </if>
+            <if test="newsContent != null">
+                newsContent,
+            </if>
+            <if test="strick != null">
+                strick,
+            </if>
+            <if test="recommend != null">
+                recommend,
+            </if>
+            <if test="origin != null">
+                origin,
+            </if>
+            <if test="createTime != null">
+                createTime,
+            </if>
+            <if test="updateTime != null">
+                updateTime,
+            </if>
+            <if test="summary != null">
+                summary,
+            </if>
+            <if test="bSummaryImgUrl != null">
+                bSummaryImgUrl,
+            </if>
+            <if test="bSummaryImgPath != null">
+                bSummaryImgPath,
+            </if>
+            <if test="mSummaryImgUrl != null">
+                mSummaryImgUrl,
+            </if>
+            <if test="mSummaryImgPath != null">
+                mSummaryImgPath,
+            </if>
+            <if test="sSummaryImgUrl != null">
+                sSummaryImgUrl,
+            </if>
+            <if test="sSummaryImgPath != null">
+                sSummaryImgPath,
+            </if>
+            <if test="sortPosition != null">
+                sortPosition,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="newsTitle != null">
+                #{newsTitle},
+            </if>
+            <if test="newsClassification != null">
+                #{newsClassification},
+            </if>
+            <if test="newsState != null">
+                #{newsState},
+            </if>
+            <if test="newsContent != null">
+                #{newsContent},
+            </if>
+            <if test="strick != null">
+                #{strick},
+            </if>
+            <if test="recommend != null">
+                #{recommend},
+            </if>
+            <if test="origin != null">
+                #{origin},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="summary != null">
+                #{summary},
+            </if>
+            <if test="bSummaryImgUrl != null">
+                #{bSummaryImgUrl},
+            </if>
+            <if test="bSummaryImgPath != null">
+                #{bSummaryImgPath},
+            </if>
+            <if test="mSummaryImgUrl != null">
+                #{mSummaryImgUrl},
+            </if>
+            <if test="mSummaryImgPath != null">
+                #{mSummaryImgPath},
+            </if>
+            <if test="sSummaryImgUrl != null">
+                #{sSummaryImgUrl},
+            </if>
+            <if test="sSummaryImgPath != null">
+                #{sSummaryImgPath},
+            </if>
+            <if test="sortPosition != null">
+                #{sortPosition},
+            </if>
+        </trim>
+    </insert>
+
+
+    <delete id="deleteById" parameterType="java.lang.Long" >
+		DELETE FROM t_loan_news WHERE id = #{id}
+	</delete>
+
+</mapper>
+

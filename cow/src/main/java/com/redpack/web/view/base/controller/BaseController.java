@@ -103,4 +103,15 @@ public class BaseController {
     }
 	
 	
+	protected String getString(HttpServletRequest request, String name) {
+        String paraVal = request.getParameter(name);
+        if (StringUtils.isNotBlank(paraVal)) {
+            paraVal = FilteSqlInfusion(paraVal);
+            if ("null".equalsIgnoreCase(paraVal) || "undefined".equalsIgnoreCase(paraVal)) {
+                return "";
+            }
+        }
+        return paraVal;
+    }
+	
 }

@@ -2,6 +2,7 @@
 package com.redpack.web.view.account.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +17,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -23,7 +25,15 @@ import com.redpack.common.account.IUserInfoService;
 import com.redpack.common.account.IUserService;
 import com.redpack.common.account.model.UserDo;
 import com.redpack.common.account.model.UserInfoDo;
+import com.redpack.common.active.IActiveService;
+import com.redpack.common.basedata.IBannerService;
+import com.redpack.common.basedata.model.BannerDo;
 import com.redpack.common.constant.WebConstants;
+import com.redpack.common.goods.IGoodsService;
+import com.redpack.common.goods.model.GoodsDo;
+import com.redpack.common.news.ILoanNewsService;
+import com.redpack.common.news.model.LoanNewsDo;
+import com.redpack.common.notice.INoticeService;
 import com.redpack.utils.ResponseUtils;
 import com.redpack.web.view.base.controller.BaseController;
 
@@ -44,6 +54,18 @@ public class LoginController extends BaseController {
 	private IUserService userService;
 	@Autowired
 	private IUserInfoService userInfoService;
+	
+	@Autowired
+	private IGoodsService goodsService;
+	@Autowired
+	private ILoanNewsService loanNewsService;
+	@Autowired
+	private INoticeService  noticeService;
+	@Autowired
+	private IBannerService  bannerService;
+	@Autowired
+	private IActiveService  activeService;
+	
 
 	// 登录页验证码标识
 	private final static String pageId = "userlogin";
@@ -71,7 +93,48 @@ public class LoginController extends BaseController {
 	@RequestMapping(value = "main")
 	public String main(ModelMap map, HttpSession sessionS) {
 		logger.info("----loginInit(登录成功)----");
+		
+		//加载认养商品
+		Map<String, Object> parameterMap= new HashMap<String,Object>();
+		List<GoodsDo> goodLst = goodsService.selectGoods(parameterMap);
+		map.addAttribute("goodLst", goodLst);
+		
+		//加载新闻
+		List<LoanNewsDo> newsLst = loanNewsService.getLastNews();
+		map.addAttribute("news", newsLst);
+		
+		//加载公告
+		List<Map<String, Object>> noticeLst = noticeService.queryNotice();
+		if(!CollectionUtils.isEmpty(noticeLst)){
+			map.addAttribute("notice", noticeLst.get(0));
+		}
+		
+		//加载活动广告图片
+		Map<String, Object> activePara= new HashMap<String,Object>();
+		activePara.put("status", 1);
+		List<BannerDo> activeLst = activeService.selectActive(activePara);
+		map.put("activeLst", activeLst);
+		
+		//加载banner图片
+		Map<String, Object> bannerPara= new HashMap<String,Object>();
+		bannerPara.put("status", 1);
+		List<BannerDo> bannerLst = bannerService.selectBanner(bannerPara);
+		map.put("bannerLst", bannerLst);
+		
 		return "main";
+	}
+	
+	/**
+	 * 个人中心
+	 * 
+	 * @return
+	 * @author: zhangyunhua
+	 * @date 2015-3-29 上午3:36:11
+	 */
+	@RequestMapping(value = "me")
+	public String me(ModelMap map, HttpSession sessionS) {
+		logger.info("----loginInit(登录成功)----");
+		return "me";
 	}
 
 	/**

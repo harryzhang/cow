@@ -1,6 +1,7 @@
 package com.redpack.web.view.cart.controller;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,12 +21,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.redpack.common.account.IBizUserAccountService;
 import com.redpack.common.account.IUserAccountIncomeService;
+import com.redpack.common.account.model.UserDo;
 import com.redpack.common.base.param.IParamService;
 import com.redpack.common.constant.WebConstants;
 import com.redpack.common.goods.IGoodsService;
 import com.redpack.common.goods.model.CartDo;
 import com.redpack.common.goods.model.GoodsDo;
 import com.redpack.common.order.IOrderService;
+import com.redpack.common.order.model.OrderDo;
+import com.redpack.common.util.CalculateUtils;
+import com.redpack.common.util.DateUtil;
 import com.redpack.utils.ResponseUtils;
 import com.redpack.web.view.base.controller.BaseController;
 import com.redpack.web.view.base.controller.TokenUtil;
@@ -99,6 +104,25 @@ public class CartController extends BaseController {
 		return getLocalPath(request,"cart/productDetail");
 	}
 
+	
+	/**
+	 * 产品收益明细
+	 * 
+	 * @return
+	 * @author: zhangyunhua
+	 * @date 2015-3-29 上午3:36:11
+	 */
+	@RequestMapping(value = "/productIncomeDesc")
+	public String productIncomeDesc(HttpServletRequest request) {
+		logger.debug("----CartController.productIncomeDesc;----");
+//		String goodsId = request.getParameter("bId");
+//		if(StringUtils.isNotBlank(goodsId)){
+//			GoodsDo goods = goodsService.getById(Long.valueOf(goodsId));
+//			request.setAttribute("goods", goods);
+//		}
+		return getLocalPath(request,"cart/productIncomeDesc");
+	}
+	
 	/**
 	 * 添加到购物车
 	 * 
@@ -231,18 +255,26 @@ public class CartController extends BaseController {
 	@RequestMapping(value = "/jiesuan")
 	public String jiesuan(HttpServletRequest request,Model model) {
 		logger.debug("----CartController.pay;----");
-		GoodsDo goods = goodsService.getKuangJi();
-		model.addAttribute("goods", goods);
+		String goodsId = request.getParameter("bid");		
+		String num = request.getParameter("num");		
+		GoodsDo goods = goodsService.getById(Long.parseLong(goodsId));
+		UserDo currentUser = (UserDo)  request.getSession().getAttribute(WebConstants.SESSION_USER);
 		
-		request.getSession().removeAttribute(SESSION_CART);
-		
-		Object cart = request.getSession().getAttribute(SESSION_CART);
-		if(null == cart){
-			CartDo myCart  = new CartDo();
-			goods.setBuyQty(1);
-			myCart.addGoods(goods);
-			request.getSession().setAttribute(SESSION_CART, myCart);
-		}
+		OrderDo newOrder = new OrderDo();
+		newOrder.setCreateTime(new Date());
+		newOrder.setGoodsId(goods.getGoodsId());
+		newOrder.setOrderStatus(3);
+		newOrder.setQty(Long.valueOf(num));
+		newOrder.setPayStatus(0);
+		newOrder.setUserId(currentUser.getId());
+		newOrder.setOrderType(1);
+		newOrder.setPrice(goods.getPrice());
+		double d=CalculateUtils.mul(goods.getPrice().doubleValue(), new Double(num));
+		newOrder.setTotalPrice(new BigDecimal(d));
+		newOrder.setOrderCode("order_"+currentUser.getId()+DateUtil.getDate()+DateUtil.getThree());
+		orderService.addOrder(newOrder);
+		request.getSession().setAttribute(SESSION_CART,newOrder);
+		model.addAttribute("order", newOrder);
 		return getLocalPath(request,"cart/jiesuan");
 	}
 

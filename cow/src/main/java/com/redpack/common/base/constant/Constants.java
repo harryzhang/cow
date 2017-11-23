@@ -8,6 +8,12 @@ package com.redpack.common.base.constant;
  *
  */
 public class Constants {
+	
+	
+    /**
+     * mybatis分页page
+     */
+    public final static String MYBATIS_PAGE  = "page";
     /**
      * 字符串：空
      */

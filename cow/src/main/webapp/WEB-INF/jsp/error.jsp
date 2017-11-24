@@ -22,7 +22,7 @@
 
  <div style="margin:0;width:100%">
      <img style="margin:0;width:100%" src="<c:url  value='/res-kuangji/images/error.jpg' />">
-     <div style="text-align: center;font-size:20px">获取用户失败，请登录重试</div>
+     <div style="text-align: center;font-size:20px">${errorMsg}</div>
  </div>
 </body>
 </html>

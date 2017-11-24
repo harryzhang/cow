@@ -40,6 +40,17 @@ public class WalletDo  implements java.io.Serializable{
 	
 	private Integer fkSmsStatus; // 0 未发， 1 已发
 	private Integer skSmsStatus; // 0 未发， 1 已发
+	/**
+	 * 订单No
+	 */
+	private String orderNo;
+	
+	/**
+	 * 付款上传的图片
+	 */
+	private String fkImg;
+	
+	
 
 	
 	public Long getId() {
@@ -149,6 +160,32 @@ public class WalletDo  implements java.io.Serializable{
 	}
 	public void setSkSmsStatus(Integer skSmsStatus) {
 		this.skSmsStatus = skSmsStatus;
+	}
+	
+	/**
+	 * @return the orderNo
+	 */
+	public String getOrderNo() {
+		return orderNo;
+	}
+	
+	/**
+	 * @param orderId the orderNo to set
+	 */
+	public void setOrderNo(String orderNo) {
+		this.orderNo = orderNo;
+	}
+	/**
+	 * @return the fkImg
+	 */
+	public String getFkImg() {
+		return fkImg;
+	}
+	/**
+	 * @param fkImg the fkImg to set
+	 */
+	public void setFkImg(String fkImg) {
+		this.fkImg = fkImg;
 	}
 	
 }

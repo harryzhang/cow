@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.redpack.common.account.IBizUserAccountService;
 import com.redpack.common.account.IUserAccountIncomeService;
 import com.redpack.common.account.model.UserDo;
+import com.redpack.common.base.constant.Constants;
 import com.redpack.common.base.param.IParamService;
 import com.redpack.common.constant.WebConstants;
 import com.redpack.common.goods.IGoodsService;
@@ -31,6 +32,8 @@ import com.redpack.common.order.IOrderService;
 import com.redpack.common.order.model.OrderDo;
 import com.redpack.common.util.CalculateUtils;
 import com.redpack.common.util.DateUtil;
+import com.redpack.common.wallet.IWalletService;
+import com.redpack.common.wallet.model.WalletDo;
 import com.redpack.utils.ResponseUtils;
 import com.redpack.web.view.base.controller.BaseController;
 import com.redpack.web.view.base.controller.TokenUtil;
@@ -41,7 +44,7 @@ public class CartController extends BaseController {
 
 	private static final Logger logger = Logger.getLogger(CartController.class);
 	
-	private static final String  SESSION_CART = "mycart";
+	
 	@Autowired
 	private IGoodsService goodsService;
 	
@@ -56,6 +59,8 @@ public class CartController extends BaseController {
 	
 	@Autowired
 	private IOrderService orderService;
+	@Autowired
+	private IWalletService walletService;
 
 	/**
 	 * 购物车
@@ -159,7 +164,7 @@ public class CartController extends BaseController {
 		long recId = Long.parseLong(recIdStr);
 		
 		//修改购买数量
-		CartDo cart = (CartDo)request.getSession().getAttribute(SESSION_CART);
+		CartDo cart = (CartDo)request.getSession().getAttribute(Constants.SESSION_CART);
 		GoodsDo goods= cart.getGoodsById(recId);
 		goods.setBuyQty(qty);
 		
@@ -184,7 +189,7 @@ public class CartController extends BaseController {
 		String recIds = request.getParameter("goods");
 		String token = request.getParameter("_token");
 		
-		CartDo cart = (CartDo)request.getSession().getAttribute(SESSION_CART);
+		CartDo cart = (CartDo)request.getSession().getAttribute(Constants.SESSION_CART);
 		double totalMoney = cart.toTal(recIds);
 		BigDecimal money = new BigDecimal(totalMoney);
 		
@@ -238,7 +243,7 @@ public class CartController extends BaseController {
 		long recId = Long.parseLong(recIdStr);
 		
 		//修改购买数量
-		CartDo cart = (CartDo)request.getSession().getAttribute(SESSION_CART);
+		CartDo cart = (CartDo)request.getSession().getAttribute(Constants.SESSION_CART);
 		cart.delGoods(recId);
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("err_msg", "");
@@ -271,9 +276,23 @@ public class CartController extends BaseController {
 		newOrder.setPrice(goods.getPrice());
 		double d=CalculateUtils.mul(goods.getPrice().doubleValue(), new Double(num));
 		newOrder.setTotalPrice(new BigDecimal(d));
-		newOrder.setOrderCode("order_"+currentUser.getId()+DateUtil.getDate()+DateUtil.getThree());
+		String orderNo = "order_"+currentUser.getId()+DateUtil.getDate()+DateUtil.getThree();
+		newOrder.setOrderCode(orderNo);
 		orderService.addOrder(newOrder);
-		request.getSession().setAttribute(SESSION_CART,newOrder);
+		request.getSession().setAttribute(Constants.SESSION_CART,newOrder);
+		
+		//写待收确认，待付确认
+		WalletDo walletDo = new WalletDo();
+		walletDo.setFkOptUserId(currentUser.getId());
+		walletDo.setFkUserId(currentUser.getId());
+		walletDo.setFkStatus(0);
+		walletDo.setSkStatus(0);
+		walletDo.setRemark("领养");
+		walletDo.setFkUpdateTime(new Date());
+		walletDo.setAmt(newOrder.getTotalPrice().doubleValue());
+		walletDo.setOrderNo(orderNo);
+		walletDo.setValid(1);
+		walletService.addWallet(walletDo);		
 		model.addAttribute("order", newOrder);
 		return getLocalPath(request,"cart/jiesuan");
 	}
@@ -315,7 +334,7 @@ public class CartController extends BaseController {
 		String token = TokenUtil.putToken(request, TokenUtil.BIZ_CODE_GOUMAI_GUQUAN);
 		
 		String recIds = request.getParameter("ckgoods");
-		CartDo cart = (CartDo)request.getSession().getAttribute(SESSION_CART);
+		CartDo cart = (CartDo)request.getSession().getAttribute(Constants.SESSION_CART);
 		GoodsDo goods = null;
 		if(null == cart){
 			goods = goodsService.getById(Long.valueOf(recIds));
@@ -323,7 +342,7 @@ public class CartController extends BaseController {
 			cart  = new CartDo();
 			goods.setBuyQty(Integer.valueOf(qty));
 			cart.addGoods(goods);
-			request.getSession().setAttribute(SESSION_CART, cart);
+			request.getSession().setAttribute(Constants.SESSION_CART, cart);
 		}
 		double totalMoney = cart.toTal(recIds);
 		double totalQty = cart.toTalQty(recIds);

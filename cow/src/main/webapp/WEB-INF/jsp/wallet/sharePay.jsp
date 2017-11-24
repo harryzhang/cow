@@ -62,18 +62,24 @@
     overflow: hidden;
 ">共享收款人电话：<span>136921111</span></p>
 			</div>
-            <form action="<c:url value='/account/confirmPassword.html'/>" class="form_wrap">
+            <form action="" class="form_wrap">
+            
             <div class="formStyle2">
                 <div class="form_item">
                     	<ul>
                     		<li class="form_line1 clearfix">
                             	<span>支付宝</span>
-                                <input type="text" placeholder="共享收款人支付宝账号" name="" id="payzfb" value="233eee">
-                            </li>
-                            <li class="form_line1 clearfix">
-                            	<span>微信</span>
-                                <input type="text" placeholder="共享收款人微信账号" name="" id="paywx" value="2xxdwe">
-                            </li>
+                                <select id="chzShareUser">
+                                	<option value="">请选择贡献者</option>
+		                            <c:forEach items="${sharePayLst}" var="item" >
+		                        	<option value="${item.userId}">
+		                        		${item.realName}<br/>
+		                        		微信账号:${item.wx}<br/>
+		                        		支付宝账号:${item.zfb}<br/>
+		                        	</option>
+		                        	</c:forEach>
+		                        </select>
+                            </li>                           
                     	</ul>
                 </div>
 			</div>                    
@@ -91,7 +97,16 @@
 
 	//修改提现密码
 	function toUploadPayImg() {
-		window.location.href= "<c:url value='/wallet/toUploadPayImg.html'/>";
+		var username = $("#chzShareUser option:selected").text(); 
+		var chzUserId = $("#chzShareUser").val();
+		if(chzUserId =="" || chzUserId=="undefined"){
+			alert("请选择一个共享者");
+			return false;
+		}
+			
+		if(confirm("你已向"+username+"支付完成？")){
+			window.location.href= "<c:url value='/wallet/toUploadPayImg.html?shareUser='/>"+chzUserId;
+		}
 	}
 
 </script>

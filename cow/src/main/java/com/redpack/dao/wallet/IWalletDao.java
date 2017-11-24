@@ -50,6 +50,13 @@ public interface IWalletDao {
 	 * @return
 	 */
 	public List<WalletDo> selectUnConfirmRecord(String groupName);
+
+	/**
+	 * 查询共享者
+	 * zhangyunhmf
+	 *
+	 */
+    public List<Map> selectSharePay();
 	
 	
 }

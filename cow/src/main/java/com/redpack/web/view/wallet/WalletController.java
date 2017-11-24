@@ -1,9 +1,8 @@
 package com.redpack.web.view.wallet;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,20 +12,23 @@ import javax.servlet.http.HttpSession;
 
 import net.sf.json.JSONObject;
 
-import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.aspectj.util.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.redpack.common.account.model.UserDo;
+import com.redpack.common.base.constant.Constants;
 import com.redpack.common.base.exception.BusinessException;
 import com.redpack.common.base.result.IResult;
 import com.redpack.common.constant.WebConstants;
+import com.redpack.common.order.IOrderService;
+import com.redpack.common.order.model.OrderDo;
 import com.redpack.common.wallet.IWalletService;
+import com.redpack.common.wallet.model.WalletDo;
 import com.redpack.utils.ResponseUtils;
 import com.redpack.utils.UploadUtil;
 import com.redpack.web.view.base.controller.BaseController;
@@ -45,7 +47,10 @@ public class WalletController extends BaseController {
 	private static final Logger logger = Logger.getLogger(WalletController.class);
 
 	@Autowired
-	IWalletService walletService;
+	private IWalletService walletService;
+	@Autowired
+	private IOrderService  orderService;
+
 
 	/**
 	 * 跳转付款页面
@@ -58,8 +63,8 @@ public class WalletController extends BaseController {
 	public String sharePay(HttpServletRequest request, HttpServletResponse response, Model model) {
 		logger.info("----跳转付款页面----");
 		// model.addAttribute("pwdFlag", pwdFlag);
-		List<Map> walletList = walletService.selectUserFk(getUserId(request), null);
-		model.addAttribute("walletList", walletList);
+		List<Map> sharePayLst = walletService.selectSharePay();
+		model.addAttribute("sharePayLst", sharePayLst);
 		return "wallet/sharePay";
 	}
 
@@ -248,6 +253,21 @@ public class WalletController extends BaseController {
 	public String toUploadPayImg(HttpServletRequest request, HttpServletResponse response,
 	        Model model) {
 		logger.info("----跳转付款凭证上传页面----");
+		String shareUser = request.getParameter("shareUser");
+		if(StringUtils.isBlank(shareUser)){
+			model.addAttribute("errorMsg", "无效的共享者");
+			return "/error";
+		}
+		OrderDo  newOrder = (OrderDo)request.getSession().getAttribute(Constants.SESSION_CART);
+		Map<String, Object> paraM = new HashMap<String,Object>();
+		paraM.put("orderNo", newOrder.getOrderCode());
+		List<WalletDo> wallLst = walletService.selectWallet(paraM);
+		if(!CollectionUtils.isEmpty(wallLst)){
+			WalletDo newWalletDo = wallLst.get(0);
+			newWalletDo.setSkUserId(Long.valueOf(shareUser));
+			walletService.updateWalletById(newWalletDo);
+		}
+		
 		String token = TokenUtil.putToken(request, "upload");
 		model.addAttribute("token", token);
 		return "wallet/uploadPayImg";
@@ -268,7 +288,6 @@ public class WalletController extends BaseController {
 		try {
 			long userId = getUserId(request);
 			String file = getString(request, "file");
-			String ordId = getString(request, "ordId");
 
 			// 允许png
 			String pngHeader = "data:image/png;base64,";
@@ -302,6 +321,10 @@ public class WalletController extends BaseController {
 				jsonObject.put("result", "上传资料成功");
 				jsonObject.put("filePath", filePath);
 				jsonObject.put("resultCode", 0);
+				
+				OrderDo  newOrder = (OrderDo)request.getSession().getAttribute(Constants.SESSION_CART);
+				
+				walletService.confirmUpload(newOrder.getOrderCode(),filePath);
 				ResponseUtils.renderText(response, "UTF-8", jsonObject.toString());
 				return;
 			} else {

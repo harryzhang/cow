@@ -1,3 +1,8 @@
+ALTER TABLE  `t_amt_record` 
+   ADD COLUMN `orderNo` BIGINT NULL COMMENT '订单No' AFTER `fkSmsStatus`;
+alter table `t_amt_record` 
+   add column `fkImg` varchar(200) NULL COMMENT '付款上传的图片' after `orderNo`;
+
 create table       t_user_act_code (id int, actCode  varchar(50),
         userName varchar(50) , `action` varchar(20)  , `status` int ,createTime date);
         

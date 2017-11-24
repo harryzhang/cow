@@ -62,4 +62,22 @@ public interface IWalletService {
 	
 	public void updateWalletById(WalletDo newWalletDo);
 
+	/**
+	 * 
+	 * 确认付款，并上传付款凭证
+	 * zhangyunhmf
+	 *
+	 */
+    public void confirmUpload(String orderNo, String filePath);
+
+	/**
+	 * 查询共享支付清单
+	 * 
+	 * zhangyunhmf
+	 *
+	 */
+    public List<Map> selectSharePay();
+    
+    public int addWallet(WalletDo walletDo);
+
 }

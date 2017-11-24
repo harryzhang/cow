@@ -196,15 +196,15 @@ background-size: 100px auto!important;}
                 	<ul class="clearfix">
                 		<li>
                         	<p id="stillMoney">0.00元</p>
-                            <span>累计收益</span>
+                            <span>投资收益</span>
                         </li>
                         <li>
                         	<p id="balance">0.00元</p>
-                            <span>可用余额</span>
+                            <span>投资金额</span>
                         </li>
                         <li>
                         	<p id="stayBackMoney">0.00元</p>
-                            <span>待返金额</span>
+                            <span>推荐奖励</span>
                         </li>
                 	</ul>
                 </div>
@@ -231,9 +231,9 @@ background-size: 100px auto!important;}
                         </a>
                     </li>
                     <li style="width: 213.333px; height: 213.333px;">
-                    	<a href="javascript:;">
+                    	<a href="<c:url value='/member/refUser.html'/>">
                             <img src="<c:url value='/res-qiquan/images/cen_icon4.png'/>" alt="">
-                            <p>活动中心</p>
+                            <p>推荐列表</p>
                         </a>
                     </li>
                     <li style="width: 213.333px; height: 213.333px;">
@@ -249,15 +249,15 @@ background-size: 100px auto!important;}
                         </a>
                     </li>
                     <li style="width: 213.333px; height: 213.333px;">
-                    	<a href="javascript:;">
+                    	<a href="<c:url value='/member/orderDetail.html'/>">
                             <img src="<c:url value='/res-qiquan/images/cen_icon7.png'/>" alt="">
-                            <p>我的舍棚</p>
+                            <p>我的订单</p>
                         </a>
                     </li>
                     <li style="width: 213.333px; height: 213.333px;">
-                    	<a href="javascript:" class="k">
+                    	<a href="<c:url value='/member/orderDetail.html'/>">
                             <img src="<c:url value='/res-qiquan/images/cen_icon8.png'/>" alt="">
-                            <p>我的订单</p>
+                            <p>上传付款图片</p>
                         </a>	
                     </li>
                     <li style="width: 213.333px; height: 213.333px;">

@@ -75,7 +75,7 @@
         <div class="title-bar">养殖推荐<a class="more" href="<c:url value='/cart/cart.html'/>">更多</a></div>
         <div class="home-news-list">
         	<c:forEach items="${goodLst}" var="item">
-              <a class="item" href="#" style="float: left;width:30%;padding: 0px; margin-left: 8px; margin-top: 10px;">
+              <a class="item" href="<c:url value='/cart/productDetail.html?bId=${item.goodsId }'/>" style="float: left;width:30%;padding: 0px; margin-left: 8px; margin-top: 10px;">
                 <div class="img" style="width=:100%;background-image: url(&quot;${item.imageSrc }&quot;);">
                 	<p style="margin-top:85px">${item.bandName}</p>
                 </div>

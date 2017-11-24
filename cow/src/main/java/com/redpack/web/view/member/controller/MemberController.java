@@ -108,6 +108,34 @@ public class MemberController extends BaseController{
 		
 		return getLocalPath(request,"member/userIncome");
 	}
+	
+	/**
+	 * json 格式获取我的账户收益
+	 * 我的收益
+	 * 
+	 * @return
+	 */
+	@RequestMapping("getUserIncome")
+	public void getUserIncome(HttpServletRequest request,HttpServletResponse response,Model model) {
+		logger.info("----我的收益----");
+		JSONObject jsonObject = new JSONObject();
+		
+		UserDo currentUser = (UserDo)  request.getSession().getAttribute(WebConstants.SESSION_USER);
+		if(currentUser == null){
+			jsonObject.put("sessionUser", "1");
+			ResponseUtils.renderText(response, "UTF-8", jsonObject.toString());
+			return;
+		}
+		long  userId = currentUser.getId();
+		Map<String,Object> userMap = memberService.getUserAccount(userId);
+		
+		
+		jsonObject.putAll(userMap);
+		
+		ResponseUtils.renderText(response, "UTF-8", jsonObject.toString());
+		
+	}
+	
 	/**
 	 * 管理中以
 	 * 
@@ -362,7 +390,7 @@ public class MemberController extends BaseController{
 			user = (UserDo)sessionUser;
 			Map<String,Object> parm = new HashMap<String,Object>();
 			parm.put("userId", user.getId());
-			parm.put("orderType", "2");
+			parm.put("orderType", "1");
 			List<OrderDo> orderList = orderService.selectPointOrder(parm);
 			model.addAttribute("orderList", orderList);
 		}

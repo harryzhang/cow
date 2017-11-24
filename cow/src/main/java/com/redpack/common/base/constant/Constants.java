@@ -9,6 +9,7 @@ package com.redpack.common.base.constant;
  */
 public class Constants {
 	
+	public final static String  SESSION_CART = "mycart";
 	
     /**
      * mybatis分页page

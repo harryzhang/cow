@@ -178,6 +178,10 @@ public class WebConstants {
     
     /** =====================埃瓦尔证券===================================**/
     /**
+     * 投资账户
+     */
+    public static final String INVEST_ACCOUNT="invest";
+    /**
      * 帐户类型现金
      */
     public static final String RMB_ACCOUNT="rmb";

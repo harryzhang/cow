@@ -6,29 +6,32 @@
 
 package com.redpack.service.wallet;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
+import com.redpack.common.account.ICowBizUserAccountService;
 import com.redpack.common.account.IUserService;
+import com.redpack.common.account.model.BizUserAccountDo;
 import com.redpack.common.account.model.UserDo;
-import com.redpack.common.base.exception.BusinessException;
 import com.redpack.common.base.result.IResult;
 import com.redpack.common.base.result.ResultSupport;
+import com.redpack.common.constant.WebConstants;
 import com.redpack.common.customer.ICustomerService;
-import com.redpack.common.grade.model.GroupDo;
 import com.redpack.common.grade.model.GroupUserDo;
 import com.redpack.common.group.IGroupService;
 import com.redpack.common.group.IGroupUserService;
+import com.redpack.common.order.IOrderService;
+import com.redpack.common.order.model.OrderDo;
 import com.redpack.common.sms.ISmsService;
 import com.redpack.common.userWaiting.model.UserWaitingDo;
 import com.redpack.common.wallet.IWalletService;
@@ -72,6 +75,10 @@ public class WalletServiceImpl implements IWalletService {
 	
 	@Autowired	
     private ISmsService smsService;
+	@Autowired	
+	private IOrderService orderService;
+	@Autowired	
+	private ICowBizUserAccountService bizUserAccountService;
 
 	@Override
 	public List<Map> selectUserSk(Long skUserId,Integer skStatus) {
@@ -131,68 +138,43 @@ public class WalletServiceImpl implements IWalletService {
 		currRec.setSkStatus(1);
 		walletDao.updateWalletById(currRec);
 		
-		paraMap.clear();
-		paraMap.put("fkUserId", currRec.getFkUserId());
-		paraMap.put("fkStatus", 0);
-		paraMap.put("valid", 1);
-		paraMap.put("groupName", currRec.getGroupName());
-		List<WalletDo>  walletAllList = walletDao.selectWallet(paraMap);
-		// last confirm sk record
-		if(null == walletAllList || walletAllList.size()<1){
-			UserDo tempUser = new UserDo();
-			tempUser.setId(currRec.getFkUserId());
-			tempUser.setStatus(1);
-			userDao.updateUser(tempUser);
-		}
+		afterSk(currRec);
 		
-		//last confirm in group
-		paraMap.clear();
-		
-		paraMap.put("groupName", currRec.getGroupName());
-		paraMap.put("skStatus", 1);
-		paraMap.put("fkStatus", 1);
-		paraMap.put("valid", 1);
-		
-		//付款成功人组所在付款状态
-		List<WalletDo>  walletGroupAllList =walletDao.selectWallet(paraMap);
-		
-		paraMap.clear();
-		paraMap.put("groupName", currRec.getGroupName());
-		List<GroupDo> groupList = groupService.selectGroup(paraMap);
-		if(null == groupList || groupList.size()<1){
-			throw new BusinessException("找不到组");
-		}
-		
-		GroupDo fenpanGroup = groupList.get(0);
-		if("0".equals(String.valueOf(fenpanGroup.getStatus()))){ 
-			//已经分配的更新状态退出
-			return ResultSupport.buildResult(0,"成功");
-		}
-		
-		//分盘 , 封号的人付款记录 需要处理  valid
-		Set<Long> fkSet = new HashSet<Long>();
-		for(WalletDo wDo : walletGroupAllList){
-			fkSet.add(wDo.getFkUserId());
-		}
-		
-		//有27个付款人确认过了，并且不存在有未确认的记录就可以分盘了
-		if(fkSet.size()>=27){
-			
-			 List<WalletDo> unrecordList = walletDao.selectUnConfirmRecord(currRec.getGroupName());
-			if(unrecordList == null || unrecordList.size()==0){
-	            //出局
-				if("A".equals(fenpanGroup.getNetworkGroup())){
-					groupService.applyGroupGrade(fenpanGroup.getGroupRootUser(),fenpanGroup);
-				}
-				if("B".equals(fenpanGroup.getNetworkGroup())){
-					groupService.applyGroupGradeForB(fenpanGroup.getGroupRootUser(),fenpanGroup);
-				}				
-				processWaitingUser(currRec.getGroupName());
-			}
-			
-		}
 		return ResultSupport.buildResult(0, "成功");
 	}
+	
+	
+	
+
+	/**
+	 * 
+	 * 收款后
+	 *
+	 * zhangyunhmf
+	 *
+	 */
+    private void afterSk(WalletDo currRec) {
+	     //更新订单为已付款
+	     OrderDo order = orderService.selectOrderByOrderNo(currRec.getOrderNo());
+	     order.setOrderStatus(1);
+	     order.setPayStatus(1);
+	     order.setPayTime(new Date());
+	     orderService.updateOrderById(order);	
+	     
+	     //累计投资金额
+	    BizUserAccountDo investUserAccountDo = new BizUserAccountDo();
+	    investUserAccountDo.setAccountType(WebConstants.INVEST_ACCOUNT);
+	    investUserAccountDo.setAmount(order.getTotalPrice());
+	    investUserAccountDo.setUserId(order.getUserId());
+		bizUserAccountService.updateUserAmountByUserIdAccountType(investUserAccountDo);
+		
+		//分配推荐金额
+		BizUserAccountDo refUserAccountDo = new BizUserAccountDo();
+		refUserAccountDo.setAccountType(WebConstants.REFFER_ACCOUNT);
+		refUserAccountDo.setAmount(order.getTotalPrice().multiply(new BigDecimal("0.1")));
+		refUserAccountDo.setUserId(order.getUserId());
+		bizUserAccountService.updateUserAmountByUserIdAccountType(refUserAccountDo);
+    }
 
 	/**
 	 * 处理等待分盘的用户
@@ -344,6 +326,49 @@ public class WalletServiceImpl implements IWalletService {
 	public void updateWalletById(WalletDo newWalletDo) {
 		walletDao.updateWalletById(newWalletDo);		
 	}
+
+	/**
+	 * 
+	 * 确认付款，并上传付款凭证
+	 * zhangyunhmf
+	 *
+	 */
+    public void confirmUpload(String orderNo, String filePath) {
+    	Map<String, Object> paraMap = new HashMap<String,Object>();
+    	paraMap.put("orderNo", orderNo);
+		List<WalletDo> fkRecord = walletDao.selectWallet(paraMap);
+    	if(CollectionUtils.isEmpty(fkRecord)){
+    		logger.error("confirmUpload 失败 ，参数如下：orderNo:"+orderNo+"; filePath:"+filePath);
+    		throw new RuntimeException("保存付款图片失败");
+    	}
+    	WalletDo newWalletDo = fkRecord.get(0);
+    	newWalletDo.setFkStatus(1);
+    	newWalletDo.setFkUpdateTime(new Date());  
+    	newWalletDo.setFkImg(filePath);
+    	walletDao.updateWalletById(newWalletDo);
+	    
+    }
+
+	/**
+	 * 查询共享者
+	 * @see com.redpack.common.wallet.IWalletService#selectSharePay()
+	 *
+	 */
+    @Override
+    public List<Map> selectSharePay() {
+	    return walletDao.selectSharePay();
+    }
+
+	/**
+	 * 
+	 *
+	 * @see com.redpack.common.wallet.IWalletService#addWallet(com.redpack.common.wallet.model.WalletDo)
+	 *
+	 */
+    @Override
+    public int addWallet(WalletDo walletDo) {
+	    return walletDao.addWallet(walletDo);
+    }
 
 
 }
